@@ -196,5 +196,5 @@ class Message(Base):
             "content": self.content,
             "severity": self.severity,
             "created_at": self.created_at.isoformat() if self.created_at else None,
-            "metadata": self.metadata
+            "metadata": self.extra_data
         }
