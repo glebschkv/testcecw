@@ -33,7 +33,8 @@ OBD InsightBot is a desktop application that helps vehicle owners understand the
 
 ### Prerequisites
 - Python 3.11 or higher
-- IBM watsonx.ai account with API key
+- **Option A (Recommended):** Ollama for local IBM Granite (no API key needed)
+- **Option B:** IBM watsonx.ai account with API key (cloud)
 - (Optional) IBM Watson Speech services for voice features
 
 ### Setup
@@ -55,10 +56,42 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-4. Configure environment variables:
+4. **Set up IBM Granite** (choose one option):
+
+#### Option A: Local Ollama (Recommended - No API Key)
+
+**Windows (PowerShell):**
+```powershell
+# Download and install Ollama
+Invoke-WebRequest -Uri "https://ollama.com/download/OllamaSetup.exe" -OutFile "$env:USERPROFILE\Downloads\OllamaSetup.exe"
+Start-Process "$env:USERPROFILE\Downloads\OllamaSetup.exe" -Wait
+
+# Pull IBM Granite model (run in new terminal after install)
+ollama pull granite3.3:2b
+
+# Verify it's working
+ollama run granite3.3:2b "Hello, test message"
+```
+
+**macOS/Linux:**
+```bash
+# Install Ollama
+curl -fsSL https://ollama.com/install.sh | sh
+
+# Pull IBM Granite model
+ollama pull granite3.3:2b
+
+# Verify it's working
+ollama run granite3.3:2b "Hello, test message"
+```
+
+The app will auto-detect Ollama when it starts. No additional configuration needed!
+
+#### Option B: IBM watsonx.ai (Cloud)
+
 ```bash
 cp .env.example .env
-# Edit .env with your IBM credentials
+# Edit .env with your IBM watsonx.ai credentials
 ```
 
 5. Run the application:
@@ -68,10 +101,19 @@ python -m src.main
 
 ## Configuration
 
-Create a `.env` file with the following variables:
+The app uses this priority order:
+1. **Local Ollama** (auto-detected, no config needed)
+2. **IBM watsonx.ai** (requires credentials in `.env`)
+3. **Mock mode** (demo fallback)
+
+### Environment Variables (`.env`)
 
 ```env
-# IBM watsonx.ai (Required)
+# LOCAL OLLAMA (Recommended - No API Key Needed)
+OLLAMA_URL=http://localhost:11434
+OLLAMA_MODEL=granite3.3:2b
+
+# IBM watsonx.ai (Cloud - Optional, only if no Ollama)
 WATSONX_URL=https://us-south.ml.cloud.ibm.com
 WATSONX_API_KEY=your_api_key_here
 WATSONX_PROJECT_ID=your_project_id_here
@@ -79,6 +121,19 @@ WATSONX_PROJECT_ID=your_project_id_here
 # IBM Watson Speech (Optional - for voice features)
 WATSON_SPEECH_API_KEY=your_speech_api_key_here
 WATSON_SPEECH_URL=https://api.us-south.speech-to-text.watson.cloud.ibm.com
+```
+
+### Available Granite Models via Ollama
+
+| Model | Size | Use Case |
+|-------|------|----------|
+| `granite3.3:2b` | ~1.5GB | Faster, lighter - good for testing |
+| `granite3.3:8b` | ~5GB | More capable - better responses |
+
+To switch models:
+```bash
+ollama pull granite3.3:8b
+# Then set OLLAMA_MODEL=granite3.3:8b in .env
 ```
 
 ## Usage
