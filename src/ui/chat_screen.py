@@ -274,9 +274,9 @@ class ChatScreen(QWidget):
         layout.addWidget(self.chat_header)
 
         # Messages scroll area with improved styling
-        scroll = QScrollArea()
-        scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("""
+        self.scroll_area = QScrollArea()
+        self.scroll_area.setWidgetResizable(True)
+        self.scroll_area.setStyleSheet("""
             QScrollArea {
                 border: none;
                 background-color: #F8FAFC;
@@ -290,8 +290,8 @@ class ChatScreen(QWidget):
         self.messages_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.messages_layout.setSpacing(16)
         self.messages_layout.setContentsMargins(8, 16, 8, 16)
-        scroll.setWidget(self.messages_container)
-        layout.addWidget(scroll, stretch=1)
+        self.scroll_area.setWidget(self.messages_container)
+        layout.addWidget(self.scroll_area, stretch=1)
 
         # Welcome message
         self._show_welcome_message()
@@ -520,8 +520,11 @@ class ChatScreen(QWidget):
 
     def _scroll_to_bottom(self):
         """Scroll messages to bottom."""
-        scrollbar = self.messages_container.parentWidget().verticalScrollBar()
-        scrollbar.setValue(scrollbar.maximum())
+        try:
+            scrollbar = self.scroll_area.verticalScrollBar()
+            scrollbar.setValue(scrollbar.maximum())
+        except Exception as e:
+            logger.debug(f"Could not scroll to bottom: {e}")
 
     def _send_message(self):
         """Send a message and get response (BR4, BR5)."""
@@ -580,6 +583,10 @@ class ChatScreen(QWidget):
     def _on_response_ready(self, response: dict):
         """Handle response from worker."""
         self._hide_loading()
+
+        # Guard against chat being deleted while waiting for response
+        if not self.current_chat:
+            return
 
         # Add assistant message
         msg = ChatService.add_message(

@@ -40,6 +40,8 @@ class SeverityStyles:
             "warning": cls.WARNING,
             "normal": cls.NORMAL
         }
+        if not severity:
+            return cls.NORMAL
         return styles.get(severity.lower(), cls.NORMAL)
 
 
