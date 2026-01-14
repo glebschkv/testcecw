@@ -49,34 +49,42 @@ class MessageWidget(QFrame):
                 QFrame {{
                     background-color: {style['background']};
                     border-left: 4px solid {style['border']};
-                    border-radius: 8px;
+                    border-radius: 12px;
+                }}
+                QLabel {{
+                    color: #212121;
+                    background-color: transparent;
                 }}
             """)
 
             # Severity indicator
             if severity != "normal":
                 severity_label = QLabel(f"{style['icon']} {style['name']}")
-                severity_label.setStyleSheet(f"color: {style['text']}; font-weight: bold;")
+                severity_label.setStyleSheet(f"color: {style['text']}; font-weight: bold; background-color: transparent;")
                 layout.addWidget(severity_label)
         else:
             # User message styling
             self.setStyleSheet("""
                 QFrame {
                     background-color: #E3F2FD;
-                    border-radius: 8px;
+                    border-radius: 12px;
+                }
+                QLabel {
+                    color: #212121;
+                    background-color: transparent;
                 }
             """)
 
         # Role label
         role_label = QLabel("You" if role == "user" else "InsightBot")
-        role_label.setStyleSheet("font-weight: bold; color: #424242;")
+        role_label.setStyleSheet("font-weight: bold; color: #424242; background-color: transparent;")
         layout.addWidget(role_label)
 
         # Content
         content_label = QLabel(content)
         content_label.setWordWrap(True)
         content_label.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
-        content_label.setStyleSheet("color: #212121;")
+        content_label.setStyleSheet("color: #212121; background-color: transparent; line-height: 1.5;")
         layout.addWidget(content_label)
 
 
@@ -274,23 +282,23 @@ class ChatScreen(QWidget):
     def _show_welcome_message(self):
         """Show initial welcome message."""
         welcome = QLabel("""
-            <h2>Welcome to OBD InsightBot!</h2>
-            <p>I'm your vehicle diagnostics assistant powered by IBM Granite.</p>
-            <p><b>To get started:</b></p>
-            <ol>
-                <li>Click <b>"+ New Chat"</b> in the sidebar</li>
-                <li>Upload your OBD-II log file (.csv format)</li>
-                <li>Ask me anything about your vehicle's health!</li>
+            <h2 style="color: #1976D2; margin-bottom: 16px;">Welcome to OBD InsightBot!</h2>
+            <p style="color: #424242; font-size: 15px; margin-bottom: 12px;">I'm your vehicle diagnostics assistant powered by IBM Granite.</p>
+            <p style="color: #424242; font-size: 15px; margin-bottom: 8px;"><b>To get started:</b></p>
+            <ol style="color: #424242; font-size: 15px; margin-left: 20px;">
+                <li style="margin-bottom: 6px;">Click <b>"+ New Chat"</b> in the sidebar</li>
+                <li style="margin-bottom: 6px;">Upload your OBD-II log file (.csv format)</li>
+                <li style="margin-bottom: 6px;">Ask me anything about your vehicle's health!</li>
             </ol>
-            <p style="color: #757575;">I can help you understand fault codes, analyze metrics, and provide maintenance recommendations.</p>
+            <p style="color: #757575; font-size: 14px; margin-top: 16px;">I can help you understand fault codes, analyze metrics, and provide maintenance recommendations.</p>
         """)
         welcome.setWordWrap(True)
         welcome.setStyleSheet("""
             QLabel {
-                background-color: white;
-                padding: 30px;
-                border-radius: 10px;
-                color: #424242;
+                background-color: #FFFFFF;
+                padding: 32px;
+                border-radius: 12px;
+                border: 1px solid #E0E0E0;
             }
         """)
         self.messages_layout.addWidget(welcome)
