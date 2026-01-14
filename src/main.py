@@ -41,9 +41,6 @@ def main():
     app.setApplicationVersion("1.0.0")
     app.setOrganizationName("Group 18")
 
-    # Set application-wide attributes
-    app.setAttribute(Qt.ApplicationAttribute.AA_UseHighDpiPixmaps)
-
     # Create and show main window
     window = MainWindow()
     window.show()
