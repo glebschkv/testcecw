@@ -2,224 +2,163 @@
 
 **Conversational Vehicle Diagnostics Powered by IBM Granite**
 
-OBD InsightBot is a desktop application that helps vehicle owners understand their OBD-II diagnostic data through natural language conversations. Using IBM Granite's large language models via watsonx.ai, it translates complex diagnostic codes and metrics into simple, actionable insights.
+A desktop app that helps you understand your vehicle's OBD-II diagnostic data through simple conversations.
 
-## Features
+---
 
-### Core Features (MUST HAVE)
-- **BR1: Account Management** - User registration, login, logout, and account deletion
-- **BR2: OBD-II Log Upload** - Upload and validate CSV log files from OBD-II scanners
-- **BR3: Chat History** - View, rename, delete, and export chat conversations
-- **BR4: Vehicle Status Queries** - Ask natural language questions about your vehicle
-- **BR5: Fault Code Explanation** - Get plain-English explanations of diagnostic codes
-- **BR8: Severity Indicators** - Color-coded responses (red/amber/green) for issue severity
+## Quick Start (Copy & Paste)
 
-### Additional Features (SHOULD HAVE)
-- **BR6: Speech-to-Text** - Dictate questions using voice input
-- **BR7: Voice Conversation Mode** - Full voice-based interaction (hands-free)
+### Windows (PowerShell)
 
-## Technology Stack
+```powershell
+# 1. Clone the repo
+git clone https://github.com/glebschkv/testcecw.git
+cd testcecw
 
-| Component | Technology |
-|-----------|------------|
-| Language | Python 3.11+ |
-| LLM | IBM Granite via watsonx.ai |
-| GUI Framework | PyQt6 |
-| Database | SQLite + SQLAlchemy |
-| Vector Store | ChromaDB |
-| Speech Services | IBM Watson STT/TTS |
-
-## Installation
-
-### Prerequisites
-- Python 3.11 or higher
-- **Option A (Recommended):** Ollama for local IBM Granite (no API key needed)
-- **Option B:** IBM watsonx.ai account with API key (cloud)
-- (Optional) IBM Watson Speech services for voice features
-
-### Setup
-
-1. Clone the repository:
-```bash
-git clone https://github.com/your-repo/obd-insightbot.git
-cd obd-insightbot
-```
-
-2. Create a virtual environment:
-```bash
+# 2. Create virtual environment
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+venv\Scripts\activate
+
+# 3. Install dependencies
+pip install -r requirements.txt
+
+# 4. Run the app
+python src/main.py
 ```
 
-3. Install dependencies:
+### macOS / Linux
+
+```bash
+# 1. Clone the repo
+git clone https://github.com/glebschkv/testcecw.git
+cd testcecw
+
+# 2. Create virtual environment
+python3 -m venv venv
+source venv/bin/activate
+
+# 3. Install dependencies
+pip install -r requirements.txt
+
+# 4. Run the app
+python src/main.py
+```
+
+---
+
+## Install Ollama + IBM Granite AI (Optional but Recommended)
+
+The app works in demo mode without AI. For full AI-powered responses:
+
+### Windows (PowerShell - Run as Administrator)
+
+```powershell
+# 1. Download Ollama installer
+Invoke-WebRequest -Uri "https://ollama.com/download/OllamaSetup.exe" -OutFile "$env:TEMP\OllamaSetup.exe"
+
+# 2. Install Ollama (follow the installer)
+Start-Process "$env:TEMP\OllamaSetup.exe" -Wait
+
+# 3. Close and reopen PowerShell, then pull the AI model
+ollama pull granite3.3:2b
+
+# 4. Verify it works
+ollama run granite3.3:2b "Hello"
+```
+
+### macOS
+
+```bash
+# 1. Download and install Ollama
+curl -fsSL https://ollama.com/install.sh | sh
+
+# 2. Pull the IBM Granite model
+ollama pull granite3.3:2b
+
+# 3. Verify it works
+ollama run granite3.3:2b "Hello"
+```
+
+### Linux (Ubuntu/Debian)
+
+```bash
+# 1. Download and install Ollama
+curl -fsSL https://ollama.com/install.sh | sh
+
+# 2. Start Ollama service
+sudo systemctl start ollama
+
+# 3. Pull the IBM Granite model
+ollama pull granite3.3:2b
+
+# 4. Verify it works
+ollama run granite3.3:2b "Hello"
+```
+
+**That's it!** The app auto-detects Ollama when running. No configuration needed.
+
+---
+
+## What You Can Do
+
+1. **Create Account** - Register and log in
+2. **Upload OBD-II Log** - Click "New Chat" and select your CSV file
+3. **Ask Questions** - Examples:
+   - "What is wrong with my vehicle?"
+   - "Explain fault code P0300"
+   - "Is my engine temperature normal?"
+
+---
+
+## Requirements
+
+- Python 3.8 or higher
+- pip (Python package manager)
+- ~2GB disk space for AI model (optional)
+
+---
+
+## Troubleshooting
+
+### "python is not recognized"
+Download Python from https://www.python.org/downloads/ and check "Add to PATH" during install.
+
+### "No module named PyQt6"
+```bash
+pip install PyQt6
+```
+
+### "No module named X"
 ```bash
 pip install -r requirements.txt
 ```
 
-4. **Set up IBM Granite** (choose one option):
+### "ollama is not recognized" (Windows)
+Close and reopen PowerShell after installing Ollama.
 
-#### Option A: Local Ollama (Recommended - No API Key)
-
-**Windows (PowerShell):**
-```powershell
-# Download and install Ollama
-Invoke-WebRequest -Uri "https://ollama.com/download/OllamaSetup.exe" -OutFile "$env:USERPROFILE\Downloads\OllamaSetup.exe"
-Start-Process "$env:USERPROFILE\Downloads\OllamaSetup.exe" -Wait
-
-# Pull IBM Granite model (run in new terminal after install)
-ollama pull granite3.3:2b
-
-# Verify it's working
-ollama run granite3.3:2b "Hello, test message"
-```
-
-**macOS/Linux:**
+### App won't start
+Make sure virtual environment is activated:
 ```bash
-# Install Ollama
-curl -fsSL https://ollama.com/install.sh | sh
+# Windows
+venv\Scripts\activate
 
-# Pull IBM Granite model
-ollama pull granite3.3:2b
-
-# Verify it's working
-ollama run granite3.3:2b "Hello, test message"
+# macOS/Linux
+source venv/bin/activate
 ```
 
-The app will auto-detect Ollama when it starts. No additional configuration needed!
+---
 
-#### Option B: IBM watsonx.ai (Cloud)
+## Tech Stack
 
-```bash
-cp .env.example .env
-# Edit .env with your IBM watsonx.ai credentials
-```
+| Component | Technology |
+|-----------|------------|
+| Language | Python 3.8+ |
+| GUI | PyQt6 |
+| AI | IBM Granite (via Ollama) |
+| Database | SQLite |
 
-5. Run the application:
-```bash
-python -m src.main
-```
-
-## Configuration
-
-The app uses this priority order:
-1. **Local Ollama** (auto-detected, no config needed)
-2. **IBM watsonx.ai** (requires credentials in `.env`)
-3. **Mock mode** (demo fallback)
-
-### Environment Variables (`.env`)
-
-```env
-# LOCAL OLLAMA (Recommended - No API Key Needed)
-OLLAMA_URL=http://localhost:11434
-OLLAMA_MODEL=granite3.3:2b
-
-# IBM watsonx.ai (Cloud - Optional, only if no Ollama)
-WATSONX_URL=https://us-south.ml.cloud.ibm.com
-WATSONX_API_KEY=your_api_key_here
-WATSONX_PROJECT_ID=your_project_id_here
-
-# IBM Watson Speech (Optional - for voice features)
-WATSON_SPEECH_API_KEY=your_speech_api_key_here
-WATSON_SPEECH_URL=https://api.us-south.speech-to-text.watson.cloud.ibm.com
-```
-
-### Available Granite Models via Ollama
-
-| Model | Size | Use Case |
-|-------|------|----------|
-| `granite3.3:2b` | ~1.5GB | Faster, lighter - good for testing |
-| `granite3.3:8b` | ~5GB | More capable - better responses |
-
-To switch models:
-```bash
-ollama pull granite3.3:8b
-# Then set OLLAMA_MODEL=granite3.3:8b in .env
-```
-
-## Usage
-
-1. **Create an Account**: Launch the app and register a new account
-2. **Upload OBD-II Log**: Click "+ New Chat" and select your CSV log file
-3. **Ask Questions**: Type or speak questions about your vehicle:
-   - "What is the overall health of my vehicle?"
-   - "Explain fault code P0300"
-   - "Is my coolant temperature normal?"
-   - "What maintenance do you recommend?"
-
-## Project Structure
-
-```
-obd-insightbot/
-├── src/
-│   ├── config/          # Configuration and settings
-│   ├── models/          # Database models
-│   ├── services/        # Business logic services
-│   ├── ui/              # PyQt6 user interface
-│   ├── prompts/         # LLM prompt templates
-│   ├── utils/           # Utility functions
-│   └── main.py          # Application entry point
-├── tests/               # Test suite
-├── docs/                # Documentation
-└── requirements.txt     # Dependencies
-```
-
-## Running Tests
-
-```bash
-pytest tests/ -v --cov=src
-```
-
-## API Documentation
-
-See [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) for detailed API specifications and architecture documentation.
-
-## Severity Color Coding (BR8)
-
-| Color | Severity | Meaning |
-|-------|----------|---------|
-| 🔴 Red | Critical | Immediate attention required - stop driving |
-| 🟡 Amber | Warning | Should be addressed soon |
-| 🟢 Green | Normal | No immediate concern |
-
-## Supported OBD-II Metrics
-
-- Engine RPM
-- Coolant Temperature
-- Vehicle Speed
-- Throttle Position
-- Engine Load
-- Fuel Level
-- Intake Air Temperature
-- Battery Voltage
-- And more...
-
-## Supported Fault Codes
-
-- Generic OBD-II codes (P0xxx, P2xxx, P3xxx)
-- Chassis codes (C0xxx)
-- Body codes (B0xxx)
-- Network codes (U0xxx)
-
-*Note: Manufacturer-specific codes (P1xxx) have limited support.*
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+---
 
 ## License
 
-This project is developed as part of a university software engineering course.
-
-## Acknowledgments
-
-- IBM for watsonx.ai and Granite models
-- John McNamara (IBM Product Owner) for project guidance
-- Group 18 development team
-
-## Contact
-
-For questions or feedback, please open an issue on GitHub.
+University software engineering course project - Group 18
