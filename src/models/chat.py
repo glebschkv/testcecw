@@ -160,7 +160,7 @@ class Message(Base):
     created_at = Column(DateTime, default=datetime.utcnow, index=True)
 
     # Additional data (e.g., source documents for RAG)
-    metadata = Column(JSON, nullable=True)
+    extra_data = Column(JSON, nullable=True)
 
     # Relationships
     chat = relationship("Chat", back_populates="messages")
