@@ -3,7 +3,7 @@ Authentication service for user management.
 Implements BR1: Account Management
 """
 
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Dict
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 import secrets
@@ -34,7 +34,7 @@ class AuthService:
     """
 
     # Active sessions: {session_token: user_id}
-    _sessions: dict[str, Tuple[int, datetime]] = {}
+    _sessions: Dict[str, Tuple[int, datetime]] = {}
 
     # Session expiry time (24 hours)
     SESSION_EXPIRY_HOURS = 24
