@@ -77,27 +77,22 @@ class RAGPipeline:
             parsed_data: Parsed OBD-II data from OBDParser
             chat_id: Chat ID for storage
         """
-        documents = self._create_documents(parsed_data)
+        try:
+            documents = self._create_documents(parsed_data)
 
-        if not documents:
-            logger.warning(f"No documents to index for chat {chat_id}")
-            return
+            if not documents:
+                logger.warning(f"No documents to index for chat {chat_id}")
+                return
 
-        if HAS_LANGCHAIN and self.granite.is_configured:
-            try:
-                # Create vector store with embeddings
-                self._vector_stores[chat_id] = Chroma.from_documents(
-                    documents=documents,
-                    embedding=self.granite._embeddings,
-                    collection_name=f"chat_{chat_id}"
-                )
-                logger.info(f"Indexed {len(documents)} documents for chat {chat_id}")
-            except Exception as e:
-                logger.error(f"Failed to create vector store: {e}")
-                self._vector_stores[chat_id] = {"documents": documents}
-        else:
-            # Store documents directly for simple retrieval
+            # Store documents directly for simple retrieval (most reliable approach)
+            # Vector store with embeddings is optional and can fail
             self._vector_stores[chat_id] = {"documents": documents}
+            logger.info(f"Indexed {len(documents)} documents for chat {chat_id}")
+
+        except Exception as e:
+            logger.error(f"Failed to index OBD data for chat {chat_id}: {e}")
+            # Ensure we have at least an empty store to prevent crashes
+            self._vector_stores[chat_id] = {"documents": []}
 
     def query(self, user_query: str, chat_id: int, chat_context: Dict[str, Any]) -> RAGResponse:
         """
