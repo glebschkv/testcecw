@@ -153,7 +153,7 @@ class ChatService:
                 role=role,
                 content=content,
                 severity=severity,
-                metadata=metadata
+                extra_data=metadata
             )
             session.add(message)
 
