@@ -83,7 +83,8 @@ class RAGPipeline:
             logger.warning(f"No documents to index for chat {chat_id}")
             return
 
-        if HAS_LANGCHAIN and self.granite.is_configured:
+        # Only use vector store if we have LangChain, watsonx configured, AND embeddings available
+        if HAS_LANGCHAIN and self.granite.is_configured and self.granite._embeddings is not None:
             try:
                 # Create vector store with embeddings
                 self._vector_stores[chat_id] = Chroma.from_documents(
@@ -96,8 +97,9 @@ class RAGPipeline:
                 logger.error(f"Failed to create vector store: {e}")
                 self._vector_stores[chat_id] = {"documents": documents}
         else:
-            # Store documents directly for simple retrieval
+            # Store documents directly for simple retrieval (Ollama mode or no embeddings)
             self._vector_stores[chat_id] = {"documents": documents}
+            logger.info(f"Stored {len(documents)} documents directly for chat {chat_id}")
 
     def query(self, user_query: str, chat_id: int, chat_context: Dict[str, Any]) -> RAGResponse:
         """
