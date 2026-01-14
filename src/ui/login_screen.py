@@ -36,29 +36,29 @@ class LoginScreen(QWidget):
         """Initialize the UI components."""
         self.setStyleSheet(Styles.LOGIN_STYLE)
 
-        # Main layout with gradient background feel
+        # Main layout with subtle background
         main_layout = QVBoxLayout(self)
         main_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.setStyleSheet("""
             QWidget {
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                    stop:0 #F8FAFC, stop:0.5 #EFF6FF, stop:1 #F8FAFC);
+                background-color: #FAFAFA;
             }
         """ + Styles.LOGIN_STYLE)
 
-        # Container frame with modern card design
+        # Container frame with refined card design
         container = QFrame()
         container.setObjectName("loginFrame")
-        container.setFixedWidth(440)
+        container.setFixedWidth(400)
         container_layout = QVBoxLayout(container)
-        container_layout.setSpacing(24)
-        container_layout.setContentsMargins(48, 48, 48, 48)
+        container_layout.setSpacing(20)
+        container_layout.setContentsMargins(40, 40, 40, 40)
 
-        # Logo/Icon area
-        icon_label = QLabel("")
+        # Logo/Icon area - refined diamond icon
+        icon_label = QLabel("◆")
         icon_label.setStyleSheet("""
-            font-size: 48px;
-            padding: 16px;
+            font-size: 36px;
+            color: #6366F1;
+            padding: 8px;
         """)
         icon_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         container_layout.addWidget(icon_label)
@@ -75,7 +75,7 @@ class LoginScreen(QWidget):
         subtitle.setAlignment(Qt.AlignmentFlag.AlignCenter)
         container_layout.addWidget(subtitle)
 
-        container_layout.addSpacing(16)
+        container_layout.addSpacing(12)
 
         # Stacked widget for login/register forms
         self.stacked_widget = QStackedWidget()
@@ -96,34 +96,26 @@ class LoginScreen(QWidget):
         """Create the login form."""
         form = QWidget()
         layout = QVBoxLayout(form)
-        layout.setSpacing(16)
+        layout.setSpacing(14)
 
-        # Username with icon placeholder
+        # Username
         self.login_username = QLineEdit()
-        self.login_username.setPlaceholderText("  Username")
+        self.login_username.setPlaceholderText("Username")
         layout.addWidget(self.login_username)
 
-        # Password with icon placeholder
+        # Password
         self.login_password = QLineEdit()
-        self.login_password.setPlaceholderText("  Password")
+        self.login_password.setPlaceholderText("Password")
         self.login_password.setEchoMode(QLineEdit.EchoMode.Password)
         layout.addWidget(self.login_password)
 
-        # Error label with modern styling
+        # Error label with refined styling
         self.login_error = QLabel()
         self.login_error.setObjectName("errorLabel")
-        self.login_error.setStyleSheet("""
-            color: #EF4444;
-            font-size: 13px;
-            font-weight: 500;
-            padding: 8px 12px;
-            background-color: #FEE2E2;
-            border-radius: 8px;
-        """)
         self.login_error.hide()
         layout.addWidget(self.login_error)
 
-        layout.addSpacing(8)
+        layout.addSpacing(4)
 
         # Login button
         login_btn = QPushButton("Sign In")
@@ -135,14 +127,14 @@ class LoginScreen(QWidget):
         divider_layout = QHBoxLayout()
         divider_left = QFrame()
         divider_left.setFrameShape(QFrame.Shape.HLine)
-        divider_left.setStyleSheet("background-color: #E2E8F0;")
+        divider_left.setStyleSheet("background-color: #E4E4E7;")
         divider_layout.addWidget(divider_left)
         or_label = QLabel("or")
-        or_label.setStyleSheet("color: #94A3B8; font-size: 13px; padding: 0 16px;")
+        or_label.setStyleSheet("color: #A1A1AA; font-size: 12px; padding: 0 12px;")
         divider_layout.addWidget(or_label)
         divider_right = QFrame()
         divider_right.setFrameShape(QFrame.Shape.HLine)
-        divider_right.setStyleSheet("background-color: #E2E8F0;")
+        divider_right.setStyleSheet("background-color: #E4E4E7;")
         divider_layout.addWidget(divider_right)
         layout.addLayout(divider_layout)
 
@@ -161,40 +153,32 @@ class LoginScreen(QWidget):
         """Create the registration form."""
         form = QWidget()
         layout = QVBoxLayout(form)
-        layout.setSpacing(16)
+        layout.setSpacing(14)
 
         # Username
         self.register_username = QLineEdit()
-        self.register_username.setPlaceholderText("  Username")
+        self.register_username.setPlaceholderText("Username")
         layout.addWidget(self.register_username)
 
         # Password
         self.register_password = QLineEdit()
-        self.register_password.setPlaceholderText("  Password")
+        self.register_password.setPlaceholderText("Password")
         self.register_password.setEchoMode(QLineEdit.EchoMode.Password)
         layout.addWidget(self.register_password)
 
         # Confirm password
         self.register_confirm = QLineEdit()
-        self.register_confirm.setPlaceholderText("  Confirm Password")
+        self.register_confirm.setPlaceholderText("Confirm Password")
         self.register_confirm.setEchoMode(QLineEdit.EchoMode.Password)
         layout.addWidget(self.register_confirm)
 
-        # Error label with modern styling
+        # Error label with refined styling
         self.register_error = QLabel()
         self.register_error.setObjectName("errorLabel")
-        self.register_error.setStyleSheet("""
-            color: #EF4444;
-            font-size: 13px;
-            font-weight: 500;
-            padding: 8px 12px;
-            background-color: #FEE2E2;
-            border-radius: 8px;
-        """)
         self.register_error.hide()
         layout.addWidget(self.register_error)
 
-        layout.addSpacing(8)
+        layout.addSpacing(4)
 
         # Register button
         register_btn = QPushButton("Create Account")

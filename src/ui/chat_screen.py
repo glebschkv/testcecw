@@ -37,7 +37,7 @@ class MessageWidget(QFrame):
         """Set up the message widget UI."""
         layout = QVBoxLayout(self)
         layout.setContentsMargins(16, 14, 16, 14)
-        layout.setSpacing(8)
+        layout.setSpacing(6)
 
         role = self.message.get("role", "assistant")
         content = self.message.get("content", "")
@@ -49,58 +49,78 @@ class MessageWidget(QFrame):
             self.setStyleSheet(f"""
                 QFrame {{
                     background-color: {style['background']};
-                    border-left: 4px solid {style['border']};
-                    border-radius: 16px;
+                    border-left: 3px solid {style['border']};
+                    border-radius: 12px;
                 }}
                 QLabel {{
-                    color: #1E293B;
+                    color: #18181B;
                     background-color: transparent;
                 }}
             """)
 
-            # Severity indicator
-            if severity != "normal":
-                severity_label = QLabel(f"{style['icon']} {style['name']}")
-                severity_label.setStyleSheet(f"""
-                    color: {style['text']};
+            # Header with severity badge for non-normal
+            header_layout = QHBoxLayout()
+            header_layout.setSpacing(10)
+
+            # Severity badge (pill style)
+            if severity and severity.lower() != "normal":
+                severity_badge = QLabel(style['name'])
+                severity_badge.setStyleSheet(f"""
+                    background-color: {style['badge_bg']};
+                    color: {style['badge_text']};
+                    border-radius: 10px;
+                    padding: 4px 10px;
+                    font-size: 11px;
                     font-weight: 600;
-                    font-size: 12px;
-                    background-color: transparent;
-                    padding: 4px 0px;
                 """)
-                layout.addWidget(severity_label)
+                severity_badge.setFixedHeight(22)
+                header_layout.addWidget(severity_badge)
+
+            header_layout.addStretch()
+
+            # Role label
+            role_label = QLabel("InsightBot")
+            role_label.setStyleSheet("""
+                font-weight: 500;
+                color: #52525B;
+                font-size: 12px;
+                background-color: transparent;
+            """)
+            header_layout.addWidget(role_label)
+
+            layout.addLayout(header_layout)
         else:
-            # User message styling - modern blue gradient feel
+            # User message styling - subtle indigo tint
             self.setStyleSheet("""
                 QFrame {
-                    background-color: #EFF6FF;
-                    border-radius: 16px;
+                    background-color: #EEF2FF;
+                    border-radius: 12px;
                 }
                 QLabel {
-                    color: #1E293B;
+                    color: #18181B;
                     background-color: transparent;
                 }
             """)
 
-        # Role label with modern styling
-        role_label = QLabel("You" if role == "user" else "InsightBot")
-        role_label.setStyleSheet("""
-            font-weight: 600;
-            color: #64748B;
-            font-size: 13px;
-            background-color: transparent;
-        """)
-        layout.addWidget(role_label)
+            # Role label for user
+            role_label = QLabel("You")
+            role_label.setStyleSheet("""
+                font-weight: 500;
+                color: #52525B;
+                font-size: 12px;
+                background-color: transparent;
+            """)
+            layout.addWidget(role_label)
 
         # Content with improved readability
         content_label = QLabel(content)
         content_label.setWordWrap(True)
         content_label.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
         content_label.setStyleSheet("""
-            color: #1E293B;
+            color: #18181B;
             background-color: transparent;
             font-size: 14px;
-            line-height: 1.6;
+            line-height: 1.5;
         """)
         layout.addWidget(content_label)
 
@@ -184,65 +204,58 @@ class ChatScreen(QWidget):
         """Create the sidebar with chat history."""
         sidebar = QFrame()
         sidebar.setObjectName("sidebarFrame")
-        sidebar.setFixedWidth(300)
+        sidebar.setFixedWidth(280)
         layout = QVBoxLayout(sidebar)
-        layout.setContentsMargins(20, 24, 20, 24)
-        layout.setSpacing(20)
+        layout.setContentsMargins(16, 20, 16, 20)
+        layout.setSpacing(16)
 
         # Header with user info
         header = QHBoxLayout()
+        header.setSpacing(12)
+
+        # App icon/logo placeholder
+        logo_label = QLabel("◆")
+        logo_label.setStyleSheet("""
+            color: #6366F1;
+            font-size: 20px;
+            font-weight: bold;
+        """)
+        header.addWidget(logo_label)
+
         title = QLabel("InsightBot")
         title.setObjectName("sidebarTitle")
         header.addWidget(title)
+        header.addStretch()
 
-        # Settings/Logout button
-        logout_btn = QPushButton("")
-        logout_btn.setFixedSize(36, 36)
-        logout_btn.setStyleSheet("""
-            QPushButton {
-                background-color: rgba(255, 255, 255, 0.1);
-                color: white;
-                border: none;
-                font-size: 16px;
-                border-radius: 18px;
-            }
-            QPushButton:hover {
-                background-color: rgba(255, 255, 255, 0.15);
-            }
-            QPushButton:pressed {
-                background-color: rgba(255, 255, 255, 0.2);
-            }
-        """)
+        # Settings/Logout button - subtle icon style
+        logout_btn = QPushButton("⚙")
+        logout_btn.setObjectName("logoutButton")
+        logout_btn.setFixedSize(32, 32)
+        logout_btn.setToolTip("Settings")
         logout_btn.clicked.connect(self._show_settings_menu)
         header.addWidget(logout_btn)
         layout.addLayout(header)
 
-        # User label with modern styling
-        user_label = QLabel(f"{self.user.username}")
-        user_label.setStyleSheet("""
-            color: #94A3B8;
-            font-size: 13px;
-            font-weight: 500;
-            padding: 4px 0px;
-        """)
+        # User label with subtle styling
+        user_label = QLabel(f"@{self.user.username}")
+        user_label.setObjectName("usernameLabel")
         layout.addWidget(user_label)
 
+        # Spacer
+        layout.addSpacing(8)
+
         # New chat button
-        new_chat_btn = QPushButton("  New Chat")
+        new_chat_btn = QPushButton("＋  New Chat")
         new_chat_btn.setObjectName("newChatButton")
         new_chat_btn.clicked.connect(self._create_new_chat)
         layout.addWidget(new_chat_btn)
 
+        # Spacer
+        layout.addSpacing(8)
+
         # Chat history section header
-        history_label = QLabel("Recent Chats")
-        history_label.setStyleSheet("""
-            color: #64748B;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            padding: 8px 0px;
-        """)
+        history_label = QLabel("RECENT CHATS")
+        history_label.setObjectName("historyLabel")
         layout.addWidget(history_label)
 
         # Chat history list
@@ -260,87 +273,74 @@ class ChatScreen(QWidget):
         chat_frame = QFrame()
         chat_frame.setObjectName("chatFrame")
         layout = QVBoxLayout(chat_frame)
-        layout.setContentsMargins(32, 28, 32, 24)
-        layout.setSpacing(20)
+        layout.setContentsMargins(32, 24, 32, 20)
+        layout.setSpacing(16)
 
-        # Chat header with modern styling
+        # Chat header with refined styling
         self.chat_header = QLabel("Welcome to InsightBot")
-        self.chat_header.setStyleSheet("""
-            font-size: 24px;
-            font-weight: 700;
-            color: #1E293B;
-            padding-bottom: 8px;
-        """)
+        self.chat_header.setObjectName("chatHeader")
         layout.addWidget(self.chat_header)
 
-        # Messages scroll area with improved styling
+        # Messages scroll area with clean styling
         self.scroll_area = QScrollArea()
         self.scroll_area.setWidgetResizable(True)
         self.scroll_area.setStyleSheet("""
             QScrollArea {
                 border: none;
-                background-color: #F8FAFC;
-                border-radius: 16px;
+                background-color: #FAFAFA;
             }
         """)
 
         self.messages_container = QWidget()
-        self.messages_container.setStyleSheet("background-color: #F8FAFC;")
+        self.messages_container.setStyleSheet("background-color: #FAFAFA;")
         self.messages_layout = QVBoxLayout(self.messages_container)
         self.messages_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
-        self.messages_layout.setSpacing(16)
-        self.messages_layout.setContentsMargins(8, 16, 8, 16)
+        self.messages_layout.setSpacing(12)
+        self.messages_layout.setContentsMargins(4, 12, 4, 12)
         self.scroll_area.setWidget(self.messages_container)
         layout.addWidget(self.scroll_area, stretch=1)
 
         # Welcome message
         self._show_welcome_message()
 
-        # Input area with modern design
+        # Input area with refined design
         input_frame = QFrame()
         input_frame.setStyleSheet("""
             QFrame {
                 background-color: #FFFFFF;
-                border-radius: 28px;
-                border: 1px solid #E2E8F0;
+                border-radius: 16px;
+                border: 1px solid #E4E4E7;
             }
         """)
         input_layout = QHBoxLayout(input_frame)
-        input_layout.setContentsMargins(8, 8, 8, 8)
+        input_layout.setContentsMargins(6, 6, 6, 6)
         input_layout.setSpacing(8)
-
-        # Microphone button (BR6)
-        self.mic_btn = QPushButton("")
-        self.mic_btn.setObjectName("micButton")
-        self.mic_btn.setFixedSize(44, 44)
-        self.mic_btn.setToolTip("Voice input (coming soon)")
-        input_layout.addWidget(self.mic_btn)
 
         # Text input
         self.message_input = QTextEdit()
         self.message_input.setObjectName("messageInput")
         self.message_input.setPlaceholderText("Ask about your vehicle...")
-        self.message_input.setFixedHeight(44)
+        self.message_input.setFixedHeight(40)
         self.message_input.setEnabled(False)
         self.message_input.setStyleSheet("""
             QTextEdit {
                 border: none;
                 background-color: transparent;
-                padding: 10px 12px;
-                font-size: 15px;
-                color: #1E293B;
+                padding: 8px 12px;
+                font-size: 14px;
+                color: #18181B;
             }
             QTextEdit:disabled {
                 background-color: transparent;
-                color: #94A3B8;
+                color: #A1A1AA;
             }
         """)
         input_layout.addWidget(self.message_input, stretch=1)
 
         # Send button
-        self.send_btn = QPushButton("")
+        self.send_btn = QPushButton("➤")
         self.send_btn.setObjectName("sendButton")
-        self.send_btn.setFixedSize(44, 44)
+        self.send_btn.setFixedSize(40, 40)
         self.send_btn.clicked.connect(self._send_message)
         self.send_btn.setEnabled(False)
         input_layout.addWidget(self.send_btn)
@@ -352,28 +352,29 @@ class ChatScreen(QWidget):
     def _show_welcome_message(self):
         """Show initial welcome message."""
         welcome = QLabel("""
-            <div style="text-align: center; padding: 20px;">
-                <h2 style="color: #1E293B; font-size: 28px; font-weight: 700; margin-bottom: 16px;">
+            <div style="text-align: center; padding: 16px;">
+                <p style="color: #6366F1; font-size: 32px; margin-bottom: 8px;">◆</p>
+                <h2 style="color: #18181B; font-size: 24px; font-weight: 600; margin-bottom: 8px; letter-spacing: -0.5px;">
                     Welcome to InsightBot
                 </h2>
-                <p style="color: #64748B; font-size: 16px; margin-bottom: 32px;">
+                <p style="color: #52525B; font-size: 14px; margin-bottom: 28px;">
                     Your intelligent vehicle diagnostics assistant
                 </p>
-                <div style="text-align: left; max-width: 400px; margin: 0 auto;">
-                    <p style="color: #1E293B; font-size: 15px; font-weight: 600; margin-bottom: 16px;">
-                        Get started in 3 simple steps:
+                <div style="text-align: left; max-width: 360px; margin: 0 auto;">
+                    <p style="color: #18181B; font-size: 13px; font-weight: 600; margin-bottom: 14px; letter-spacing: 0.3px;">
+                        GET STARTED
                     </p>
-                    <p style="color: #475569; font-size: 14px; margin-bottom: 12px; padding-left: 8px;">
-                        <span style="color: #3B82F6; font-weight: 600;">1.</span>&nbsp;&nbsp;Click "New Chat" in the sidebar
+                    <p style="color: #52525B; font-size: 14px; margin-bottom: 10px;">
+                        <span style="color: #6366F1; font-weight: 600;">1.</span>&nbsp;&nbsp;Click "New Chat" in the sidebar
                     </p>
-                    <p style="color: #475569; font-size: 14px; margin-bottom: 12px; padding-left: 8px;">
-                        <span style="color: #3B82F6; font-weight: 600;">2.</span>&nbsp;&nbsp;Upload your OBD-II log file (.csv)
+                    <p style="color: #52525B; font-size: 14px; margin-bottom: 10px;">
+                        <span style="color: #6366F1; font-weight: 600;">2.</span>&nbsp;&nbsp;Upload your OBD-II log file (.csv)
                     </p>
-                    <p style="color: #475569; font-size: 14px; margin-bottom: 24px; padding-left: 8px;">
-                        <span style="color: #3B82F6; font-weight: 600;">3.</span>&nbsp;&nbsp;Ask anything about your vehicle
+                    <p style="color: #52525B; font-size: 14px; margin-bottom: 20px;">
+                        <span style="color: #6366F1; font-weight: 600;">3.</span>&nbsp;&nbsp;Ask anything about your vehicle
                     </p>
                 </div>
-                <p style="color: #94A3B8; font-size: 13px; margin-top: 24px;">
+                <p style="color: #A1A1AA; font-size: 12px; margin-top: 20px;">
                     Powered by IBM Granite AI
                 </p>
             </div>
@@ -382,9 +383,9 @@ class ChatScreen(QWidget):
         welcome.setStyleSheet("""
             QLabel {
                 background-color: #FFFFFF;
-                padding: 48px 40px;
-                border-radius: 20px;
-                border: 1px solid #E2E8F0;
+                padding: 40px 32px;
+                border-radius: 12px;
+                border: 1px solid #E4E4E7;
             }
         """)
         self.messages_layout.addWidget(welcome)
@@ -395,7 +396,7 @@ class ChatScreen(QWidget):
         chats = ChatService.get_user_chats(self.user.id)
 
         for chat in chats:
-            item = QListWidgetItem(f"📁 {chat.name}")
+            item = QListWidgetItem(f"○  {chat.name}")
             item.setData(Qt.ItemDataRole.UserRole, chat.id)
             self.chat_list.addItem(item)
 
@@ -660,12 +661,12 @@ class ChatScreen(QWidget):
         """Rename a chat (BR3.3)."""
         new_name, ok = QInputDialog.getText(
             self, "Rename Chat", "Enter new name:",
-            text=item.text().replace("📁 ", "")
+            text=item.text().replace("○  ", "")
         )
 
         if ok and new_name:
             ChatService.rename_chat(chat_id, self.user.id, new_name)
-            item.setText(f"📁 {new_name}")
+            item.setText(f"○  {new_name}")
 
             if self.current_chat and self.current_chat.id == chat_id:
                 self.chat_header.setText(new_name)
