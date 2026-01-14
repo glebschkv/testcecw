@@ -584,6 +584,10 @@ class ChatScreen(QWidget):
         """Handle response from worker."""
         self._hide_loading()
 
+        # Guard against chat being deleted while waiting for response
+        if not self.current_chat:
+            return
+
         # Add assistant message
         msg = ChatService.add_message(
             self.current_chat.id,
