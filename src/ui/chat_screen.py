@@ -36,7 +36,8 @@ class MessageWidget(QFrame):
     def setup_ui(self):
         """Set up the message widget UI."""
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(10, 10, 10, 10)
+        layout.setContentsMargins(16, 14, 16, 14)
+        layout.setSpacing(8)
 
         role = self.message.get("role", "assistant")
         content = self.message.get("content", "")
@@ -49,10 +50,10 @@ class MessageWidget(QFrame):
                 QFrame {{
                     background-color: {style['background']};
                     border-left: 4px solid {style['border']};
-                    border-radius: 12px;
+                    border-radius: 16px;
                 }}
                 QLabel {{
-                    color: #212121;
+                    color: #1E293B;
                     background-color: transparent;
                 }}
             """)
@@ -60,31 +61,47 @@ class MessageWidget(QFrame):
             # Severity indicator
             if severity != "normal":
                 severity_label = QLabel(f"{style['icon']} {style['name']}")
-                severity_label.setStyleSheet(f"color: {style['text']}; font-weight: bold; background-color: transparent;")
+                severity_label.setStyleSheet(f"""
+                    color: {style['text']};
+                    font-weight: 600;
+                    font-size: 12px;
+                    background-color: transparent;
+                    padding: 4px 0px;
+                """)
                 layout.addWidget(severity_label)
         else:
-            # User message styling
+            # User message styling - modern blue gradient feel
             self.setStyleSheet("""
                 QFrame {
-                    background-color: #E3F2FD;
-                    border-radius: 12px;
+                    background-color: #EFF6FF;
+                    border-radius: 16px;
                 }
                 QLabel {
-                    color: #212121;
+                    color: #1E293B;
                     background-color: transparent;
                 }
             """)
 
-        # Role label
+        # Role label with modern styling
         role_label = QLabel("You" if role == "user" else "InsightBot")
-        role_label.setStyleSheet("font-weight: bold; color: #424242; background-color: transparent;")
+        role_label.setStyleSheet("""
+            font-weight: 600;
+            color: #64748B;
+            font-size: 13px;
+            background-color: transparent;
+        """)
         layout.addWidget(role_label)
 
-        # Content
+        # Content with improved readability
         content_label = QLabel(content)
         content_label.setWordWrap(True)
         content_label.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
-        content_label.setStyleSheet("color: #212121; background-color: transparent; line-height: 1.5;")
+        content_label.setStyleSheet("""
+            color: #1E293B;
+            background-color: transparent;
+            font-size: 14px;
+            line-height: 1.6;
+        """)
         layout.addWidget(content_label)
 
 
@@ -167,46 +184,66 @@ class ChatScreen(QWidget):
         """Create the sidebar with chat history."""
         sidebar = QFrame()
         sidebar.setObjectName("sidebarFrame")
-        sidebar.setFixedWidth(280)
+        sidebar.setFixedWidth(300)
         layout = QVBoxLayout(sidebar)
-        layout.setContentsMargins(15, 15, 15, 15)
-        layout.setSpacing(15)
+        layout.setContentsMargins(20, 24, 20, 24)
+        layout.setSpacing(20)
 
         # Header with user info
         header = QHBoxLayout()
-        title = QLabel("OBD InsightBot")
+        title = QLabel("InsightBot")
         title.setObjectName("sidebarTitle")
         header.addWidget(title)
 
         # Settings/Logout button
-        logout_btn = QPushButton("⚙")
-        logout_btn.setFixedSize(30, 30)
+        logout_btn = QPushButton("")
+        logout_btn.setFixedSize(36, 36)
         logout_btn.setStyleSheet("""
             QPushButton {
-                background-color: transparent;
+                background-color: rgba(255, 255, 255, 0.1);
                 color: white;
                 border: none;
-                font-size: 18px;
+                font-size: 16px;
+                border-radius: 18px;
             }
             QPushButton:hover {
-                background-color: #37474F;
-                border-radius: 15px;
+                background-color: rgba(255, 255, 255, 0.15);
+            }
+            QPushButton:pressed {
+                background-color: rgba(255, 255, 255, 0.2);
             }
         """)
         logout_btn.clicked.connect(self._show_settings_menu)
         header.addWidget(logout_btn)
         layout.addLayout(header)
 
-        # User label
-        user_label = QLabel(f"👤 {self.user.username}")
-        user_label.setStyleSheet("color: #B0BEC5; font-size: 12px;")
+        # User label with modern styling
+        user_label = QLabel(f"{self.user.username}")
+        user_label.setStyleSheet("""
+            color: #94A3B8;
+            font-size: 13px;
+            font-weight: 500;
+            padding: 4px 0px;
+        """)
         layout.addWidget(user_label)
 
         # New chat button
-        new_chat_btn = QPushButton("+ New Chat")
+        new_chat_btn = QPushButton("  New Chat")
         new_chat_btn.setObjectName("newChatButton")
         new_chat_btn.clicked.connect(self._create_new_chat)
         layout.addWidget(new_chat_btn)
+
+        # Chat history section header
+        history_label = QLabel("Recent Chats")
+        history_label.setStyleSheet("""
+            color: #64748B;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 8px 0px;
+        """)
+        layout.addWidget(history_label)
 
         # Chat history list
         self.chat_list = QListWidget()
@@ -223,54 +260,87 @@ class ChatScreen(QWidget):
         chat_frame = QFrame()
         chat_frame.setObjectName("chatFrame")
         layout = QVBoxLayout(chat_frame)
-        layout.setContentsMargins(20, 20, 20, 20)
-        layout.setSpacing(15)
+        layout.setContentsMargins(32, 28, 32, 24)
+        layout.setSpacing(20)
 
-        # Chat header
-        self.chat_header = QLabel("Welcome to OBD InsightBot")
-        self.chat_header.setStyleSheet("font-size: 20px; font-weight: bold; color: #1976D2;")
+        # Chat header with modern styling
+        self.chat_header = QLabel("Welcome to InsightBot")
+        self.chat_header.setStyleSheet("""
+            font-size: 24px;
+            font-weight: 700;
+            color: #1E293B;
+            padding-bottom: 8px;
+        """)
         layout.addWidget(self.chat_header)
 
-        # Messages scroll area
+        # Messages scroll area with improved styling
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("border: none; background-color: #FAFAFA;")
+        scroll.setStyleSheet("""
+            QScrollArea {
+                border: none;
+                background-color: #F8FAFC;
+                border-radius: 16px;
+            }
+        """)
 
         self.messages_container = QWidget()
+        self.messages_container.setStyleSheet("background-color: #F8FAFC;")
         self.messages_layout = QVBoxLayout(self.messages_container)
         self.messages_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
-        self.messages_layout.setSpacing(10)
+        self.messages_layout.setSpacing(16)
+        self.messages_layout.setContentsMargins(8, 16, 8, 16)
         scroll.setWidget(self.messages_container)
         layout.addWidget(scroll, stretch=1)
 
         # Welcome message
         self._show_welcome_message()
 
-        # Input area
+        # Input area with modern design
         input_frame = QFrame()
+        input_frame.setStyleSheet("""
+            QFrame {
+                background-color: #FFFFFF;
+                border-radius: 28px;
+                border: 1px solid #E2E8F0;
+            }
+        """)
         input_layout = QHBoxLayout(input_frame)
-        input_layout.setContentsMargins(0, 0, 0, 0)
-        input_layout.setSpacing(10)
+        input_layout.setContentsMargins(8, 8, 8, 8)
+        input_layout.setSpacing(8)
 
         # Microphone button (BR6)
-        self.mic_btn = QPushButton("🎤")
+        self.mic_btn = QPushButton("")
         self.mic_btn.setObjectName("micButton")
-        self.mic_btn.setFixedSize(40, 40)
+        self.mic_btn.setFixedSize(44, 44)
         self.mic_btn.setToolTip("Voice input (coming soon)")
         input_layout.addWidget(self.mic_btn)
 
         # Text input
         self.message_input = QTextEdit()
         self.message_input.setObjectName("messageInput")
-        self.message_input.setPlaceholderText("Type your question about your vehicle...")
-        self.message_input.setFixedHeight(50)
+        self.message_input.setPlaceholderText("Ask about your vehicle...")
+        self.message_input.setFixedHeight(44)
         self.message_input.setEnabled(False)
+        self.message_input.setStyleSheet("""
+            QTextEdit {
+                border: none;
+                background-color: transparent;
+                padding: 10px 12px;
+                font-size: 15px;
+                color: #1E293B;
+            }
+            QTextEdit:disabled {
+                background-color: transparent;
+                color: #94A3B8;
+            }
+        """)
         input_layout.addWidget(self.message_input, stretch=1)
 
         # Send button
-        self.send_btn = QPushButton("➤")
+        self.send_btn = QPushButton("")
         self.send_btn.setObjectName("sendButton")
-        self.send_btn.setFixedSize(40, 40)
+        self.send_btn.setFixedSize(44, 44)
         self.send_btn.clicked.connect(self._send_message)
         self.send_btn.setEnabled(False)
         input_layout.addWidget(self.send_btn)
@@ -282,23 +352,39 @@ class ChatScreen(QWidget):
     def _show_welcome_message(self):
         """Show initial welcome message."""
         welcome = QLabel("""
-            <h2 style="color: #1976D2; margin-bottom: 16px;">Welcome to OBD InsightBot!</h2>
-            <p style="color: #424242; font-size: 15px; margin-bottom: 12px;">I'm your vehicle diagnostics assistant powered by IBM Granite.</p>
-            <p style="color: #424242; font-size: 15px; margin-bottom: 8px;"><b>To get started:</b></p>
-            <ol style="color: #424242; font-size: 15px; margin-left: 20px;">
-                <li style="margin-bottom: 6px;">Click <b>"+ New Chat"</b> in the sidebar</li>
-                <li style="margin-bottom: 6px;">Upload your OBD-II log file (.csv format)</li>
-                <li style="margin-bottom: 6px;">Ask me anything about your vehicle's health!</li>
-            </ol>
-            <p style="color: #757575; font-size: 14px; margin-top: 16px;">I can help you understand fault codes, analyze metrics, and provide maintenance recommendations.</p>
+            <div style="text-align: center; padding: 20px;">
+                <h2 style="color: #1E293B; font-size: 28px; font-weight: 700; margin-bottom: 16px;">
+                    Welcome to InsightBot
+                </h2>
+                <p style="color: #64748B; font-size: 16px; margin-bottom: 32px;">
+                    Your intelligent vehicle diagnostics assistant
+                </p>
+                <div style="text-align: left; max-width: 400px; margin: 0 auto;">
+                    <p style="color: #1E293B; font-size: 15px; font-weight: 600; margin-bottom: 16px;">
+                        Get started in 3 simple steps:
+                    </p>
+                    <p style="color: #475569; font-size: 14px; margin-bottom: 12px; padding-left: 8px;">
+                        <span style="color: #3B82F6; font-weight: 600;">1.</span>&nbsp;&nbsp;Click "New Chat" in the sidebar
+                    </p>
+                    <p style="color: #475569; font-size: 14px; margin-bottom: 12px; padding-left: 8px;">
+                        <span style="color: #3B82F6; font-weight: 600;">2.</span>&nbsp;&nbsp;Upload your OBD-II log file (.csv)
+                    </p>
+                    <p style="color: #475569; font-size: 14px; margin-bottom: 24px; padding-left: 8px;">
+                        <span style="color: #3B82F6; font-weight: 600;">3.</span>&nbsp;&nbsp;Ask anything about your vehicle
+                    </p>
+                </div>
+                <p style="color: #94A3B8; font-size: 13px; margin-top: 24px;">
+                    Powered by IBM Granite AI
+                </p>
+            </div>
         """)
         welcome.setWordWrap(True)
         welcome.setStyleSheet("""
             QLabel {
                 background-color: #FFFFFF;
-                padding: 32px;
-                border-radius: 12px;
-                border: 1px solid #E0E0E0;
+                padding: 48px 40px;
+                border-radius: 20px;
+                border: 1px solid #E2E8F0;
             }
         """)
         self.messages_layout.addWidget(welcome)
@@ -368,38 +454,54 @@ class ChatScreen(QWidget):
 
     def _load_chat(self, chat_id: int):
         """Load a chat and display its messages."""
-        chat = ChatService.get_chat(chat_id, self.user.id)
-        if not chat:
-            return
+        try:
+            chat = ChatService.get_chat(chat_id, self.user.id)
+            if not chat:
+                logger.warning(f"Chat {chat_id} not found or access denied")
+                QMessageBox.warning(self, "Error", "Could not load the selected chat.")
+                return
 
-        self.current_chat = chat
-        self.current_context = {
-            "metrics": chat.parsed_metrics or [],
-            "fault_codes": chat.fault_codes or []
-        }
+            self.current_chat = chat
+            self.current_context = {
+                "metrics": chat.parsed_metrics or [],
+                "fault_codes": chat.fault_codes or []
+            }
 
-        # Update header
-        self.chat_header.setText(chat.name)
+            # Update header
+            self.chat_header.setText(chat.name)
 
-        # Clear messages
-        self._clear_messages()
+            # Clear messages
+            self._clear_messages()
 
-        # Load messages
-        messages = ChatService.get_chat_messages(chat_id, self.user.id)
-        for msg in messages:
-            self._add_message_widget(msg.to_dict())
+            # Load messages with error handling
+            try:
+                messages = ChatService.get_chat_messages(chat_id, self.user.id)
+                for msg in messages:
+                    try:
+                        self._add_message_widget(msg.to_dict())
+                    except Exception as e:
+                        logger.error(f"Error displaying message {msg.id}: {e}")
+            except Exception as e:
+                logger.error(f"Error loading messages for chat {chat_id}: {e}")
 
-        # Enable input
-        self.message_input.setEnabled(True)
-        self.send_btn.setEnabled(True)
+            # Enable input
+            self.message_input.setEnabled(True)
+            self.send_btn.setEnabled(True)
 
-        # Re-index data for RAG if needed
-        if chat.parsed_metrics:
-            self.rag_pipeline.index_obd_data({
-                "metrics": chat.parsed_metrics,
-                "fault_codes": chat.fault_codes or [],
-                "statistics": {}
-            }, chat_id)
+            # Re-index data for RAG if needed (with error handling)
+            try:
+                if chat.parsed_metrics:
+                    self.rag_pipeline.index_obd_data({
+                        "metrics": chat.parsed_metrics,
+                        "fault_codes": chat.fault_codes or [],
+                        "statistics": {}
+                    }, chat_id)
+            except Exception as e:
+                logger.error(f"Error indexing RAG data for chat {chat_id}: {e}")
+
+        except Exception as e:
+            logger.error(f"Error loading chat {chat_id}: {e}")
+            QMessageBox.critical(self, "Error", f"Failed to load chat: {str(e)}")
 
     def _clear_messages(self):
         """Clear all messages from the display."""
@@ -433,27 +535,37 @@ class ChatScreen(QWidget):
         # Clear input
         self.message_input.clear()
 
-        # Add user message
-        user_msg = ChatService.add_message(
-            self.current_chat.id,
-            "user",
-            text
-        )
-        self._add_message_widget(user_msg.to_dict())
+        try:
+            # Add user message
+            user_msg = ChatService.add_message(
+                self.current_chat.id,
+                "user",
+                text
+            )
+            self._add_message_widget(user_msg.to_dict())
 
-        # Show loading indicator
-        self._show_loading()
+            # Show loading indicator
+            self._show_loading()
 
-        # Process query in background
-        self.worker = ChatWorker(
-            self.rag_pipeline,
-            text,
-            self.current_chat.id,
-            self.current_context
-        )
-        self.worker.response_ready.connect(self._on_response_ready)
-        self.worker.error_occurred.connect(self._on_response_error)
-        self.worker.start()
+            # Process query in background
+            self.worker = ChatWorker(
+                self.rag_pipeline,
+                text,
+                self.current_chat.id,
+                self.current_context
+            )
+            self.worker.response_ready.connect(self._on_response_ready)
+            self.worker.error_occurred.connect(self._on_response_error)
+            self.worker.start()
+
+        except Exception as e:
+            logger.error(f"Error sending message: {e}")
+            self._hide_loading()
+            self._add_message_widget({
+                "role": "assistant",
+                "content": f"Sorry, there was an error processing your message. Please try again.",
+                "severity": "warning"
+            })
 
     def _show_loading(self):
         """Show loading indicator."""
