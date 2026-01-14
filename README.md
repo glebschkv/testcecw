@@ -8,7 +8,7 @@ A desktop app that helps you understand your vehicle's OBD-II diagnostic data th
 
 ## Quick Start (Copy & Paste)
 
-### Windows
+### Windows (PowerShell)
 
 ```powershell
 # 1. Clone the repo
@@ -46,29 +46,56 @@ python src/main.py
 
 ---
 
-## Optional: Set Up AI (IBM Granite via Ollama)
+## Install Ollama + IBM Granite AI (Optional but Recommended)
 
-The app works in demo mode without AI setup. For full AI features:
+The app works in demo mode without AI. For full AI-powered responses:
 
-### Windows
+### Windows (PowerShell - Run as Administrator)
 
 ```powershell
-# Download and install Ollama from https://ollama.com/download
-# Then run:
+# 1. Download Ollama installer
+Invoke-WebRequest -Uri "https://ollama.com/download/OllamaSetup.exe" -OutFile "$env:TEMP\OllamaSetup.exe"
+
+# 2. Install Ollama (follow the installer)
+Start-Process "$env:TEMP\OllamaSetup.exe" -Wait
+
+# 3. Close and reopen PowerShell, then pull the AI model
 ollama pull granite3.3:2b
+
+# 4. Verify it works
+ollama run granite3.3:2b "Hello"
 ```
 
-### macOS / Linux
+### macOS
 
 ```bash
-# Install Ollama
+# 1. Download and install Ollama
 curl -fsSL https://ollama.com/install.sh | sh
 
-# Pull the model
+# 2. Pull the IBM Granite model
 ollama pull granite3.3:2b
+
+# 3. Verify it works
+ollama run granite3.3:2b "Hello"
 ```
 
-The app auto-detects Ollama when running. No config needed!
+### Linux (Ubuntu/Debian)
+
+```bash
+# 1. Download and install Ollama
+curl -fsSL https://ollama.com/install.sh | sh
+
+# 2. Start Ollama service
+sudo systemctl start ollama
+
+# 3. Pull the IBM Granite model
+ollama pull granite3.3:2b
+
+# 4. Verify it works
+ollama run granite3.3:2b "Hello"
+```
+
+**That's it!** The app auto-detects Ollama when running. No configuration needed.
 
 ---
 
@@ -83,24 +110,18 @@ The app auto-detects Ollama when running. No config needed!
 
 ---
 
-## Screenshots
-
-The app features a modern, sophisticated UI with:
-- Dark sidebar with chat history
-- Color-coded severity indicators (Critical/Warning/Normal)
-- Clean message bubbles
-- Indigo accent theme
-
----
-
 ## Requirements
 
-- Python 3.8+
+- Python 3.8 or higher
 - pip (Python package manager)
+- ~2GB disk space for AI model (optional)
 
 ---
 
 ## Troubleshooting
+
+### "python is not recognized"
+Download Python from https://www.python.org/downloads/ and check "Add to PATH" during install.
 
 ### "No module named PyQt6"
 ```bash
@@ -112,29 +133,17 @@ pip install PyQt6
 pip install -r requirements.txt
 ```
 
+### "ollama is not recognized" (Windows)
+Close and reopen PowerShell after installing Ollama.
+
 ### App won't start
-Make sure you're in the project directory and virtual environment is activated:
+Make sure virtual environment is activated:
 ```bash
 # Windows
 venv\Scripts\activate
 
 # macOS/Linux
 source venv/bin/activate
-```
-
----
-
-## Project Structure
-
-```
-testcecw/
-├── src/
-│   ├── ui/           # User interface (PyQt6)
-│   ├── services/     # Business logic
-│   ├── models/       # Database models
-│   └── main.py       # Entry point
-├── requirements.txt  # Dependencies
-└── README.md
 ```
 
 ---
@@ -153,9 +162,3 @@ testcecw/
 ## License
 
 University software engineering course project - Group 18
-
----
-
-## Need Help?
-
-Open an issue on GitHub or check the troubleshooting section above.
