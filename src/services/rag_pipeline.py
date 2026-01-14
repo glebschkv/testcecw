@@ -113,34 +113,42 @@ class RAGPipeline:
         Returns:
             RAGResponse with answer, severity, and sources
         """
-        # Retrieve relevant context
-        relevant_docs = self._retrieve(user_query, chat_id)
+        try:
+            # Retrieve relevant context
+            relevant_docs = self._retrieve(user_query, chat_id)
 
-        # Build augmented context
-        context = self._build_context(chat_context, relevant_docs)
+            # Build augmented context
+            context = self._build_context(chat_context, relevant_docs)
 
-        # Determine query type and select appropriate prompt
-        prompt = self._select_prompt(user_query, chat_context)
+            # Determine query type and select appropriate prompt
+            prompt = self._select_prompt(user_query, chat_context)
 
-        # Generate response
-        response = self.granite.generate_response(
-            prompt=user_query,
-            context=context,
-            system_prompt=prompt
-        )
+            # Generate response
+            response = self.granite.generate_response(
+                prompt=user_query,
+                context=context,
+                system_prompt=prompt
+            )
 
-        # Classify severity
-        severity = self.severity_classifier.classify(
-            response=response,
-            metrics=chat_context.get("metrics", []),
-            fault_codes=chat_context.get("fault_codes", [])
-        )
+            # Classify severity
+            severity = self.severity_classifier.classify(
+                response=response,
+                metrics=chat_context.get("metrics", []),
+                fault_codes=chat_context.get("fault_codes", [])
+            )
 
-        return RAGResponse(
-            response=response,
-            severity=severity,
-            sources=[{"content": doc} for doc in relevant_docs[:3]]
-        )
+            return RAGResponse(
+                response=response,
+                severity=severity,
+                sources=[{"content": doc} for doc in relevant_docs[:3]]
+            )
+        except Exception as e:
+            logger.error(f"RAG query error: {e}", exc_info=True)
+            return RAGResponse(
+                response=f"I encountered an error processing your question. Please try again. Error: {str(e)}",
+                severity="warning",
+                sources=[]
+            )
 
     def get_vehicle_summary(self, chat_context: Dict[str, Any]) -> RAGResponse:
         """

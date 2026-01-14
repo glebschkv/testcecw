@@ -345,8 +345,12 @@ class ChatScreen(QWidget):
                 name=f"Vehicle Diagnostic - {file_path.split('/')[-1]}"
             )
 
-            # Index data for RAG
-            self.rag_pipeline.index_obd_data(parsed_data, chat.id)
+            # Index data for RAG (wrapped in try-except to prevent crash)
+            try:
+                self.rag_pipeline.index_obd_data(parsed_data, chat.id)
+            except Exception as e:
+                logger.error(f"RAG indexing failed: {e}")
+                # Continue anyway - chat will still work
 
             # Refresh chat list and open new chat
             self.load_chat_history()
@@ -358,7 +362,7 @@ class ChatScreen(QWidget):
         except OBDParseError as e:
             QMessageBox.critical(self, "Parse Error", str(e))
         except Exception as e:
-            logger.error(f"Error creating chat: {e}")
+            logger.error(f"Error creating chat: {e}", exc_info=True)
             QMessageBox.critical(self, "Error", f"Failed to create chat: {str(e)}")
 
     def _on_chat_selected(self, item: QListWidgetItem):
@@ -395,11 +399,14 @@ class ChatScreen(QWidget):
 
         # Re-index data for RAG if needed
         if chat.parsed_metrics:
-            self.rag_pipeline.index_obd_data({
-                "metrics": chat.parsed_metrics,
-                "fault_codes": chat.fault_codes or [],
-                "statistics": {}
-            }, chat_id)
+            try:
+                self.rag_pipeline.index_obd_data({
+                    "metrics": chat.parsed_metrics,
+                    "fault_codes": chat.fault_codes or [],
+                    "statistics": {}
+                }, chat_id)
+            except Exception as e:
+                logger.error(f"RAG re-indexing failed: {e}")
 
     def _clear_messages(self):
         """Clear all messages from the display."""
@@ -469,14 +476,22 @@ class ChatScreen(QWidget):
         """Handle response from worker."""
         self._hide_loading()
 
-        # Add assistant message
-        msg = ChatService.add_message(
-            self.current_chat.id,
-            "assistant",
-            response["response"],
-            severity=response["severity"]
-        )
-        self._add_message_widget(msg.to_dict())
+        try:
+            # Add assistant message
+            msg = ChatService.add_message(
+                self.current_chat.id,
+                "assistant",
+                response.get("response", "No response generated."),
+                severity=response.get("severity", "normal")
+            )
+            self._add_message_widget(msg.to_dict())
+        except Exception as e:
+            logger.error(f"Error handling response: {e}", exc_info=True)
+            self._add_message_widget({
+                "role": "assistant",
+                "content": f"Error saving response: {str(e)}",
+                "severity": "warning"
+            })
 
     def _on_response_error(self, error: str):
         """Handle error from worker."""
