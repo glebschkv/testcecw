@@ -358,7 +358,7 @@ class OBDParser:
 
                 metric = OBDMetric(
                     name=metric_name,
-                    value=round(latest_value, 2),
+                    value=float(round(latest_value, 2)),
                     unit=self.METRIC_UNITS.get(metric_name, ""),
                     status=status,
                     description=self.METRIC_DESCRIPTIONS.get(metric_name, ""),
@@ -486,10 +486,10 @@ class OBDParser:
                 values = pd.to_numeric(df[col], errors="coerce").dropna()
                 if not values.empty:
                     metric_stats[metric.name] = {
-                        "min": round(values.min(), 2),
-                        "max": round(values.max(), 2),
-                        "mean": round(values.mean(), 2),
-                        "std": round(values.std(), 2) if len(values) > 1 else 0
+                        "min": float(round(values.min(), 2)),
+                        "max": float(round(values.max(), 2)),
+                        "mean": float(round(values.mean(), 2)),
+                        "std": float(round(values.std(), 2)) if len(values) > 1 else 0.0
                     }
 
         stats["metric_statistics"] = metric_stats
