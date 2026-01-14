@@ -3,7 +3,7 @@ Voice Service for Speech-to-Text and Text-to-Speech.
 Implements BR6: Speech-to-text Dictation and BR7: Voice Conversation Mode
 """
 
-from typing import Optional, Callable, Generator
+from typing import Optional, Callable, Generator, Tuple
 import threading
 import time
 import io
@@ -99,7 +99,7 @@ class VoiceService:
         """Check if currently recording."""
         return self._is_recording
 
-    def check_microphone_permission(self) -> tuple[bool, str]:
+    def check_microphone_permission(self) -> Tuple[bool, str]:
         """
         Check if microphone is available (BR6.4).
 

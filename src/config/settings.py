@@ -6,7 +6,7 @@ Loads configuration from environment variables and .env file.
 import os
 from pathlib import Path
 from dataclasses import dataclass, field
-from typing import Optional
+from typing import Optional, Tuple, List
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -90,7 +90,7 @@ class Settings:
             "repetition_penalty": self.repetition_penalty
         }
 
-    def validate(self) -> tuple[bool, list[str]]:
+    def validate(self) -> Tuple[bool, List[str]]:
         """Validate required settings are configured."""
         errors = []
 
