@@ -1,0 +1,151 @@
+OBD InsightBot - System Architecture Summary
+============================================
+
+OVERVIEW
+--------
+Desktop application for vehicle diagnostics using IBM Granite AI.
+Users upload OBD-II diagnostic logs and chat with AI about vehicle health.
+
+USER ACCOUNTS
+-------------
+- Custom local authentication (NOT Firebase/Auth0)
+- Password hashing: bcrypt with 12 salt rounds
+- Session management: In-memory tokens (24-hour expiry)
+- Single session per user (new login invalidates old)
+
+DATA STORAGE
+------------
+- Database: SQLite (local file at ./data/obd_insightbot.db)
+- ORM: SQLAlchemy 2.0+
+- Tables:
+  * User: id, username, password_hash, created_at, last_login
+  * Chat: id, user_id, obd_log_path, parsed_metrics (JSON), fault_codes (JSON)
+  * Message: id, chat_id, role, content, severity, extra_data (JSON)
+- All data stored locally - no cloud sync
+
+IBM AI MODELS
+-------------
+Primary Chat Model:
+  - Model ID: ibm/granite-3-8b-instruct
+  - Provider: IBM watsonx.ai API
+  - Parameters: 8 billion
+
+Embedding Model (for RAG):
+  - Model ID: ibm/granite-embedding-107m-multilingual
+  - Parameters: 107 million
+  - Supports 107+ languages
+
+Local Alternative (Ollama):
+  - Model: granite3.3:2b (2 billion params)
+  - Runs locally, no API key needed
+
+Generation Settings:
+  - decoding_method: greedy
+  - max_new_tokens: 1024
+  - temperature: 0.7
+  - top_p: 0.9
+  - repetition_penalty: 1.1
+
+RAG SYSTEM
+----------
+- Vector Store: ChromaDB (in-memory per chat session)
+- Text Splitter: LangChain RecursiveCharacterTextSplitter
+  * Chunk size: 500 chars
+  * Overlap: 50 chars
+- Retrieval: Top-5 similarity search
+- Documents indexed from:
+  * OBD metrics (RPM, temp, speed, etc.)
+  * Fault codes (DTCs with descriptions)
+  * Summary statistics
+
+RAG Pipeline Flow:
+1. Parse OBD CSV -> Create document chunks
+2. Generate embeddings via Granite embedding model
+3. Store in ChromaDB
+4. On query: retrieve relevant chunks
+5. Augment prompt with context
+6. Generate response via Granite chat model
+7. Classify severity (critical/warning/normal)
+
+BACKEND STACK
+-------------
+- Language: Python 3.11+
+- Architecture: Monolithic desktop app
+- Key Services:
+  * AuthService - authentication
+  * ChatService - chat history management
+  * OBDParser - CSV parsing, fault code extraction
+  * GraniteClient - AI model interaction
+  * RAGPipeline - retrieval-augmented generation
+  * SeverityClassifier - response severity
+  * VoiceService - speech-to-text/text-to-speech
+
+FRONTEND
+--------
+- Framework: PyQt6 (Qt6 for Python)
+- Window: 1200x800 minimum
+- Screens:
+  * LoginScreen - auth forms
+  * ChatScreen - chat interface with sidebar
+- Severity color coding:
+  * Critical: Red (#F44336)
+  * Warning: Amber (#FFC107)
+  * Normal: Green (#4CAF50)
+
+EXTERNAL SERVICES
+-----------------
+1. IBM watsonx.ai (optional, cloud)
+   - URL: https://us-south.ml.cloud.ibm.com
+   - Auth: API Key + Project ID
+
+2. IBM Watson Speech Services (optional)
+   - Speech-to-Text
+   - Text-to-Speech
+   - Auth: IAM API Key
+
+3. Ollama (optional, local)
+   - URL: http://localhost:11434
+   - No authentication needed
+
+ENVIRONMENT VARIABLES
+---------------------
+# Local Ollama (recommended)
+OLLAMA_URL=http://localhost:11434
+OLLAMA_MODEL=granite3.3:2b
+
+# IBM watsonx.ai (cloud option)
+WATSONX_URL=https://us-south.ml.cloud.ibm.com
+WATSONX_API_KEY=<your_key>
+WATSONX_PROJECT_ID=<your_project>
+
+# Watson Speech (optional)
+WATSON_SPEECH_API_KEY=<your_key>
+WATSON_SPEECH_URL=https://api.us-south.speech-to-text.watson.cloud.ibm.com
+
+# App settings
+DATABASE_PATH=./data/obd_insightbot.db
+APP_DEBUG=false
+APP_LOG_LEVEL=INFO
+
+DEPLOYMENT
+----------
+- Type: Desktop application (not web)
+- Packaging: PyInstaller for standalone executable
+- Requirements: Python 3.11+, 4GB RAM recommended
+- Database auto-creates on first run
+
+KEY DEPENDENCIES
+----------------
+- PyQt6 (GUI)
+- SQLAlchemy (database)
+- ibm-watsonx-ai, langchain-ibm (AI)
+- chromadb (vector store)
+- bcrypt (password hashing)
+- pandas, numpy (data processing)
+
+SECURITY
+--------
+- Passwords: bcrypt hashed (12 rounds)
+- Sessions: 24-hour expiry tokens
+- Authorization: User ownership checks
+- Data: All local, no cloud storage by default
