@@ -2,7 +2,43 @@
 UI Styles and Themes for OBD InsightBot.
 Sophisticated, refined design with modern aesthetics.
 Implements BR8: Severity color coding.
+Supports pixel art background images.
 """
+
+import os
+from pathlib import Path
+
+
+# Background image configuration
+ASSETS_DIR = Path(__file__).parent.parent / "assets"
+BACKGROUNDS_DIR = ASSETS_DIR / "backgrounds"
+
+
+def get_background_path(filename: str) -> str:
+    """Get the full path to a background image file."""
+    return str(BACKGROUNDS_DIR / filename)
+
+
+def get_background_css(filename: str = None) -> str:
+    """
+    Generate CSS for background image.
+    If no filename provided, returns empty string (uses default solid color).
+    """
+    if not filename:
+        return ""
+
+    path = get_background_path(filename)
+    if not os.path.exists(path):
+        return ""
+
+    # Convert to forward slashes for Qt CSS compatibility
+    css_path = path.replace("\\", "/")
+    return f"""
+        background-image: url("{css_path}");
+        background-repeat: repeat-x;
+        background-position: bottom;
+        background-size: auto 100%;
+    """
 
 
 class SeverityStyles:
@@ -758,3 +794,85 @@ class Styles:
             font-weight: 600;
         ">{colors['name']}</span>
         """
+
+    # ═══════════════════════════════════════════════════════════════
+    # PIXEL ART BACKGROUND SUPPORT
+    # ═══════════════════════════════════════════════════════════════
+
+    # Available background themes (add your generated images here)
+    BACKGROUND_THEMES = {
+        "meadow": "meadow.png",
+        "forest": "forest.png",
+        "desert": "desert.png",
+        "ocean": "ocean.png",
+        "snow": "snow.png",
+        "night": "night.png",
+        "city": "city.png",
+    }
+
+    @classmethod
+    def get_chat_style_with_background(cls, background_name: str = None) -> str:
+        """
+        Get chat style with optional pixel art background.
+
+        Args:
+            background_name: Name of background theme (meadow, forest, etc.)
+                           or None for solid color background.
+
+        Returns:
+            Complete stylesheet string for chat screen.
+        """
+        # Get background filename from theme name
+        bg_filename = cls.BACKGROUND_THEMES.get(background_name)
+        bg_css = get_background_css(bg_filename)
+
+        # If no valid background, use default solid color
+        if not bg_css:
+            bg_style = "background-color: #FAFAFA;"
+        else:
+            bg_style = f"""
+                background-color: #87CEEB;
+                {bg_css}
+            """
+
+        return cls.CHAT_STYLE.replace(
+            """QFrame#chatFrame {
+        background-color: #FAFAFA;
+        border-radius: 0px;
+    }""",
+            f"""QFrame#chatFrame {{
+        {bg_style}
+        border-radius: 0px;
+    }}"""
+        )
+
+    @classmethod
+    def get_main_style_with_background(cls, background_name: str = None) -> str:
+        """
+        Get main window style with optional pixel art background.
+
+        Args:
+            background_name: Name of background theme or None for default.
+
+        Returns:
+            Complete stylesheet string for main window.
+        """
+        bg_filename = cls.BACKGROUND_THEMES.get(background_name)
+        bg_css = get_background_css(bg_filename)
+
+        if not bg_css:
+            bg_style = "background-color: #FAFAFA;"
+        else:
+            bg_style = f"""
+                background-color: #87CEEB;
+                {bg_css}
+            """
+
+        return cls.MAIN_STYLE.replace(
+            """QMainWindow {
+        background-color: #FAFAFA;
+    }""",
+            f"""QMainWindow {{
+        {bg_style}
+    }}"""
+        )
