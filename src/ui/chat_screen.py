@@ -13,7 +13,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import Qt, pyqtSignal, QThread, QTimer
 from PyQt6.QtGui import QFont, QAction, QTextCursor
 
-from .styles import Styles, SeverityStyles
+from .styles import Styles, SeverityStyles, BACKGROUNDS_DIR
 from ..models.user import User
 from ..models.chat import Chat, Message
 from ..services.chat_service import ChatService
@@ -186,7 +186,8 @@ class ChatScreen(QWidget):
 
     def setup_ui(self):
         """Set up the chat screen UI."""
-        self.setStyleSheet(Styles.CHAT_STYLE)
+        # Use pixel art background if available, otherwise fall back to default
+        self.setStyleSheet(Styles.get_chat_style_with_background("meadow"))
 
         main_layout = QHBoxLayout(self)
         main_layout.setContentsMargins(0, 0, 0, 0)
@@ -281,18 +282,18 @@ class ChatScreen(QWidget):
         self.chat_header.setObjectName("chatHeader")
         layout.addWidget(self.chat_header)
 
-        # Messages scroll area with clean styling
+        # Messages scroll area - transparent to show background
         self.scroll_area = QScrollArea()
         self.scroll_area.setWidgetResizable(True)
         self.scroll_area.setStyleSheet("""
             QScrollArea {
                 border: none;
-                background-color: #FAFAFA;
+                background-color: transparent;
             }
         """)
 
         self.messages_container = QWidget()
-        self.messages_container.setStyleSheet("background-color: #FAFAFA;")
+        self.messages_container.setStyleSheet("background-color: transparent;")
         self.messages_layout = QVBoxLayout(self.messages_container)
         self.messages_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.messages_layout.setSpacing(12)
