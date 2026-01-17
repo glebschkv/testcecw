@@ -7,17 +7,22 @@ Each prompt is complete and standalone. Copy and paste directly.
 ## MEADOW
 
 ```
-2D pixel art game background, retro platformer, 1920x1080, 16:9,
+2D pixel art game background, retro side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally,
 
-pure side view with zero depth, the entire image is flat like a painted backdrop with no 3D elements whatsoever, no front-facing surfaces, no ledges, no platforms sticking out toward the viewer,
+PARALLAX BACKGROUND LAYERS creating depth from back to front:
+- FAR BACK: pale blue sky with soft white pixel clouds and bright yellow sun
+- DISTANT: hazy blue-green mountain silhouettes as simple shapes
+- MID-DISTANT: darker blue-green rolling hills as layered horizontal bands
+- NEAR: large oak tree with chunky green pixel leaves and brown trunk
 
-COMPOSITION: the bottom 25 percent is a flat green grass field that extends horizontally from edge to edge as a simple color block, the grass meets the sky at one clean horizontal line with no dirt edge no cross-section no visible ground thickness, just grass color above and that is it,
+GROUND PLATFORM - bottom 30 percent:
+flat green grass field as a single solid horizontal band, the grass is one flat color block with simple texture, NO dirt cross-section below, NO 3D ledge effect, NO front-facing edge, the ground is just a flat green strip that characters walk left and right on,
 
-ABOVE THE GRASS LINE: large oak tree on the left as a flat 2D shape, distant blue-green hills as horizontal color bands, blue sky, white pixel clouds, yellow sun, small birds,
+small decorative details ON TOP of the grass: tiny flowers, clovers, small rocks, all as flat pixel sprites sitting on the green surface,
 
-STYLE: 8-bit or 16-bit pixel art, flat colors only, no shading gradients, visible chunky pixels, hard edges, limited palette, looks like classic NES or SNES game background, every element is a flat 2D shape with no volume or depth,
+STYLE: 16-bit SNES era pixel art, chunky visible pixels, vibrant colors, clean shapes, parallax scrolling game aesthetic, beautiful scenic backdrop with depth created through color and layering not 3D perspective,
 
-AVOID: any 3D depth, ground cross-sections, dirt layers, platform edges, ledges, front-facing surfaces, thickness on any element, gradients, anti-aliasing, realistic lighting, animals on the ground, characters
+AVOID: dirt layer showing below grass, 3D platform edges, ground cross-sections, front-facing surfaces on the walkable area, animals, characters
 ```
 
 ---
@@ -25,17 +30,22 @@ AVOID: any 3D depth, ground cross-sections, dirt layers, platform edges, ledges,
 ## FOREST
 
 ```
-2D pixel art game background, retro platformer, 1920x1080, 16:9,
+2D pixel art game background, retro side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally,
 
-pure side view with zero depth, the entire image is flat like a painted backdrop with no 3D elements whatsoever, no front-facing surfaces, no ledges, no platforms sticking out toward the viewer,
+PARALLAX BACKGROUND LAYERS creating depth from back to front:
+- FAR BACK: pale misty sky barely visible through canopy
+- DISTANT: dark tree silhouettes in deep green, fog between layers
+- MID-DISTANT: more detailed trees with visible trunks and branches
+- NEAR: large foreground tree trunks with bark texture, dense leaf canopy overhead, golden light rays streaming through
 
-COMPOSITION: the bottom 25 percent is a flat dark brown forest floor that extends horizontally from edge to edge as a simple color block, the ground meets the trees at one clean horizontal line with no dirt edge no cross-section no visible ground thickness, just brown color and scattered leaf pixels on top,
+GROUND PLATFORM - bottom 30 percent:
+flat dark brown forest floor as a single solid horizontal band, the ground is one flat color block with leaf texture, NO dirt cross-section below, NO 3D ledge effect, NO front-facing edge, the ground is just a flat brown strip that characters walk left and right on,
 
-ABOVE THE GROUND LINE: multiple tree trunks as flat 2D shapes rising upward, green canopy overhead, fog layers between trees as flat color bands, light rays as simple diagonal lines, darker trees in background as flat silhouettes,
+small decorative details ON TOP of the ground: fallen leaves in red and orange, small mushrooms, ferns, moss patches, all as flat pixel sprites sitting on the brown surface,
 
-STYLE: 8-bit or 16-bit pixel art, flat colors only, no shading gradients, visible chunky pixels, hard edges, limited palette, looks like classic NES or SNES game background, every element is a flat 2D shape with no volume or depth, moody forest atmosphere,
+STYLE: 16-bit SNES era pixel art, chunky visible pixels, moody atmospheric colors, clean shapes, parallax scrolling game aesthetic, mysterious forest backdrop with depth created through color and layering,
 
-AVOID: any 3D depth, ground cross-sections, dirt layers, platform edges, ledges, front-facing surfaces, thickness on any element, gradients, anti-aliasing, realistic lighting, animals, characters
+AVOID: dirt layer showing below ground, 3D platform edges, ground cross-sections, front-facing surfaces on the walkable area, animals, characters
 ```
 
 ---
@@ -43,17 +53,22 @@ AVOID: any 3D depth, ground cross-sections, dirt layers, platform edges, ledges,
 ## DESERT
 
 ```
-2D pixel art game background, retro platformer, 1920x1080, 16:9,
+2D pixel art game background, retro side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally,
 
-pure side view with zero depth, the entire image is flat like a painted backdrop with no 3D elements whatsoever, no front-facing surfaces, no ledges, no platforms sticking out toward the viewer,
+PARALLAX BACKGROUND LAYERS creating depth from back to front:
+- FAR BACK: dramatic sunset sky with horizontal bands of orange, pink, coral fading to dusty blue
+- DISTANT: purple mountain silhouettes on the horizon
+- MID-DISTANT: orange and brown mesa rock formations as layered flat shapes
+- NEAR: tall saguaro cactus with arms, prickly pear cactus clusters
 
-COMPOSITION: the bottom 25 percent is a flat golden sand color that extends horizontally from edge to edge as a simple color block, the sand meets the sky at one clean horizontal line with no sand edge no cross-section no visible ground thickness, just sand color with small rock pixels on top,
+GROUND PLATFORM - bottom 30 percent:
+flat golden-orange sand as a single solid horizontal band, the sand is one flat color block with subtle texture, NO sand cross-section below, NO 3D ledge effect, NO front-facing edge, the ground is just a flat sand strip that characters walk left and right on,
 
-ABOVE THE SAND LINE: tall cactus as flat 2D shapes, distant mesa formations as flat horizontal color bands in purple and orange, large orange setting sun as a circle, sky as horizontal flat color stripes from orange to pink to blue,
+small decorative details ON TOP of the sand: small rocks, desert shrubs, cracked earth patches, all as flat pixel sprites sitting on the sand surface,
 
-STYLE: 8-bit or 16-bit pixel art, flat colors only, no shading gradients, visible chunky pixels, hard edges, limited palette, looks like classic NES or SNES game background, every element is a flat 2D shape with no volume or depth, warm sunset colors,
+STYLE: 16-bit SNES era pixel art, chunky visible pixels, warm sunset colors, clean shapes, parallax scrolling game aesthetic, beautiful desert backdrop with depth created through color and layering,
 
-AVOID: any 3D depth, ground cross-sections, sand dunes with depth, platform edges, ledges, front-facing surfaces, thickness on any element, gradients, anti-aliasing, realistic lighting, animals, characters
+AVOID: sand dune cross-sections, 3D platform edges, ground showing thickness, front-facing surfaces on the walkable area, animals, characters
 ```
 
 ---
@@ -61,17 +76,22 @@ AVOID: any 3D depth, ground cross-sections, sand dunes with depth, platform edge
 ## OCEAN BEACH
 
 ```
-2D pixel art game background, retro platformer, 1920x1080, 16:9,
+2D pixel art game background, retro side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally,
 
-pure side view with zero depth, the entire image is flat like a painted backdrop with no 3D elements whatsoever, no front-facing surfaces, no ledges, no platforms sticking out toward the viewer,
+PARALLAX BACKGROUND LAYERS creating depth from back to front:
+- FAR BACK: bright blue sky with fluffy white pixel clouds and yellow sun
+- DISTANT: light blue ocean meeting the horizon, small sailboat silhouette
+- MID-DISTANT: darker blue ocean waves as horizontal bands, white foam lines
+- NEAR: palm tree with green fronds leaning into frame, maybe a wooden pier post
 
-COMPOSITION: the bottom 25 percent is a flat beige sand color that extends horizontally from edge to edge as a simple color block, the sand meets the water at one clean horizontal line with no sand edge no cross-section no visible ground thickness, just sand color with shell pixels on top,
+GROUND PLATFORM - bottom 30 percent:
+flat warm beige sand as a single solid horizontal band, the sand is one flat color block with grain texture, NO sand cross-section below, NO 3D ledge effect, NO front-facing edge, the ground is just a flat sand strip that characters walk left and right on,
 
-ABOVE THE SAND LINE: ocean water as horizontal flat color bands in different blues stacked on top of each other, white foam line, palm tree as flat 2D shape on left side, sailboat silhouette on horizon, blue sky with white pixel clouds, yellow sun,
+small decorative details ON TOP of the sand: seashells, starfish, seaweed clumps, beach grass, all as flat pixel sprites sitting on the sand surface,
 
-STYLE: 8-bit or 16-bit pixel art, flat colors only, no shading gradients, visible chunky pixels, hard edges, limited palette, looks like classic NES or SNES game background, every element is a flat 2D shape with no volume or depth, bright tropical feel,
+STYLE: 16-bit SNES era pixel art, chunky visible pixels, bright tropical colors, clean shapes, parallax scrolling game aesthetic, cheerful beach backdrop with depth created through ocean layers,
 
-AVOID: any 3D depth, ground cross-sections, platform edges, ledges, front-facing surfaces, thickness on any element, gradients, anti-aliasing, realistic lighting, animals, characters, fish
+AVOID: sand showing thickness below, 3D platform edges, ground cross-sections, front-facing surfaces on the walkable area, animals, crabs, fish, characters
 ```
 
 ---
@@ -79,17 +99,22 @@ AVOID: any 3D depth, ground cross-sections, platform edges, ledges, front-facing
 ## SNOWY MOUNTAINS
 
 ```
-2D pixel art game background, retro platformer, 1920x1080, 16:9,
+2D pixel art game background, retro side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally,
 
-pure side view with zero depth, the entire image is flat like a painted backdrop with no 3D elements whatsoever, no front-facing surfaces, no ledges, no platforms sticking out toward the viewer,
+PARALLAX BACKGROUND LAYERS creating depth from back to front:
+- FAR BACK: twilight sky in pink, lavender, and deep blue with stars and crescent moon, aurora hints
+- DISTANT: majestic snow-capped mountain peaks as triangular silhouettes in purple-gray
+- MID-DISTANT: snow-covered pine tree forest, cozy cabin with glowing orange windows and chimney smoke
+- NEAR: detailed pine trees with snow on branches, falling snowflakes throughout
 
-COMPOSITION: the bottom 25 percent is a flat white snow color that extends horizontally from edge to edge as a simple color block, the snow meets the sky at one clean horizontal line with no snow edge no cross-section no visible ground thickness, just white color with small twig pixels on top,
+GROUND PLATFORM - bottom 30 percent:
+flat white snow as a single solid horizontal band, the snow is one flat color block with subtle blue shadow texture, NO snow cross-section below, NO 3D ledge effect, NO front-facing edge, the ground is just a flat white strip that characters walk left and right on,
 
-ABOVE THE SNOW LINE: snow-covered pine trees as flat 2D shapes, mountain peaks in distance as flat triangular shapes, wooden cabin with glowing windows, falling snowflakes as white dots, twilight sky as horizontal flat color stripes from pink to purple to dark blue, moon and stars,
+small decorative details ON TOP of the snow: small twigs, footprints, ice patches, snow-covered rocks, all as flat pixel sprites sitting on the snow surface,
 
-STYLE: 8-bit or 16-bit pixel art, flat colors only, no shading gradients, visible chunky pixels, hard edges, limited palette, looks like classic NES or SNES game background, every element is a flat 2D shape with no volume or depth, cold winter evening,
+STYLE: 16-bit SNES era pixel art, chunky visible pixels, cold winter colors, clean shapes, parallax scrolling game aesthetic, peaceful winter backdrop with depth created through mountain layers,
 
-AVOID: any 3D depth, ground cross-sections, snow banks with depth, platform edges, ledges, front-facing surfaces, thickness on any element, gradients, anti-aliasing, realistic lighting, animals, characters
+AVOID: snow showing thickness below, 3D platform edges, ground cross-sections, front-facing surfaces on the walkable area, animals, characters
 ```
 
 ---
@@ -97,17 +122,22 @@ AVOID: any 3D depth, ground cross-sections, snow banks with depth, platform edge
 ## NIGHT STARFIELD
 
 ```
-2D pixel art game background, retro platformer, 1920x1080, 16:9,
+2D pixel art game background, retro side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally,
 
-pure side view with zero depth, the entire image is flat like a painted backdrop with no 3D elements whatsoever, no front-facing surfaces, no ledges, no platforms sticking out toward the viewer,
+PARALLAX BACKGROUND LAYERS creating depth from back to front:
+- FAR BACK: vast starry night sky from dark blue to black, hundreds of pixel stars, milky way band, shooting star
+- DISTANT: large detailed moon with craters and soft glow
+- MID-DISTANT: dark tree line silhouettes, distant cottage with warm glowing windows
+- NEAR: wooden fence posts, tall grass silhouettes, glowing fireflies
 
-COMPOSITION: the bottom 25 percent is a flat dark green grass color that extends horizontally from edge to edge as a simple color block, the grass meets the sky at one clean horizontal line with no grass edge no cross-section no visible ground thickness, just dark grass color with firefly dots above,
+GROUND PLATFORM - bottom 30 percent:
+flat dark green grass with blue night tint as a single solid horizontal band, the grass is one flat color block, NO grass cross-section below, NO 3D ledge effect, NO front-facing edge, the ground is just a flat dark strip that characters walk left and right on,
 
-ABOVE THE GRASS LINE: tree silhouettes as flat dark 2D shapes, cottage with glowing windows, fence posts, massive starry night sky filling most of the image, hundreds of pixel stars, large moon with craters, milky way band, shooting star, sky transitions from dark blue to black,
+small decorative details ON TOP of the grass: closed flower buds, small glowing mushrooms, dewdrops catching moonlight, all as flat pixel sprites sitting on the grass surface,
 
-STYLE: 8-bit or 16-bit pixel art, flat colors only, no shading gradients, visible chunky pixels, hard edges, limited palette, looks like classic NES or SNES game background, every element is a flat 2D shape with no volume or depth, peaceful night atmosphere,
+STYLE: 16-bit SNES era pixel art, chunky visible pixels, magical night colors, clean shapes, parallax scrolling game aesthetic, peaceful nighttime backdrop with depth created through sky layers,
 
-AVOID: any 3D depth, ground cross-sections, platform edges, ledges, front-facing surfaces, thickness on any element, gradients, anti-aliasing, realistic lighting, animals, characters
+AVOID: ground showing thickness below, 3D platform edges, ground cross-sections, front-facing surfaces on the walkable area, animals, characters
 ```
 
 ---
@@ -115,17 +145,22 @@ AVOID: any 3D depth, ground cross-sections, platform edges, ledges, front-facing
 ## CITYSCAPE
 
 ```
-2D pixel art game background, retro platformer, 1920x1080, 16:9,
+2D pixel art game background, retro side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally,
 
-pure side view with zero depth, the entire image is flat like a painted backdrop with no 3D elements whatsoever, no front-facing surfaces, no ledges, no platforms sticking out toward the viewer,
+PARALLAX BACKGROUND LAYERS creating depth from back to front:
+- FAR BACK: sunset sky in orange, pink, and purple horizontal bands with wispy clouds
+- DISTANT: tall building silhouettes and water tower shapes against the sky
+- MID-DISTANT: colorful building facades with lit windows in yellow, neon signs in pink and blue
+- NEAR: detailed storefronts with awnings, string lights, flower boxes, street lamp
 
-COMPOSITION: the bottom 25 percent is a flat gray sidewalk color that extends horizontally from edge to edge as a simple color block, the sidewalk meets the buildings at one clean horizontal line with no concrete edge no cross-section no visible ground thickness, just gray color with small detail pixels on top,
+GROUND PLATFORM - bottom 30 percent:
+flat gray concrete sidewalk as a single solid horizontal band, the sidewalk is one flat color block with crack texture, NO concrete cross-section below, NO 3D ledge effect, NO front-facing edge, the ground is just a flat gray strip that characters walk left and right on,
 
-ABOVE THE SIDEWALK LINE: colorful building facades as flat 2D rectangles with window details, neon signs in pink and blue, awnings, lit windows in yellow, water tower silhouette, string lights, sunset sky as horizontal flat color stripes from orange to pink to purple,
+small decorative details ON TOP of the sidewalk: fire hydrant, trash can, newspaper, fallen leaves, all as flat pixel sprites sitting on the sidewalk surface,
 
-STYLE: 8-bit or 16-bit pixel art, flat colors only, no shading gradients, visible chunky pixels, hard edges, limited palette, looks like classic NES or SNES game background, every element is a flat 2D shape with no volume or depth, cozy urban evening,
+STYLE: 16-bit SNES era pixel art, chunky visible pixels, cozy urban sunset colors, clean shapes, parallax scrolling game aesthetic, charming city backdrop with depth created through building layers,
 
-AVOID: any 3D depth, ground cross-sections, platform edges, ledges, front-facing surfaces, thickness on any element, gradients, anti-aliasing, realistic lighting, people, characters, cars
+AVOID: sidewalk showing thickness below, 3D platform edges, ground cross-sections, front-facing surfaces on the walkable area, people, cars, characters
 ```
 
 ---
@@ -133,17 +168,22 @@ AVOID: any 3D depth, ground cross-sections, platform edges, ledges, front-facing
 ## JUNGLE
 
 ```
-2D pixel art game background, retro platformer, 1920x1080, 16:9,
+2D pixel art game background, retro side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally,
 
-pure side view with zero depth, the entire image is flat like a painted backdrop with no 3D elements whatsoever, no front-facing surfaces, no ledges, no platforms sticking out toward the viewer,
+PARALLAX BACKGROUND LAYERS creating depth from back to front:
+- FAR BACK: glimpses of blue sky through dense canopy, misty atmosphere
+- DISTANT: dark jungle silhouettes, ancient stone ruins covered in vines
+- MID-DISTANT: massive tree trunks with buttress roots, hanging vines with flowers
+- NEAR: huge tropical leaves, colorful orchids, dense foliage framing the scene, golden light rays
 
-COMPOSITION: the bottom 25 percent is a flat dark brown jungle floor color that extends horizontally from edge to edge as a simple color block, the floor meets the trees at one clean horizontal line with no dirt edge no cross-section no visible ground thickness, just brown color with colorful leaf and flower pixels on top,
+GROUND PLATFORM - bottom 30 percent:
+flat dark brown jungle floor as a single solid horizontal band, the ground is one flat color block with soil texture, NO dirt cross-section below, NO 3D ledge effect, NO front-facing edge, the ground is just a flat brown strip that characters walk left and right on,
 
-ABOVE THE FLOOR LINE: massive tree trunks as flat 2D shapes, dense canopy with huge leaves, hanging vines, orchids on trunks, misty fog as flat color layers, ancient stone ruins partially visible, filtered light rays as simple lines,
+small decorative details ON TOP of the ground: colorful fallen leaves, exotic flowers, strange mushrooms, small puddles, vines, all as flat pixel sprites sitting on the ground surface,
 
-STYLE: 8-bit or 16-bit pixel art, flat colors only, no shading gradients, visible chunky pixels, hard edges, limited palette, looks like classic NES or SNES game background, every element is a flat 2D shape with no volume or depth, humid tropical atmosphere,
+STYLE: 16-bit SNES era pixel art, chunky visible pixels, lush tropical colors, clean shapes, parallax scrolling game aesthetic, mysterious jungle backdrop with depth created through foliage layers,
 
-AVOID: any 3D depth, ground cross-sections, platform edges, ledges, front-facing surfaces, thickness on any element, gradients, anti-aliasing, realistic lighting, animals, characters
+AVOID: ground showing thickness below, 3D platform edges, ground cross-sections, front-facing surfaces on the walkable area, animals, monkeys, characters
 ```
 
 ---
@@ -151,17 +191,22 @@ AVOID: any 3D depth, ground cross-sections, platform edges, ledges, front-facing
 ## UNDERWATER
 
 ```
-2D pixel art game background, retro platformer, 1920x1080, 16:9,
+2D pixel art game background, retro side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally,
 
-pure side view with zero depth, the entire image is flat like a painted backdrop with no 3D elements whatsoever, no front-facing surfaces, no ledges, no platforms sticking out toward the viewer,
+PARALLAX BACKGROUND LAYERS creating depth from back to front:
+- FAR BACK: light filtering down from surface, silhouette of boat hull above, sun glow
+- DISTANT: deep blue water, distant coral reef shapes, whale silhouette
+- MID-DISTANT: kelp forest swaying, rock formations, more coral
+- NEAR: detailed colorful coral, sea anemones, bubbles rising, light rays as diagonal lines
 
-COMPOSITION: the bottom 25 percent is a flat beige sandy seabed color that extends horizontally from edge to edge as a simple color block, the sand meets the water at one clean horizontal line with no sand edge no cross-section no visible ground thickness, just sand color with coral and shell pixels growing upward,
+GROUND PLATFORM - bottom 30 percent:
+flat beige sandy seabed as a single solid horizontal band, the sand is one flat color block with grain texture, NO sand cross-section below, NO 3D ledge effect, NO front-facing edge, the ground is just a flat sand strip that characters swim left and right above,
 
-ABOVE THE SAND LINE: underwater blue as horizontal flat color bands getting lighter toward top, coral reef shapes as flat 2D silhouettes, kelp as flat shapes, bubbles as white dots, light rays as diagonal lines, water surface at top with boat silhouette and sun glow,
+small decorative details ON TOP of the sand: seashells, starfish, sea grass, small coral growths, treasure chest, all as flat pixel sprites sitting on the sand surface,
 
-STYLE: 8-bit or 16-bit pixel art, flat colors only, no shading gradients, visible chunky pixels, hard edges, limited palette, looks like classic NES or SNES game background, every element is a flat 2D shape with no volume or depth, serene underwater scene,
+STYLE: 16-bit SNES era pixel art, chunky visible pixels, beautiful ocean colors from dark to light blue, clean shapes, parallax scrolling game aesthetic, serene underwater backdrop with depth created through water color layers,
 
-AVOID: any 3D depth, ground cross-sections, platform edges, ledges, front-facing surfaces, thickness on any element, gradients, anti-aliasing, realistic lighting, fish, sea creatures, animals
+AVOID: sand showing thickness below, 3D platform edges, ground cross-sections, front-facing surfaces on the walkable area, fish, sea creatures, characters
 ```
 
 ---
@@ -169,17 +214,22 @@ AVOID: any 3D depth, ground cross-sections, platform edges, ledges, front-facing
 ## AUTUMN FOREST
 
 ```
-2D pixel art game background, retro platformer, 1920x1080, 16:9,
+2D pixel art game background, retro side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally,
 
-pure side view with zero depth, the entire image is flat like a painted backdrop with no 3D elements whatsoever, no front-facing surfaces, no ledges, no platforms sticking out toward the viewer,
+PARALLAX BACKGROUND LAYERS creating depth from back to front:
+- FAR BACK: soft pale blue sky with wispy clouds, warm golden sunlight, geese flying in V formation
+- DISTANT: trees in muted autumn colors as silhouettes
+- MID-DISTANT: beautiful maple and oak trees with bright red, orange, yellow, and brown foliage
+- NEAR: detailed tree with falling leaves drifting down, wooden bench, some bare branches
 
-COMPOSITION: the bottom 25 percent is a flat orange-brown leaf-covered ground color that extends horizontally from edge to edge as a simple color block, the leaves meet the trees at one clean horizontal line with no ground edge no cross-section no visible ground thickness, just autumn leaf colors as a flat layer with acorn and pumpkin pixels on top,
+GROUND PLATFORM - bottom 30 percent:
+flat carpet of autumn leaves in red, orange, yellow, brown as a single solid horizontal band, the leaf ground is one flat color block with leaf texture, NO ground cross-section below, NO 3D ledge effect, NO front-facing edge, the ground is just a flat colorful strip that characters walk left and right on,
 
-ABOVE THE LEAF LINE: autumn trees with red orange yellow foliage as flat 2D shapes, some bare branches, falling leaves as scattered pixels, wooden bench, pale blue sky visible through canopy, geese flying as simple V shapes,
+small decorative details ON TOP of the leaves: acorns, pine cones, small pumpkin, mushrooms, all as flat pixel sprites sitting on the leaf surface,
 
-STYLE: 8-bit or 16-bit pixel art, flat colors only, no shading gradients, visible chunky pixels, hard edges, limited palette, looks like classic NES or SNES game background, every element is a flat 2D shape with no volume or depth, warm fall afternoon,
+STYLE: 16-bit SNES era pixel art, chunky visible pixels, warm fall colors, clean shapes, parallax scrolling game aesthetic, cozy autumn backdrop with depth created through tree layers,
 
-AVOID: any 3D depth, ground cross-sections, platform edges, ledges, front-facing surfaces, thickness on any element, gradients, anti-aliasing, realistic lighting, animals, characters
+AVOID: ground showing thickness below, 3D platform edges, ground cross-sections, front-facing surfaces on the walkable area, animals, squirrels, characters
 ```
 
 ---
@@ -187,17 +237,22 @@ AVOID: any 3D depth, ground cross-sections, platform edges, ledges, front-facing
 ## CHERRY BLOSSOM
 
 ```
-2D pixel art game background, retro platformer, 1920x1080, 16:9,
+2D pixel art game background, retro side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally,
 
-pure side view with zero depth, the entire image is flat like a painted backdrop with no 3D elements whatsoever, no front-facing surfaces, no ledges, no platforms sticking out toward the viewer,
+PARALLAX BACKGROUND LAYERS creating depth from back to front:
+- FAR BACK: dreamy soft sky in pale pink and light blue, delicate clouds, hint of Mount Fuji
+- DISTANT: misty purple-blue mountains as layered shapes
+- MID-DISTANT: red torii gate, distant pagoda silhouette, more cherry trees
+- NEAR: magnificent cherry blossom trees in full bloom with pink and white flowers, petals floating everywhere, paper lanterns
 
-COMPOSITION: the bottom 25 percent is a flat green grass color that extends horizontally from edge to edge as a simple color block, the grass meets the scene at one clean horizontal line with no grass edge no cross-section no visible ground thickness, just grass color with pink petal pixels and stepping stones on top,
+GROUND PLATFORM - bottom 30 percent:
+flat green grass with pink fallen petals as a single solid horizontal band, the grass is one flat color block with petal texture, NO grass cross-section below, NO 3D ledge effect, NO front-facing edge, the ground is just a flat green-pink strip that characters walk left and right on,
 
-ABOVE THE GRASS LINE: cherry blossom trees in full bloom as flat 2D shapes with pink and white flowers, floating petals everywhere, red torii gate as flat shape, distant pagoda silhouette, misty purple mountains as flat color bands, soft pink and blue sky,
+small decorative details ON TOP of the grass: stepping stones, moss-covered rocks, small flowers, edge of koi pond (water only no fish), all as flat pixel sprites sitting on the grass surface,
 
-STYLE: 8-bit or 16-bit pixel art, flat colors only, no shading gradients, visible chunky pixels, hard edges, limited palette, looks like classic NES or SNES game background, every element is a flat 2D shape with no volume or depth, dreamy Japanese spring,
+STYLE: 16-bit SNES era pixel art, chunky visible pixels, soft dreamy pink and green colors, clean shapes, parallax scrolling game aesthetic, peaceful Japanese spring backdrop with depth created through mountain and tree layers,
 
-AVOID: any 3D depth, ground cross-sections, platform edges, ledges, front-facing surfaces, thickness on any element, gradients, anti-aliasing, realistic lighting, animals, fish, characters, koi
+AVOID: ground showing thickness below, 3D platform edges, ground cross-sections, front-facing surfaces on the walkable area, animals, koi fish, characters
 ```
 
 ---
@@ -205,17 +260,22 @@ AVOID: any 3D depth, ground cross-sections, platform edges, ledges, front-facing
 ## SPACE STATION
 
 ```
-2D pixel art game background, retro platformer, 1920x1080, 16:9,
+2D pixel art game background, retro side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally,
 
-pure side view with zero depth, the entire image is flat like a painted backdrop with no 3D elements whatsoever, no front-facing surfaces, no ledges, no platforms sticking out toward the viewer,
+PARALLAX BACKGROUND LAYERS creating depth from back to front:
+- FAR BACK: deep black space filled with countless stars, colorful nebula in purple and blue
+- DISTANT: large ringed planet, smaller red planet, distant space station or ship
+- MID-DISTANT: large windows showing the space view, structural beams
+- NEAR: control panels with blinking colored lights, pipes, machinery, screens with data, airlock door
 
-COMPOSITION: the bottom 25 percent is a flat gray metal floor color that extends horizontally from edge to edge as a simple color block, the floor meets the walls at one clean horizontal line with no floor edge no cross-section no visible ground thickness, just gray metal color with crate and cable pixels on top,
+GROUND PLATFORM - bottom 30 percent:
+flat gray metal floor panels as a single solid horizontal band, the floor is one flat color block with panel grid texture, NO floor cross-section below, NO 3D ledge effect, NO front-facing edge, the floor is just a flat gray strip that characters walk left and right on,
 
-ABOVE THE FLOOR LINE: large windows showing black space with stars as flat rectangular shapes, planets visible as flat circles, control panels as flat rectangles with colored light pixels, pipes and machinery as flat shapes, purple and blue ambient lighting,
+small decorative details ON TOP of the floor: storage crates, cables, floor lights glowing blue and green, all as flat pixel sprites sitting on the floor surface,
 
-STYLE: 8-bit or 16-bit pixel art, flat colors only, no shading gradients, visible chunky pixels, hard edges, limited palette, looks like classic NES or SNES game background, every element is a flat 2D shape with no volume or depth, retro sci-fi feel,
+STYLE: 16-bit SNES era pixel art, chunky visible pixels, sci-fi purple and blue lighting, clean shapes, parallax scrolling game aesthetic, retro sci-fi backdrop with depth created through window space view,
 
-AVOID: any 3D depth, ground cross-sections, platform edges, ledges, front-facing surfaces, thickness on any element, gradients, anti-aliasing, realistic lighting, people, aliens, characters
+AVOID: floor showing thickness below, 3D platform edges, ground cross-sections, front-facing surfaces on the walkable area, aliens, people, characters
 ```
 
 ---
@@ -223,17 +283,22 @@ AVOID: any 3D depth, ground cross-sections, platform edges, ledges, front-facing
 ## CASTLE
 
 ```
-2D pixel art game background, retro platformer, 1920x1080, 16:9,
+2D pixel art game background, retro side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally,
 
-pure side view with zero depth, the entire image is flat like a painted backdrop with no 3D elements whatsoever, no front-facing surfaces, no ledges, no platforms sticking out toward the viewer,
+PARALLAX BACKGROUND LAYERS creating depth from back to front:
+- FAR BACK: arched windows showing dark blue night sky with stars
+- DISTANT: stone wall texture with mounted shields and crossed swords, distant doorway
+- MID-DISTANT: hanging royal banners in red and gold, iron chandeliers with candles
+- NEAR: detailed stone columns, torch sconces with flickering orange flames, suits of armor as decoration
 
-COMPOSITION: the bottom 25 percent is a flat gray stone floor color that extends horizontally from edge to edge as a simple color block, the floor meets the walls at one clean horizontal line with no floor edge no cross-section no visible ground thickness, just gray stone color with red carpet and armor pixels on top,
+GROUND PLATFORM - bottom 30 percent:
+flat gray stone brick floor as a single solid horizontal band, the floor is one flat color block with brick pattern texture, NO floor cross-section below, NO 3D ledge effect, NO front-facing edge, the floor is just a flat gray strip that characters walk left and right on,
 
-ABOVE THE FLOOR LINE: tall stone walls as flat 2D rectangles with brick texture, arched windows showing night sky, hanging banners and tapestries as flat shapes, chandeliers, torches with orange glow, crossed swords on walls,
+small decorative details ON TOP of the floor: red carpet runner with gold trim, small treasure chest, candelabra, all as flat pixel sprites sitting on the floor surface,
 
-STYLE: 8-bit or 16-bit pixel art, flat colors only, no shading gradients, visible chunky pixels, hard edges, limited palette, looks like classic NES or SNES game background, every element is a flat 2D shape with no volume or depth, medieval fantasy interior,
+STYLE: 16-bit SNES era pixel art, chunky visible pixels, medieval warm torchlight colors against cool stone, clean shapes, parallax scrolling game aesthetic, fantasy castle backdrop with depth created through interior layers,
 
-AVOID: any 3D depth, ground cross-sections, platform edges, ledges, front-facing surfaces, thickness on any element, gradients, anti-aliasing, realistic lighting, people, characters
+AVOID: floor showing thickness below, 3D platform edges, ground cross-sections, front-facing surfaces on the walkable area, people, knights, characters
 ```
 
 ---
@@ -241,15 +306,20 @@ AVOID: any 3D depth, ground cross-sections, platform edges, ledges, front-facing
 ## VOLCANO
 
 ```
-2D pixel art game background, retro platformer, 1920x1080, 16:9,
+2D pixel art game background, retro side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally,
 
-pure side view with zero depth, the entire image is flat like a painted backdrop with no 3D elements whatsoever, no front-facing surfaces, no ledges, no platforms sticking out toward the viewer,
+PARALLAX BACKGROUND LAYERS creating depth from back to front:
+- FAR BACK: ominous dark sky glowing orange and red from volcanic light, ash clouds
+- DISTANT: massive volcano with lava flowing down in bright orange rivers, erupting crater
+- MID-DISTANT: jagged rock formations silhouetted against the glow, floating embers and ash
+- NEAR: rocky pillars, steam vents, lava pools glowing bright orange
 
-COMPOSITION: the bottom 25 percent is a flat dark gray volcanic rock color that extends horizontally from edge to edge as a simple color block, the rock meets the scene at one clean horizontal line with no rock edge no cross-section no visible ground thickness, just dark rock color with orange lava crack pixels on top,
+GROUND PLATFORM - bottom 30 percent:
+flat dark gray volcanic rock as a single solid horizontal band, the rock is one flat color block with cracked texture, NO rock cross-section below, NO 3D ledge effect, NO front-facing edge, the ground is just a flat dark strip that characters walk left and right on,
 
-ABOVE THE ROCK LINE: massive volcano as flat triangular shape with lava flowing down as orange lines, smoke clouds as flat dark shapes, rocky pillars as flat silhouettes, orange ember pixels floating, ominous orange and gray sky,
+small decorative details ON TOP of the rock: glowing lava cracks, small lava pools, charred remnants, steam wisps, all as flat pixel sprites sitting on the rock surface,
 
-STYLE: 8-bit or 16-bit pixel art, flat colors only, no shading gradients, visible chunky pixels, hard edges, limited palette, looks like classic NES or SNES game background, every element is a flat 2D shape with no volume or depth, dangerous volcanic atmosphere,
+STYLE: 16-bit SNES era pixel art, chunky visible pixels, dramatic orange and black colors, clean shapes, parallax scrolling game aesthetic, dangerous volcanic backdrop with depth created through volcano and smoke layers,
 
-AVOID: any 3D depth, ground cross-sections, platform edges, ledges, front-facing surfaces, thickness on any element, gradients, anti-aliasing, realistic lighting, creatures, characters
+AVOID: rock showing thickness below, 3D platform edges, ground cross-sections, front-facing surfaces on the walkable area, creatures, characters
 ```
