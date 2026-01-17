@@ -7,22 +7,22 @@ Each prompt is complete and standalone. Copy and paste directly.
 ## MEADOW
 
 ```
-2D pixel art game background, retro side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally,
+2D pixel art game background, whimsical side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally, CHARMING AND FULL OF PERSONALITY,
 
 PARALLAX BACKGROUND LAYERS creating depth from back to front:
-- FAR BACK: pale blue sky with soft white pixel clouds and bright yellow sun
-- DISTANT: hazy blue-green mountain silhouettes as simple shapes
-- MID-DISTANT: darker blue-green rolling hills as layered horizontal bands
-- NEAR: large oak tree with chunky green pixel leaves and brown trunk
+- FAR BACK: dreamy gradient sky from soft peach at horizon to bright cyan blue above, fluffy cartoon clouds in different sizes with happy round shapes, big cheerful pixel sun with subtle rays, maybe a tiny rainbow arc peeking through clouds
+- DISTANT: rolling purple and blue mountain range with snow-capped peaks, whimsical castle tower silhouette on distant hilltop
+- MID-DISTANT: lush layered hills in multiple shades of green from sage to emerald, a charming windmill with spinning blades, scattered wildflower patches as colorful dots (red, yellow, purple, white), a winding dirt path disappearing into hills
+- NEAR: magnificent flowering tree with mix of pink blossoms and green leaves, thick gnarled trunk with character, maybe a wooden signpost or rustic fence section, butterflies as tiny colorful pixels floating around
 
-GROUND PLATFORM - bottom 30 percent:
-flat green grass field as a single solid horizontal band, the grass is one flat color block with simple texture, NO dirt cross-section below, NO 3D ledge effect, NO front-facing edge, the ground is just a flat green strip that characters walk left and right on,
+GROUND PLATFORM - bottom 25 percent:
+vibrant grass field as flat horizontal band with rich green color and pixel grass blade texture along top edge, small tufts and variation in the green tones, NO dirt cross-section below, NO 3D ledge effect, just a flat colorful strip,
 
-small decorative details ON TOP of the grass: tiny flowers, clovers, small rocks, all as flat pixel sprites sitting on the green surface,
+ABUNDANT decorative details ON TOP of the grass: clusters of colorful wildflowers (daisies, tulips, dandelions), four-leaf clovers, cute mushrooms with red spotted caps, mossy rocks, fallen petals, maybe a little wishing well or garden lantern,
 
-STYLE: 16-bit SNES era pixel art, chunky visible pixels, vibrant colors, clean shapes, parallax scrolling game aesthetic, beautiful scenic backdrop with depth created through color and layering not 3D perspective,
+STYLE: Kirby and Yoshi's Island inspired, 16-bit SNES golden era, chunky charming pixels, SATURATED VIBRANT colors, adorable and inviting atmosphere, storybook fantasy feeling, every element has personality and charm,
 
-AVOID: dirt layer showing below grass, 3D platform edges, ground cross-sections, front-facing surfaces on the walkable area, animals, characters
+AVOID: dirt showing below grass, 3D platform edges, ground cross-sections, animals, characters, anything scary or dark
 ```
 
 ---
@@ -30,22 +30,22 @@ AVOID: dirt layer showing below grass, 3D platform edges, ground cross-sections,
 ## FOREST
 
 ```
-2D pixel art game background, retro side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally,
+2D pixel art game background, enchanted side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally, MAGICAL FAIRYTALE FOREST,
 
 PARALLAX BACKGROUND LAYERS creating depth from back to front:
-- FAR BACK: pale misty sky barely visible through canopy
-- DISTANT: dark tree silhouettes in deep green, fog between layers
-- MID-DISTANT: more detailed trees with visible trunks and branches
-- NEAR: large foreground tree trunks with bark texture, dense leaf canopy overhead, golden light rays streaming through
+- FAR BACK: mystical pale green and gold light filtering through dense canopy above, magical sparkles and dust motes floating in light beams, hints of blue sky through gaps
+- DISTANT: mysterious ancient trees as dark silhouettes, soft ethereal fog between layers in mint green, hint of a fairy cottage with glowing windows deep in the woods
+- MID-DISTANT: massive enchanted oak trees with faces subtly suggested in bark texture, thick trunks with magical runes carved in them, hanging vines with tiny glowing flowers, hollow tree with cozy round door
+- NEAR: beautiful detailed tree with thick twisted roots above ground, magical glowing mushrooms in clusters (blue, purple, pink bioluminescence), hanging lanterns made from acorns, vines with heart-shaped leaves
 
-GROUND PLATFORM - bottom 30 percent:
-flat dark brown forest floor as a single solid horizontal band, the ground is one flat color block with leaf texture, NO dirt cross-section below, NO 3D ledge effect, NO front-facing edge, the ground is just a flat brown strip that characters walk left and right on,
+GROUND PLATFORM - bottom 25 percent:
+lush forest floor as flat horizontal band in rich earthy brown-green tones with soft moss texture, NO dirt cross-section below, NO 3D ledge effect, just a flat enchanted carpet of nature,
 
-small decorative details ON TOP of the ground: fallen leaves in red and orange, small mushrooms, ferns, moss patches, all as flat pixel sprites sitting on the brown surface,
+ABUNDANT decorative details ON TOP of the ground: carpets of fallen autumn leaves in orange red gold, clusters of magical glowing mushrooms, ferns unfurling, tiny fairy rings of mushrooms, moss-covered stones, scattered acorns and pinecones, maybe a treasure chest peeking out,
 
-STYLE: 16-bit SNES era pixel art, chunky visible pixels, moody atmospheric colors, clean shapes, parallax scrolling game aesthetic, mysterious forest backdrop with depth created through color and layering,
+STYLE: Studio Ghibli meets Kirby, enchanted forest from a children's storybook, 16-bit SNES golden era, chunky charming pixels, rich saturated greens and warm golden light, magical cozy atmosphere, every element feels alive with wonder,
 
-AVOID: dirt layer showing below ground, 3D platform edges, ground cross-sections, front-facing surfaces on the walkable area, animals, characters
+AVOID: dirt showing below ground, 3D platform edges, ground cross-sections, animals, characters, anything too dark or scary
 ```
 
 ---
@@ -53,22 +53,22 @@ AVOID: dirt layer showing below ground, 3D platform edges, ground cross-sections
 ## DESERT
 
 ```
-2D pixel art game background, retro side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally,
+2D pixel art game background, adventurous side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally, MAGICAL DESERT OASIS VIBES,
 
 PARALLAX BACKGROUND LAYERS creating depth from back to front:
-- FAR BACK: dramatic sunset sky with horizontal bands of orange, pink, coral fading to dusty blue
-- DISTANT: purple mountain silhouettes on the horizon
-- MID-DISTANT: orange and brown mesa rock formations as layered flat shapes
-- NEAR: tall saguaro cactus with arms, prickly pear cactus clusters
+- FAR BACK: STUNNING gradient sunset sky exploding with color - deep orange melting into hot pink into coral into purple into deep blue at top, dramatic wispy clouds catching golden light, huge setting sun as glowing orange-red orb
+- DISTANT: majestic purple and blue mesa formations with flat tops, ancient pyramid silhouette in the distance, mysterious ruins of a lost temple peeking above horizon
+- MID-DISTANT: dramatic red rock arches and spires in warm terracotta colors, a sparkling desert oasis with palm trees and blue water, adobe pueblo buildings with warm glowing windows, hot air balloon floating peacefully
+- NEAR: tall friendly saguaro cactus with arms reaching up like waving hello, barrel cacti with bright pink flowers blooming, decorative southwestern pottery, a treasure map pinned to wooden post
 
-GROUND PLATFORM - bottom 30 percent:
-flat golden-orange sand as a single solid horizontal band, the sand is one flat color block with subtle texture, NO sand cross-section below, NO 3D ledge effect, NO front-facing edge, the ground is just a flat sand strip that characters walk left and right on,
+GROUND PLATFORM - bottom 25 percent:
+warm golden-orange sand as flat horizontal band with subtle ripple texture, scattered with sparkly golden specks, NO sand cross-section below, NO 3D ledge effect, just a flat warm inviting desert floor,
 
-small decorative details ON TOP of the sand: small rocks, desert shrubs, cracked earth patches, all as flat pixel sprites sitting on the sand surface,
+ABUNDANT decorative details ON TOP of the sand: colorful desert wildflowers in bloom (pink, orange, yellow), tumbleweeds, smooth river stones, cow skull with flowers growing through it, little gems and gold coins half-buried, decorative blanket laid out,
 
-STYLE: 16-bit SNES era pixel art, chunky visible pixels, warm sunset colors, clean shapes, parallax scrolling game aesthetic, beautiful desert backdrop with depth created through color and layering,
+STYLE: Aladdin meets Yoshi's Island, magical desert adventure, 16-bit SNES golden era, chunky charming pixels, WARM SATURATED sunset palette, romantic and adventurous atmosphere, every element tells a story,
 
-AVOID: sand dune cross-sections, 3D platform edges, ground showing thickness, front-facing surfaces on the walkable area, animals, characters
+AVOID: sand showing thickness below, 3D platform edges, ground cross-sections, animals, characters, scorpions, snakes
 ```
 
 ---
@@ -76,22 +76,22 @@ AVOID: sand dune cross-sections, 3D platform edges, ground showing thickness, fr
 ## OCEAN BEACH
 
 ```
-2D pixel art game background, retro side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally,
+2D pixel art game background, tropical paradise side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally, VACATION PARADISE VIBES,
 
 PARALLAX BACKGROUND LAYERS creating depth from back to front:
-- FAR BACK: bright blue sky with fluffy white pixel clouds and yellow sun
-- DISTANT: light blue ocean meeting the horizon, small sailboat silhouette
-- MID-DISTANT: darker blue ocean waves as horizontal bands, white foam lines
-- NEAR: palm tree with green fronds leaning into frame, maybe a wooden pier post
+- FAR BACK: gorgeous tropical sky gradient from warm peachy-pink at horizon through turquoise to brilliant blue, puffy happy clouds in cotton candy shapes, brilliant golden sun with warm glow, maybe a faint rainbow arc
+- DISTANT: sparkling turquoise ocean meeting sky at horizon, cute sailboats with colorful striped sails, distant tropical island with palm trees as tiny silhouette, maybe a lighthouse
+- MID-DISTANT: beautiful ocean waves in layers of teal and aqua with white foam caps, a wooden pier extending into water with colorful pennant flags, beach umbrellas in bright stripes (red, yellow, blue), lifeguard tower
+- NEAR: magnificent leaning palm tree with coconuts and lush fronds, tiki torch with flickering flame, surfboard stuck in sand, beach hammock between palm trunks, string of paper lanterns
 
-GROUND PLATFORM - bottom 30 percent:
-flat warm beige sand as a single solid horizontal band, the sand is one flat color block with grain texture, NO sand cross-section below, NO 3D ledge effect, NO front-facing edge, the ground is just a flat sand strip that characters walk left and right on,
+GROUND PLATFORM - bottom 25 percent:
+warm golden sand as flat horizontal band with sparkly grain texture, gradient from pale cream to warm tan, NO sand cross-section below, NO 3D ledge effect, just a flat sun-kissed beach,
 
-small decorative details ON TOP of the sand: seashells, starfish, seaweed clumps, beach grass, all as flat pixel sprites sitting on the sand surface,
+ABUNDANT decorative details ON TOP of the sand: beautiful seashells in pink and peach spiral shapes, orange starfish, colorful beach towel laid out, sand castle with little flag, beach bucket and shovel, message in a bottle, tropical flowers scattered, flip flops,
 
-STYLE: 16-bit SNES era pixel art, chunky visible pixels, bright tropical colors, clean shapes, parallax scrolling game aesthetic, cheerful beach backdrop with depth created through ocean layers,
+STYLE: tropical vacation postcard meets Kirby, beach episode from anime, 16-bit SNES golden era, chunky charming pixels, BRIGHT SATURATED tropical palette (turquoise, coral, golden), pure joy and relaxation vibes,
 
-AVOID: sand showing thickness below, 3D platform edges, ground cross-sections, front-facing surfaces on the walkable area, animals, crabs, fish, characters
+AVOID: sand showing thickness below, 3D platform edges, ground cross-sections, crabs, fish, sea creatures, people
 ```
 
 ---
@@ -99,22 +99,22 @@ AVOID: sand showing thickness below, 3D platform edges, ground cross-sections, f
 ## SNOWY MOUNTAINS
 
 ```
-2D pixel art game background, retro side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally,
+2D pixel art game background, cozy winter wonderland side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally, MAGICAL CHRISTMAS CARD VIBES,
 
 PARALLAX BACKGROUND LAYERS creating depth from back to front:
-- FAR BACK: twilight sky in pink, lavender, and deep blue with stars and crescent moon, aurora hints
-- DISTANT: majestic snow-capped mountain peaks as triangular silhouettes in purple-gray
-- MID-DISTANT: snow-covered pine tree forest, cozy cabin with glowing orange windows and chimney smoke
-- NEAR: detailed pine trees with snow on branches, falling snowflakes throughout
+- FAR BACK: breathtaking twilight sky gradient from soft pink and peach at horizon through lavender to deep midnight blue, thousands of twinkling pixel stars, beautiful crescent moon with gentle glow, dancing aurora borealis ribbons in green and pink, gently falling snowflakes throughout entire scene
+- DISTANT: majestic snow-capped mountain peaks in soft purple and blue, ice castle towers sparkling on highest peak, frozen waterfall catching moonlight
+- MID-DISTANT: charming snow-covered pine forest in blue-green tones, ADORABLE cozy log cabin with warm golden light glowing from windows, smoke curling from chimney, string of Christmas lights on eaves, wooden sled parked outside, maybe a snowman friend nearby
+- NEAR: beautiful detailed snow-laden evergreen trees with ornaments hanging, vintage lamp post with warm glow and icicles, wooden sign pointing to "North Pole", stack of wrapped presents, candy canes stuck in snow
 
-GROUND PLATFORM - bottom 30 percent:
-flat white snow as a single solid horizontal band, the snow is one flat color block with subtle blue shadow texture, NO snow cross-section below, NO 3D ledge effect, NO front-facing edge, the ground is just a flat white strip that characters walk left and right on,
+GROUND PLATFORM - bottom 25 percent:
+pristine sparkling white snow as flat horizontal band with subtle blue shadows and glittery texture, NO snow cross-section below, NO 3D ledge effect, just a flat magical snow blanket,
 
-small decorative details ON TOP of the snow: small twigs, footprints, ice patches, snow-covered rocks, all as flat pixel sprites sitting on the snow surface,
+ABUNDANT decorative details ON TOP of the snow: cute snowman with scarf and top hat, snow angels impression, scattered pinecones, holly berries and leaves, tiny snow-covered mushrooms, ice crystals catching light, sled tracks, cozy mittens dropped in snow,
 
-STYLE: 16-bit SNES era pixel art, chunky visible pixels, cold winter colors, clean shapes, parallax scrolling game aesthetic, peaceful winter backdrop with depth created through mountain layers,
+STYLE: Hallmark Christmas movie meets Kirby, cozy holiday magic, 16-bit SNES golden era, chunky charming pixels, SOFT WINTER PALETTE (whites, lavenders, warm golden glows against cool blues), pure cozy hygge feeling,
 
-AVOID: snow showing thickness below, 3D platform edges, ground cross-sections, front-facing surfaces on the walkable area, animals, characters
+AVOID: snow showing thickness below, 3D platform edges, ground cross-sections, animals, reindeer, people
 ```
 
 ---
@@ -122,22 +122,22 @@ AVOID: snow showing thickness below, 3D platform edges, ground cross-sections, f
 ## NIGHT STARFIELD
 
 ```
-2D pixel art game background, retro side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally,
+2D pixel art game background, magical nighttime side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally, DREAMY STARGAZING MAGIC,
 
 PARALLAX BACKGROUND LAYERS creating depth from back to front:
-- FAR BACK: vast starry night sky from dark blue to black, hundreds of pixel stars, milky way band, shooting star
-- DISTANT: large detailed moon with craters and soft glow
-- MID-DISTANT: dark tree line silhouettes, distant cottage with warm glowing windows
-- NEAR: wooden fence posts, tall grass silhouettes, glowing fireflies
+- FAR BACK: BREATHTAKING night sky gradient from deep navy at top through purple to dark teal near horizon, THOUSANDS of twinkling stars in different sizes some brighter than others, beautiful milky way band sweeping across in soft purple and blue, shooting star with sparkle trail, constellation patterns subtly visible
+- DISTANT: gorgeous huge full moon with visible craters and warm golden glow, soft clouds drifting past moon, distant mountains as dark purple silhouettes with a few twinkling lights
+- MID-DISTANT: charming countryside silhouette - rolling hills, cozy cottage with warm amber light in windows and chimney smoke, old windmill, church steeple, wooden water tower, scattered trees
+- NEAR: rustic wooden fence with hanging lantern glowing warmly, tall wildflowers and grass silhouettes, mason jar catching fireflies, telescope on tripod pointing at stars, blanket laid out for stargazing, floating fireflies as tiny golden dots throughout the scene
 
-GROUND PLATFORM - bottom 30 percent:
-flat dark green grass with blue night tint as a single solid horizontal band, the grass is one flat color block, NO grass cross-section below, NO 3D ledge effect, NO front-facing edge, the ground is just a flat dark strip that characters walk left and right on,
+GROUND PLATFORM - bottom 25 percent:
+moonlit grass meadow as flat horizontal band in deep blue-green night tones with silvery highlights from moonlight, NO ground cross-section below, NO 3D ledge effect, just a flat dreamy midnight meadow,
 
-small decorative details ON TOP of the grass: closed flower buds, small glowing mushrooms, dewdrops catching moonlight, all as flat pixel sprites sitting on the grass surface,
+ABUNDANT decorative details ON TOP of the grass: sleeping flowers with closed petals, magical glowing mushrooms in soft blue and purple, fireflies resting on grass blades, dewdrops sparkling like tiny stars, old books and star charts, steaming cup of cocoa, cozy blanket corner,
 
-STYLE: 16-bit SNES era pixel art, chunky visible pixels, magical night colors, clean shapes, parallax scrolling game aesthetic, peaceful nighttime backdrop with depth created through sky layers,
+STYLE: Studio Ghibli night scenes meets Kirby, magical realism, 16-bit SNES golden era, chunky charming pixels, DREAMY NIGHT PALETTE (deep blues, purples, silver moonlight, warm golden glows), peaceful contemplative wonder,
 
-AVOID: ground showing thickness below, 3D platform edges, ground cross-sections, front-facing surfaces on the walkable area, animals, characters
+AVOID: ground showing thickness below, 3D platform edges, ground cross-sections, animals, owls, people
 ```
 
 ---
@@ -145,22 +145,22 @@ AVOID: ground showing thickness below, 3D platform edges, ground cross-sections,
 ## CITYSCAPE
 
 ```
-2D pixel art game background, retro side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally,
+2D pixel art game background, cozy urban side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally, CHARMING NEIGHBORHOOD VIBES,
 
 PARALLAX BACKGROUND LAYERS creating depth from back to front:
-- FAR BACK: sunset sky in orange, pink, and purple horizontal bands with wispy clouds
-- DISTANT: tall building silhouettes and water tower shapes against the sky
-- MID-DISTANT: colorful building facades with lit windows in yellow, neon signs in pink and blue
-- NEAR: detailed storefronts with awnings, string lights, flower boxes, street lamp
+- FAR BACK: GORGEOUS golden hour sky gradient from warm orange-gold at horizon through soft pink and coral to lavender and light blue above, puffy clouds catching warm light in pink and gold, maybe a hot air balloon or blimp in the distance
+- DISTANT: romantic city skyline silhouette with varied building heights, iconic water towers, antenna spires, clock tower with glowing face, church dome, distant Ferris wheel, all backlit by sunset glow
+- MID-DISTANT: charming multi-story buildings with TONS of personality - colorful facades in terracotta, mint green, soft yellow, warm brick red, each with unique window arrangements and architectural details, rooftop gardens with greenery, fire escapes with hanging plants, billboard signs for fictional products, clothes lines between buildings, pigeons on ledges (silhouettes only)
+- NEAR: adorable detailed storefronts - bakery with striped awning and cake display, bookshop with books stacked in window, flower shop bursting with blooms, cafe with bistro tables outside, vintage lamp post with warm glow, hanging flower baskets, string of cafe lights, colorful neon signs (OPEN, coffee cup, etc)
 
-GROUND PLATFORM - bottom 30 percent:
-flat gray concrete sidewalk as a single solid horizontal band, the sidewalk is one flat color block with crack texture, NO concrete cross-section below, NO 3D ledge effect, NO front-facing edge, the ground is just a flat gray strip that characters walk left and right on,
+GROUND PLATFORM - bottom 25 percent:
+warm gray cobblestone sidewalk as flat horizontal band with charming brick pattern texture and puddle reflections catching sunset colors, NO sidewalk cross-section below, NO 3D ledge effect, just a flat cozy street,
 
-small decorative details ON TOP of the sidewalk: fire hydrant, trash can, newspaper, fallen leaves, all as flat pixel sprites sitting on the sidewalk surface,
+ABUNDANT decorative details ON TOP of the sidewalk: classic red fire hydrant, overflowing flower planter, cafe sandwich board sign, scattered autumn leaves, vintage bicycle parked against lamp post, stack of newspapers, cute cat silhouette in window, mailbox, bench with cushion,
 
-STYLE: 16-bit SNES era pixel art, chunky visible pixels, cozy urban sunset colors, clean shapes, parallax scrolling game aesthetic, charming city backdrop with depth created through building layers,
+STYLE: Parisian cafe scene meets Kirby, cozy slice-of-life anime background, 16-bit SNES golden era, chunky charming pixels, WARM GOLDEN HOUR PALETTE (soft oranges, pinks, warm brick tones, cozy amber lights), pure comfort and charm,
 
-AVOID: sidewalk showing thickness below, 3D platform edges, ground cross-sections, front-facing surfaces on the walkable area, people, cars, characters
+AVOID: sidewalk showing thickness below, 3D platform edges, ground cross-sections, cars, people walking, vehicles
 ```
 
 ---
@@ -168,22 +168,22 @@ AVOID: sidewalk showing thickness below, 3D platform edges, ground cross-section
 ## JUNGLE
 
 ```
-2D pixel art game background, retro side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally,
+2D pixel art game background, adventure temple side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally, LOST TEMPLE ADVENTURE VIBES,
 
 PARALLAX BACKGROUND LAYERS creating depth from back to front:
-- FAR BACK: glimpses of blue sky through dense canopy, misty atmosphere
-- DISTANT: dark jungle silhouettes, ancient stone ruins covered in vines
-- MID-DISTANT: massive tree trunks with buttress roots, hanging vines with flowers
-- NEAR: huge tropical leaves, colorful orchids, dense foliage framing the scene, golden light rays
+- FAR BACK: glimpses of brilliant blue sky through gaps in dense emerald canopy, dramatic golden sun rays streaming through in diagonal god rays, ethereal mist floating between layers, tiny colorful pixel butterflies and sparkles in the light beams
+- DISTANT: MYSTERIOUS ancient temple ruins reclaimed by jungle - crumbling stone walls covered in vines, carved stone face of forgotten deity half-hidden by foliage, stone archway leading to unknown depths, waterfall cascading in the distance catching light
+- MID-DISTANT: MASSIVE ancient trees with thick buttress roots like cathedral columns, hanging vines dripping with exotic flowers in hot pink and orange, rope bridge spanning between trees, stone steps leading up to hidden platform, glowing eyes peeking from hollow trees (just mysterious glowing dots)
+- NEAR: gorgeous huge tropical leaves in multiple shades of green, stunning orchids in magenta and yellow, carnivorous plants with colorful patterns, ancient carved stone pillar with glowing runes, treasure chest overflowing with gold coins, hanging lantern with warm light, parrots as colorful silhouettes on branch
 
-GROUND PLATFORM - bottom 30 percent:
-flat dark brown jungle floor as a single solid horizontal band, the ground is one flat color block with soil texture, NO dirt cross-section below, NO 3D ledge effect, NO front-facing edge, the ground is just a flat brown strip that characters walk left and right on,
+GROUND PLATFORM - bottom 25 percent:
+rich jungle floor as flat horizontal band in deep brown-green earthy tones with lush moss texture, NO dirt cross-section below, NO 3D ledge effect, just a flat mysterious forest floor,
 
-small decorative details ON TOP of the ground: colorful fallen leaves, exotic flowers, strange mushrooms, small puddles, vines, all as flat pixel sprites sitting on the ground surface,
+ABUNDANT decorative details ON TOP of the ground: scattered gold coins and gems catching light, ancient artifacts half-buried, vibrant exotic flowers, giant mushrooms in neon colors, small reflecting pools, fallen stone blocks with carvings, opened treasure map, explorer's hat and whip,
 
-STYLE: 16-bit SNES era pixel art, chunky visible pixels, lush tropical colors, clean shapes, parallax scrolling game aesthetic, mysterious jungle backdrop with depth created through foliage layers,
+STYLE: Indiana Jones meets Donkey Kong Country meets Kirby, adventure awaits around every corner, 16-bit SNES golden era, chunky charming pixels, LUSH SATURATED JUNGLE PALETTE (emerald greens, golden light, mysterious purples in shadows), sense of wonder and discovery,
 
-AVOID: ground showing thickness below, 3D platform edges, ground cross-sections, front-facing surfaces on the walkable area, animals, monkeys, characters
+AVOID: ground showing thickness below, 3D platform edges, ground cross-sections, snakes, monkeys, spiders, people
 ```
 
 ---
@@ -191,22 +191,22 @@ AVOID: ground showing thickness below, 3D platform edges, ground cross-sections,
 ## UNDERWATER
 
 ```
-2D pixel art game background, retro side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally,
+2D pixel art game background, magical underwater kingdom side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally, MERMAID KINGDOM FANTASY,
 
 PARALLAX BACKGROUND LAYERS creating depth from back to front:
-- FAR BACK: light filtering down from surface, silhouette of boat hull above, sun glow
-- DISTANT: deep blue water, distant coral reef shapes, whale silhouette
-- MID-DISTANT: kelp forest swaying, rock formations, more coral
-- NEAR: detailed colorful coral, sea anemones, bubbles rising, light rays as diagonal lines
+- FAR BACK: beautiful gradient from bright turquoise surface with dancing sunbeams down to deep mysterious blue, light rays streaming diagonally through water as golden-white beams, thousands of tiny bubbles rising, silhouette of ship hull far above, sun glow rippling through waves
+- DISTANT: magnificent underwater mountain range in deep blue and purple, ancient sunken city with domed buildings and towers glowing with bioluminescence, massive whale silhouette peacefully swimming by, distant coral reef shapes in pink and purple
+- MID-DISTANT: enchanting kelp forest swaying gently in current (deep green and gold fronds), mysterious shipwreck with treasure spilling out, coral archway like an underwater garden gate, giant clam shells (closed), underwater hot springs with rising bubbles, mermaid statue covered in barnacles
+- NEAR: STUNNING colorful coral garden - brain coral in pink, fan coral in purple and orange, tube coral in yellow, magnificent sea anemones in hot pink and electric blue, giant seashells as big as doors, anchor wrapped in seaweed, bubbles everywhere, sparkles in the water
 
-GROUND PLATFORM - bottom 30 percent:
-flat beige sandy seabed as a single solid horizontal band, the sand is one flat color block with grain texture, NO sand cross-section below, NO 3D ledge effect, NO front-facing edge, the ground is just a flat sand strip that characters swim left and right above,
+GROUND PLATFORM - bottom 25 percent:
+pale golden sandy seabed as flat horizontal band with ripple texture and scattered sparkles, NO sand cross-section below, NO 3D ledge effect, just a flat magical ocean floor,
 
-small decorative details ON TOP of the sand: seashells, starfish, sea grass, small coral growths, treasure chest, all as flat pixel sprites sitting on the sand surface,
+ABUNDANT decorative details ON TOP of the sand: beautiful spiral seashells in pink and peach, orange starfish, purple sea urchins (stationary), swaying sea grass in different heights, treasure chest overflowing with gold and gems, sunken crown and scepter, ancient amphora jars, message in bottle, pearl in open oyster shell,
 
-STYLE: 16-bit SNES era pixel art, chunky visible pixels, beautiful ocean colors from dark to light blue, clean shapes, parallax scrolling game aesthetic, serene underwater backdrop with depth created through water color layers,
+STYLE: Little Mermaid meets Kirby, underwater fairy tale, 16-bit SNES golden era, chunky charming pixels, MAGICAL OCEAN PALETTE (teals, turquoise, deep blues, coral pinks, golden light), dreamy and enchanting atmosphere,
 
-AVOID: sand showing thickness below, 3D platform edges, ground cross-sections, front-facing surfaces on the walkable area, fish, sea creatures, characters
+AVOID: sand showing thickness below, 3D platform edges, ground cross-sections, fish, sharks, dolphins, octopi, any swimming creatures, mermaids
 ```
 
 ---
@@ -214,22 +214,22 @@ AVOID: sand showing thickness below, 3D platform edges, ground cross-sections, f
 ## AUTUMN FOREST
 
 ```
-2D pixel art game background, retro side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally,
+2D pixel art game background, cozy fall harvest side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally, PUMPKIN SPICE EVERYTHING VIBES,
 
 PARALLAX BACKGROUND LAYERS creating depth from back to front:
-- FAR BACK: soft pale blue sky with wispy clouds, warm golden sunlight, geese flying in V formation
-- DISTANT: trees in muted autumn colors as silhouettes
-- MID-DISTANT: beautiful maple and oak trees with bright red, orange, yellow, and brown foliage
-- NEAR: detailed tree with falling leaves drifting down, wooden bench, some bare branches
+- FAR BACK: dreamy autumn sky gradient from soft golden at horizon through peachy pink to pale blue above, fluffy clouds catching warm light, golden sun with soft glow, V-formation of geese silhouettes migrating south, scattered leaves blowing in the wind throughout entire scene
+- DISTANT: rolling hills covered in autumn trees creating a STUNNING tapestry of reds, oranges, golds, and deep burgundies, charming farmhouse with smoking chimney, red barn with weathervane, church steeple peeking through trees
+- MID-DISTANT: MAGNIFICENT autumn trees in full color glory - maple trees blazing red, oak trees in deep orange and brown, birch trees with golden yellow leaves, leaves actively falling and swirling, cozy wooden gazebo draped in harvest garlands, old stone bridge over stream, haystacks
+- NEAR: gorgeous detailed tree with trunk you can see bark texture, branches laden with red and gold leaves, rustic wooden fence with pumpkins lined up on it, old-fashioned lamp post with warm glow, wheelbarrow full of apples, corn stalks bundled together, harvest wreath on tree
 
-GROUND PLATFORM - bottom 30 percent:
-flat carpet of autumn leaves in red, orange, yellow, brown as a single solid horizontal band, the leaf ground is one flat color block with leaf texture, NO ground cross-section below, NO 3D ledge effect, NO front-facing edge, the ground is just a flat colorful strip that characters walk left and right on,
+GROUND PLATFORM - bottom 25 percent:
+lush carpet of fallen autumn leaves as flat horizontal band in gorgeous mix of crimson, pumpkin orange, golden yellow, and russet brown, NO ground cross-section below, NO 3D ledge effect, just a flat cozy leaf-covered ground,
 
-small decorative details ON TOP of the leaves: acorns, pine cones, small pumpkin, mushrooms, all as flat pixel sprites sitting on the leaf surface,
+ABUNDANT decorative details ON TOP of the leaves: adorable orange pumpkins of different sizes, bushel baskets of red apples, acorns and pinecones scattered about, cute mushrooms with brown caps, thermos and plaid blanket for leaf-watching, apple cider jug, stack of old books, cinnamon sticks,
 
-STYLE: 16-bit SNES era pixel art, chunky visible pixels, warm fall colors, clean shapes, parallax scrolling game aesthetic, cozy autumn backdrop with depth created through tree layers,
+STYLE: Hallmark fall movie meets Kirby, peak cozy autumn aesthetic, 16-bit SNES golden era, chunky charming pixels, WARM HARVEST PALETTE (burnt orange, crimson red, golden yellow, warm browns, soft amber light), pure comfort and nostalgia,
 
-AVOID: ground showing thickness below, 3D platform edges, ground cross-sections, front-facing surfaces on the walkable area, animals, squirrels, characters
+AVOID: ground showing thickness below, 3D platform edges, ground cross-sections, squirrels, animals, people
 ```
 
 ---
@@ -237,22 +237,22 @@ AVOID: ground showing thickness below, 3D platform edges, ground cross-sections,
 ## CHERRY BLOSSOM
 
 ```
-2D pixel art game background, retro side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally,
+2D pixel art game background, serene Japanese spring side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally, PEACEFUL HANAMI FESTIVAL DREAMS,
 
 PARALLAX BACKGROUND LAYERS creating depth from back to front:
-- FAR BACK: dreamy soft sky in pale pink and light blue, delicate clouds, hint of Mount Fuji
-- DISTANT: misty purple-blue mountains as layered shapes
-- MID-DISTANT: red torii gate, distant pagoda silhouette, more cherry trees
-- NEAR: magnificent cherry blossom trees in full bloom with pink and white flowers, petals floating everywhere, paper lanterns
+- FAR BACK: ETHEREAL dreamy sky gradient from soft peach and rose gold at horizon through delicate pink to soft lavender to pale blue above, whispy clouds like watercolor brushstrokes, iconic Mount Fuji silhouette with snow cap in soft purple-blue, cherry blossom petals floating EVERYWHERE throughout entire scene like pink snow
+- DISTANT: misty layered mountains in soft purple, lavender, and blue creating dreamy depth, distant pagoda temple with curved roofs catching soft light, traditional Japanese castle silhouette on hilltop, cranes flying in formation (small silhouettes only)
+- MID-DISTANT: STUNNING cherry blossom grove in full bloom - trees bursting with soft pink and white flowers, traditional red torii gate framing a path, arched wooden bridge over gentle stream with reflections, stone lanterns glowing softly, hanging paper lanterns in pink and white with gentle glow
+- NEAR: magnificent cherry tree trunk with gnarled character, branches heavy with cascading pink blossoms creating canopy frame, traditional paper umbrella (wagasa) in red and white leaning against tree, bamboo water fountain (shishi-odoshi), decorative stone guardian statue, silk ribbons tied to branches with wishes
 
-GROUND PLATFORM - bottom 30 percent:
-flat green grass with pink fallen petals as a single solid horizontal band, the grass is one flat color block with petal texture, NO grass cross-section below, NO 3D ledge effect, NO front-facing edge, the ground is just a flat green-pink strip that characters walk left and right on,
+GROUND PLATFORM - bottom 25 percent:
+soft green grass scattered with pink cherry blossom petals as flat horizontal band creating dreamy carpet, NO ground cross-section below, NO 3D ledge effect, just a flat petal-covered spring meadow,
 
-small decorative details ON TOP of the grass: stepping stones, moss-covered rocks, small flowers, edge of koi pond (water only no fish), all as flat pixel sprites sitting on the grass surface,
+ABUNDANT decorative details ON TOP of the ground: traditional stepping stones in winding path, moss-covered boulders, small wildflowers in purple and white, peaceful koi pond (just blue water with lily pads - no fish visible), bento box with sakura mochi, tea set on blanket, scattered petals in drifts,
 
-STYLE: 16-bit SNES era pixel art, chunky visible pixels, soft dreamy pink and green colors, clean shapes, parallax scrolling game aesthetic, peaceful Japanese spring backdrop with depth created through mountain and tree layers,
+STYLE: Studio Ghibli meets Kirby, peaceful Japanese spring postcard, 16-bit SNES golden era, chunky charming pixels, SOFT SAKURA PALETTE (cherry blossom pinks, soft greens, lavender mist, warm wood tones), tranquil and meditative beauty,
 
-AVOID: ground showing thickness below, 3D platform edges, ground cross-sections, front-facing surfaces on the walkable area, animals, koi fish, characters
+AVOID: ground showing thickness below, 3D platform edges, ground cross-sections, koi fish, animals, people
 ```
 
 ---
@@ -260,22 +260,22 @@ AVOID: ground showing thickness below, 3D platform edges, ground cross-sections,
 ## SPACE STATION
 
 ```
-2D pixel art game background, retro side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally,
+2D pixel art game background, retro-futuristic space side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally, COSMIC ADVENTURE AWAITS,
 
 PARALLAX BACKGROUND LAYERS creating depth from back to front:
-- FAR BACK: deep black space filled with countless stars, colorful nebula in purple and blue
-- DISTANT: large ringed planet, smaller red planet, distant space station or ship
-- MID-DISTANT: large windows showing the space view, structural beams
-- NEAR: control panels with blinking colored lights, pipes, machinery, screens with data, airlock door
+- FAR BACK: BREATHTAKING deep space vista through massive panoramic window - gradient from deep purple-black to midnight blue, THOUSANDS of stars twinkling in different sizes and colors (white, blue, golden), stunning colorful nebula clouds in swirling pink, purple, and cyan, distant galaxy spiral, shooting stars with trails
+- DISTANT: magnificent view of planets through window - gorgeous ringed planet like Saturn in golden and cream bands, smaller red Mars-like planet, Earth-like blue-green planet, distant space station or ship with blinking lights, asteroid belt
+- MID-DISTANT: space station interior structure - large curved window frames showing space view, metallic support beams in silver and bronze, glowing holographic displays floating with star maps and data, hanging plants in space terrariums (green pops of color), cozy viewing lounge with curved couch
+- NEAR: detailed control center - sleek console panels with TONS of colorful blinking lights (red, green, blue, amber), screens displaying alien languages and graphs, retro-futuristic machinery with chrome finish, robotic arm, space suit hanging on wall, telescope pointed at stars, floating coffee mug (in zero-g), potted space plant
 
-GROUND PLATFORM - bottom 30 percent:
-flat gray metal floor panels as a single solid horizontal band, the floor is one flat color block with panel grid texture, NO floor cross-section below, NO 3D ledge effect, NO front-facing edge, the floor is just a flat gray strip that characters walk left and right on,
+GROUND PLATFORM - bottom 25 percent:
+sleek metallic floor as flat horizontal band in silver-gray with glowing blue panel grid lines, NO floor cross-section below, NO 3D ledge effect, just a flat high-tech floor,
 
-small decorative details ON TOP of the floor: storage crates, cables, floor lights glowing blue and green, all as flat pixel sprites sitting on the floor surface,
+ABUNDANT decorative details ON TOP of the floor: colorful storage crates marked with symbols, coiled cables and wires, floor lights glowing in blue and magenta strips, space boots and helmet, tablet with star chart, toolbox with floating tools, little robot companion (powered off/stationary), commemorative mission patches,
 
-STYLE: 16-bit SNES era pixel art, chunky visible pixels, sci-fi purple and blue lighting, clean shapes, parallax scrolling game aesthetic, retro sci-fi backdrop with depth created through window space view,
+STYLE: retro 80s sci-fi movie meets Kirby, optimistic space exploration vibes, 16-bit SNES golden era, chunky charming pixels, COSMIC PALETTE (deep space purples, electric blues, warm amber lights, chrome silvers), sense of wonder at the universe,
 
-AVOID: floor showing thickness below, 3D platform edges, ground cross-sections, front-facing surfaces on the walkable area, aliens, people, characters
+AVOID: floor showing thickness below, 3D platform edges, ground cross-sections, aliens, astronauts, people
 ```
 
 ---
@@ -283,22 +283,22 @@ AVOID: floor showing thickness below, 3D platform edges, ground cross-sections, 
 ## CASTLE
 
 ```
-2D pixel art game background, retro side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally,
+2D pixel art game background, magical fantasy castle side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally, FAIRY TALE ROYAL PALACE,
 
 PARALLAX BACKGROUND LAYERS creating depth from back to front:
-- FAR BACK: arched windows showing dark blue night sky with stars
-- DISTANT: stone wall texture with mounted shields and crossed swords, distant doorway
-- MID-DISTANT: hanging royal banners in red and gold, iron chandeliers with candles
-- NEAR: detailed stone columns, torch sconces with flickering orange flames, suits of armor as decoration
+- FAR BACK: gorgeous tall arched windows showing magical night sky - deep blue velvet sky filled with twinkling stars, beautiful full moon casting silver light through windows, hints of distant fairy tale towers and spires through the glass, maybe northern lights or magical sparkles in the sky
+- DISTANT: magnificent castle interior walls in warm stone with intricate carvings, mounted heraldic shields in red, blue, and gold with lion and dragon crests, crossed ceremonial swords, ornate tapestries depicting heroic scenes, arched doorway leading to grand staircase with red carpet
+- MID-DISTANT: OPULENT royal decorations - massive hanging chandeliers with hundreds of candles glowing warmly, rich velvet banners in deep red and royal purple with gold trim and tassels, stained glass window sections casting colorful light patches, grand fireplace with roaring warm fire, suit of ceremonial armor with plume
+- NEAR: detailed carved stone column with gold leaf accents, ornate wall sconce with flickering torch flame casting warm dancing light, decorative suit of armor holding shield, royal portrait in gilded frame, potted flowering plant on pedestal, magical glowing crystal in display case, bookshelf with ancient tomes
 
-GROUND PLATFORM - bottom 30 percent:
-flat gray stone brick floor as a single solid horizontal band, the floor is one flat color block with brick pattern texture, NO floor cross-section below, NO 3D ledge effect, NO front-facing edge, the floor is just a flat gray strip that characters walk left and right on,
+GROUND PLATFORM - bottom 25 percent:
+elegant stone floor as flat horizontal band in warm gray with ornate tile pattern, NO floor cross-section below, NO 3D ledge effect, just a flat regal floor,
 
-small decorative details ON TOP of the floor: red carpet runner with gold trim, small treasure chest, candelabra, all as flat pixel sprites sitting on the floor surface,
+ABUNDANT decorative details ON TOP of the floor: luxurious red carpet runner with intricate gold border and tasseled edges, ornate treasure chest overflowing with gold and gems, silver candelabra with dripping candles, scattered gold coins, royal crown on velvet pillow, magical sword stuck in stone, spellbook with glowing pages, cute dragon egg in nest (no hatched dragons),
 
-STYLE: 16-bit SNES era pixel art, chunky visible pixels, medieval warm torchlight colors against cool stone, clean shapes, parallax scrolling game aesthetic, fantasy castle backdrop with depth created through interior layers,
+STYLE: Disney fairy tale meets Kirby, enchanted royal palace, 16-bit SNES golden era, chunky charming pixels, ROYAL PALETTE (rich reds, royal purples, warm gold, silver accents, warm amber torchlight against cool stone), magical and majestic atmosphere,
 
-AVOID: floor showing thickness below, 3D platform edges, ground cross-sections, front-facing surfaces on the walkable area, people, knights, characters
+AVOID: floor showing thickness below, 3D platform edges, ground cross-sections, knights, guards, royalty, people, dragons
 ```
 
 ---
@@ -306,20 +306,20 @@ AVOID: floor showing thickness below, 3D platform edges, ground cross-sections, 
 ## VOLCANO
 
 ```
-2D pixel art game background, retro side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally,
+2D pixel art game background, epic volcanic adventure side-scrolling platformer, 1920x1080, 16:9, seamless tileable horizontally, DRAMATIC FIRE REALM,
 
 PARALLAX BACKGROUND LAYERS creating depth from back to front:
-- FAR BACK: ominous dark sky glowing orange and red from volcanic light, ash clouds
-- DISTANT: massive volcano with lava flowing down in bright orange rivers, erupting crater
-- MID-DISTANT: jagged rock formations silhouetted against the glow, floating embers and ash
-- NEAR: rocky pillars, steam vents, lava pools glowing bright orange
+- FAR BACK: DRAMATIC apocalyptic sky gradient from deep blood red and orange at horizon through dark crimson to smoky purple-black above, massive billowing ash clouds backlit with orange glow, lightning flashing within clouds, floating embers and ash particles drifting throughout entire scene like fiery snow
+- DISTANT: MASSIVE imposing volcano dominating the horizon - erupting crater spewing brilliant orange-red lava fountain and smoke plume, multiple rivers of glowing molten lava cascading down mountainside, other volcanic peaks in the mountain range, ominous red glow reflecting off ash clouds
+- MID-DISTANT: dramatic volcanic landscape - jagged obsidian rock formations silhouetted against the fiery glow, ancient stone ruins of a fire temple half-consumed by lava, rope bridges spanning over lava rivers, geysers shooting steam, floating islands of rock suspended by heat (cooled platforms safe to walk on), dragon skeleton fossil embedded in rock
+- NEAR: detailed volcanic rock pillar with crystalline formations, steam vent shooting hot vapor with orange underglow, bubbling lava pool contained in rock basin glowing intensely, ancient fire-themed shrine with eternal flame, treasure chest made of heat-resistant metal, mystical fire crystals growing from rocks in orange and red
 
-GROUND PLATFORM - bottom 30 percent:
-flat dark gray volcanic rock as a single solid horizontal band, the rock is one flat color block with cracked texture, NO rock cross-section below, NO 3D ledge effect, NO front-facing edge, the ground is just a flat dark strip that characters walk left and right on,
+GROUND PLATFORM - bottom 25 percent:
+cooled volcanic rock as flat horizontal band in dark charcoal gray and black with subtle glowing orange cracks scattered throughout, NO rock cross-section below, NO 3D ledge effect, just a flat dramatic volcanic floor,
 
-small decorative details ON TOP of the rock: glowing lava cracks, small lava pools, charred remnants, steam wisps, all as flat pixel sprites sitting on the rock surface,
+ABUNDANT decorative details ON TOP of the rock: scattered fire crystals glowing orange and amber, small contained lava pools with bubbles, obsidian shards catching light, steam wisps rising, charred ancient artifacts, fire-flower blooming (magical plant that thrives in heat), dragon scale (just one decorative scale), pile of gold coins slightly melted together,
 
-STYLE: 16-bit SNES era pixel art, chunky visible pixels, dramatic orange and black colors, clean shapes, parallax scrolling game aesthetic, dangerous volcanic backdrop with depth created through volcano and smoke layers,
+STYLE: epic adventure game meets Kirby, thrilling but not scary fire level, 16-bit SNES golden era, chunky charming pixels, DRAMATIC FIRE PALETTE (brilliant oranges, deep reds, glowing yellows against charcoal black and deep purple), exciting and adventurous not terrifying,
 
-AVOID: rock showing thickness below, 3D platform edges, ground cross-sections, front-facing surfaces on the walkable area, creatures, characters
+AVOID: rock showing thickness below, 3D platform edges, ground cross-sections, fire creatures, dragons, lava monsters, people
 ```
