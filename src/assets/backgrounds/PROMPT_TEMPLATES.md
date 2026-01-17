@@ -3,33 +3,36 @@
 Each prompt is complete and standalone. Copy and paste directly.
 
 CRITICAL RULES FOR ALL PROMPTS:
+- CHUNKY VISIBLE PIXELS - you should clearly see the pixel grid
 - NO FACES on sun, moon, clouds, or any objects
 - Ground has STRAIGHT FLAT top edge - no grass blades, no jagged edges
-- Mature 16-bit aesthetic, NOT kawaii/childish
+- Mature aesthetic like classic 90s games, NOT cute/kawaii
 
 ---
 
 ## MEADOW
 
 ```
-2D pixel art game background, side-scrolling platformer, 1920x1080, 16:9, seamless horizontal tiling,
+RETRO PIXEL ART game background, 1920x1080, 16:9, seamless horizontal tiling,
 
-SKY: gradient from warm peach at horizon to clear blue above, simple puffy clouds (NO FACES), golden sun as plain circle with subtle rays (NO FACE), small rainbow arc
+PIXEL STYLE: CLEARLY VISIBLE CHUNKY PIXELS, low resolution upscaled look, visible pixel grid, LIMITED COLOR PALETTE, dithering for gradients, like actual Super Nintendo or GBA graphics, NOT smooth, NOT anti-aliased, NOT modern vector art,
 
-DISTANT: purple-blue snow-capped mountain range, castle tower silhouette on hilltop
+SKY: gradient from muted peach at horizon to dusty blue above using DITHERING, simple clouds as pixel clusters (NO FACES), sun as plain yellow-orange circle (NO FACE)
 
-MID: rolling hills in 2-3 green shades, windmill, winding dirt path, scattered wildflower patches as colorful dots
+DISTANT: purple-blue mountain range with snow peaks, small castle silhouette
 
-NEAR: large flowering tree with pink blossoms and thick brown trunk, wooden signpost, rustic fence section, floating petals
+MID: rolling hills in 2-3 muted green shades, old windmill, dirt path, sparse flower patches
+
+NEAR: large tree with pink-white blossoms and thick trunk, weathered wooden signpost, old fence
 
 GROUND - bottom 25%:
-Solid green grass field as a FLAT HORIZONTAL BAND. The top edge is a PERFECTLY STRAIGHT LINE - no grass blades sticking up, no jagged pixels, no spiky edge. Just a clean flat rectangle of green with subtle color variation.
+Solid muted green as a FLAT HORIZONTAL BAND with PERFECTLY STRAIGHT top edge. No grass blades, no jagged edge. Simple flat rectangle.
 
-Small decorations sitting ON TOP of the flat ground: wildflowers, red-cap mushrooms, mossy rocks, clovers
+Sparse decorations on ground: few flowers, mushrooms, rocks
 
-STYLE: 16-bit SNES like Secret of Mana or Chrono Trigger, mature pixel art, vibrant colors, NOT childish, NOT kawaii
+STYLE: authentic 16-bit Super Nintendo aesthetic like Final Fantasy VI or Seiken Densetsu, CHUNKY PIXELS clearly visible, muted earthy color palette, nostalgic retro game feel, NOT modern, NOT cute, NOT smooth
 
-DO NOT INCLUDE: faces on sun, faces on clouds, faces on anything, grass blade edges, jagged ground edge, dirt cross-section, animals, characters
+DO NOT INCLUDE: faces on anything, grass blade edges, smooth gradients, anti-aliasing, modern clean look, animals, characters
 ```
 
 ---
@@ -37,24 +40,26 @@ DO NOT INCLUDE: faces on sun, faces on clouds, faces on anything, grass blade ed
 ## FOREST
 
 ```
-2D pixel art game background, side-scrolling platformer, 1920x1080, 16:9, seamless horizontal tiling,
+RETRO PIXEL ART game background, 1920x1080, 16:9, seamless horizontal tiling,
 
-SKY: pale green-gold light filtering through canopy, hints of blue sky through gaps, floating dust motes and light beams
+PIXEL STYLE: CLEARLY VISIBLE CHUNKY PIXELS, low resolution upscaled look, visible pixel grid, LIMITED COLOR PALETTE, dithering for gradients, like actual Super Nintendo graphics, NOT smooth, NOT anti-aliased,
 
-DISTANT: ancient tree silhouettes in dark green, soft mint fog between layers, small cottage with glowing windows deep in woods
+SKY: pale green-gold light through canopy using DITHERING, hints of blue through gaps, dust motes as single pixels
 
-MID: massive oak trees with thick trunks, hanging vines with small flowers, hollow tree with round door, carved wooden signs
+DISTANT: ancient tree silhouettes in dark green, mint fog between layers using dithering, small cottage with lit windows
 
-NEAR: detailed tree with twisted roots, glowing mushroom clusters in blue and purple, hanging lanterns, ferns
+MID: massive oak trees with thick trunks, hanging vines, hollow tree, carved signs
+
+NEAR: detailed tree with twisted roots, glowing mushrooms in blue-purple, lanterns, ferns
 
 GROUND - bottom 25%:
-Rich brown-green forest floor as a FLAT HORIZONTAL BAND. The top edge is a PERFECTLY STRAIGHT LINE - no grass, no jagged pixels, no texture along the edge. Just a clean flat rectangle with moss coloring.
+Rich brown-green as a FLAT HORIZONTAL BAND with PERFECTLY STRAIGHT top edge. No grass, no jagged edge. Simple flat rectangle.
 
-Decorations ON TOP: fallen autumn leaves, glowing mushrooms, fern fronds, pinecones, small rocks
+Sparse decorations: fallen leaves, mushrooms, ferns, rocks
 
-STYLE: 16-bit SNES like Secret of Mana, atmospheric and mysterious, mature pixel art, NOT childish
+STYLE: authentic 16-bit SNES like Secret of Mana, CHUNKY PIXELS visible, muted forest greens and browns, atmospheric, NOT modern, NOT cute
 
-DO NOT INCLUDE: faces on anything, grass blade edges, jagged ground edge, dirt cross-section, animals, characters
+DO NOT INCLUDE: faces on anything, grass edges, smooth gradients, anti-aliasing, animals, characters
 ```
 
 ---
@@ -62,24 +67,26 @@ DO NOT INCLUDE: faces on anything, grass blade edges, jagged ground edge, dirt c
 ## DESERT
 
 ```
-2D pixel art game background, side-scrolling platformer, 1920x1080, 16:9, seamless horizontal tiling,
+RETRO PIXEL ART game background, 1920x1080, 16:9, seamless horizontal tiling,
 
-SKY: dramatic sunset gradient - deep orange through hot pink through coral to purple to deep blue at top, wispy clouds catching golden light, large setting sun as plain orange-red orb (NO FACE)
+PIXEL STYLE: CLEARLY VISIBLE CHUNKY PIXELS, low resolution upscaled look, visible pixel grid, LIMITED COLOR PALETTE, dithering for gradients, like actual Super Nintendo graphics, NOT smooth, NOT anti-aliased,
 
-DISTANT: purple and blue mesa formations, ancient pyramid silhouette, ruined temple on horizon
+SKY: sunset gradient using DITHERING - orange through pink to purple to blue, wispy clouds, setting sun as plain orange circle (NO FACE)
 
-MID: red rock arches in terracotta colors, oasis with palm trees and blue water, adobe buildings with warm glowing windows
+DISTANT: purple-blue mesa formations, pyramid silhouette, ruined temple
 
-NEAR: tall saguaro cactus with arms, barrel cacti with pink flowers, southwestern pottery, wooden post with map
+MID: red rock arches in terracotta, oasis with palms and water, adobe buildings with lit windows
+
+NEAR: tall saguaro cactus, barrel cacti, pottery, wooden post
 
 GROUND - bottom 25%:
-Golden-orange sand as a FLAT HORIZONTAL BAND. The top edge is a PERFECTLY STRAIGHT LINE - no ripples at edge, no dunes, no texture along the top. Just a clean flat rectangle of warm sand color.
+Golden-orange sand as a FLAT HORIZONTAL BAND with PERFECTLY STRAIGHT top edge. No ripples, no dunes at edge. Simple flat rectangle.
 
-Decorations ON TOP: desert wildflowers, tumbleweeds, smooth stones, scattered gems, decorative blanket
+Sparse decorations: tumbleweeds, stones, sparse flowers
 
-STYLE: 16-bit SNES, warm sunset palette, adventurous atmosphere, mature pixel art, NOT childish
+STYLE: authentic 16-bit SNES, CHUNKY PIXELS visible, warm muted desert palette, NOT modern, NOT cute
 
-DO NOT INCLUDE: faces on sun, faces on anything, wavy ground edge, sand cross-section, animals, characters
+DO NOT INCLUDE: faces on sun, faces on anything, smooth gradients, anti-aliasing, animals, characters
 ```
 
 ---
@@ -87,24 +94,26 @@ DO NOT INCLUDE: faces on sun, faces on anything, wavy ground edge, sand cross-se
 ## OCEAN BEACH
 
 ```
-2D pixel art game background, side-scrolling platformer, 1920x1080, 16:9, seamless horizontal tiling,
+RETRO PIXEL ART game background, 1920x1080, 16:9, seamless horizontal tiling,
 
-SKY: tropical gradient from peachy-pink at horizon through turquoise to bright blue, puffy clouds (NO FACES), golden sun with warm glow (NO FACE), faint rainbow
+PIXEL STYLE: CLEARLY VISIBLE CHUNKY PIXELS, low resolution upscaled look, visible pixel grid, LIMITED COLOR PALETTE, dithering for gradients, like actual Super Nintendo graphics, NOT smooth, NOT anti-aliased,
 
-DISTANT: sparkling turquoise ocean at horizon, sailboats with striped sails, tiny tropical island silhouette, lighthouse
+SKY: gradient using DITHERING from peach at horizon through turquoise to blue, clouds as pixel clusters (NO FACES), sun as plain circle (NO FACE)
 
-MID: ocean waves in teal and aqua with white foam caps, wooden pier with pennant flags, striped beach umbrellas, lifeguard tower
+DISTANT: turquoise ocean at horizon, sailboat silhouettes, small island, lighthouse
 
-NEAR: leaning palm tree with coconuts, tiki torch, surfboard in sand, beach hammock, string of paper lanterns
+MID: ocean waves in teal with white foam, wooden pier, beach umbrellas, lifeguard tower
+
+NEAR: leaning palm tree, tiki torch, surfboard, hammock
 
 GROUND - bottom 25%:
-Warm golden sand as a FLAT HORIZONTAL BAND. The top edge is a PERFECTLY STRAIGHT LINE - no texture at edge, no beach grass, no ripples. Just a clean flat rectangle of warm tan sand.
+Warm tan sand as a FLAT HORIZONTAL BAND with PERFECTLY STRAIGHT top edge. No texture at edge, no ripples. Simple flat rectangle.
 
-Decorations ON TOP: seashells, orange starfish, beach towel, sand castle, bucket and shovel, tropical flowers
+Sparse decorations: seashells, starfish, towel, bucket
 
-STYLE: 16-bit SNES, bright tropical palette, relaxing atmosphere, mature pixel art, NOT childish
+STYLE: authentic 16-bit SNES, CHUNKY PIXELS visible, muted tropical palette, NOT modern, NOT cute
 
-DO NOT INCLUDE: faces on sun, faces on clouds, wavy ground edge, sand cross-section, crabs, fish, animals, people
+DO NOT INCLUDE: faces on anything, smooth gradients, anti-aliasing, crabs, fish, animals, people
 ```
 
 ---
@@ -112,24 +121,26 @@ DO NOT INCLUDE: faces on sun, faces on clouds, wavy ground edge, sand cross-sect
 ## SNOWY MOUNTAINS
 
 ```
-2D pixel art game background, side-scrolling platformer, 1920x1080, 16:9, seamless horizontal tiling,
+RETRO PIXEL ART game background, 1920x1080, 16:9, seamless horizontal tiling,
 
-SKY: twilight gradient from soft pink at horizon through lavender to deep midnight blue, twinkling pixel stars, crescent moon with glow (NO FACE), aurora borealis ribbons in green and pink, falling snowflakes throughout
+PIXEL STYLE: CLEARLY VISIBLE CHUNKY PIXELS, low resolution upscaled look, visible pixel grid, LIMITED COLOR PALETTE, dithering for gradients, like actual Super Nintendo graphics, NOT smooth, NOT anti-aliased,
 
-DISTANT: majestic snow-capped peaks in purple and blue, ice castle sparkling on highest peak, frozen waterfall
+SKY: twilight gradient using DITHERING from pink through lavender to deep blue, pixel stars, crescent moon (NO FACE), aurora ribbons, falling snowflake pixels
 
-MID: snow-covered pine forest, cozy log cabin with golden lit windows, smoke from chimney, Christmas lights on eaves, parked wooden sled
+DISTANT: snow peaks in purple-blue, ice castle on peak, frozen waterfall
 
-NEAR: snow-laden evergreen trees, vintage lamp post with warm glow and icicles, wooden sign to "North Pole", wrapped presents, candy canes in snow
+MID: snow-covered pines, log cabin with lit windows, chimney smoke, wooden sled
+
+NEAR: snow-laden evergreens, lamp post with icicles, wooden sign
 
 GROUND - bottom 25%:
-White snow as a FLAT HORIZONTAL BAND. The top edge is a PERFECTLY STRAIGHT LINE - no snowdrift shapes, no jagged ice, no texture at edge. Just a clean flat rectangle of white with subtle blue shadows.
+White snow as a FLAT HORIZONTAL BAND with PERFECTLY STRAIGHT top edge. No snowdrifts, no jagged edge. Simple flat rectangle with blue shadow pixels.
 
-Decorations ON TOP: snowman with scarf and hat, snow angel impression, pinecones, holly berries, ice crystals
+Sparse decorations: snowman, pinecones, holly
 
-STYLE: 16-bit SNES, cozy winter palette, peaceful atmosphere, mature pixel art, NOT childish
+STYLE: authentic 16-bit SNES, CHUNKY PIXELS visible, muted winter blues and whites, NOT modern, NOT cute
 
-DO NOT INCLUDE: faces on moon, faces on anything, bumpy ground edge, snow cross-section, animals, people
+DO NOT INCLUDE: faces on moon, faces on anything, smooth gradients, anti-aliasing, animals, people
 ```
 
 ---
@@ -137,24 +148,26 @@ DO NOT INCLUDE: faces on moon, faces on anything, bumpy ground edge, snow cross-
 ## NIGHT STARFIELD
 
 ```
-2D pixel art game background, side-scrolling platformer, 1920x1080, 16:9, seamless horizontal tiling,
+RETRO PIXEL ART game background, 1920x1080, 16:9, seamless horizontal tiling,
 
-SKY: night gradient from deep navy at top through purple to dark teal near horizon, thousands of twinkling stars in different sizes, milky way band in soft purple, shooting star with trail, constellation patterns
+PIXEL STYLE: CLEARLY VISIBLE CHUNKY PIXELS, low resolution upscaled look, visible pixel grid, LIMITED COLOR PALETTE, dithering for gradients, like actual Super Nintendo graphics, NOT smooth, NOT anti-aliased,
 
-DISTANT: large full moon with visible craters and golden glow (NO FACE), soft clouds drifting past, distant purple mountain silhouettes with twinkling lights
+SKY: night gradient using DITHERING from navy through purple to teal, pixel stars in different sizes, milky way band, shooting star
 
-MID: countryside silhouette - rolling hills, cottage with amber lit windows, windmill, church steeple, water tower, trees
+DISTANT: full moon with craters (NO FACE), clouds, purple mountain silhouettes
 
-NEAR: rustic wooden fence with hanging lantern, tall wildflower silhouettes, mason jar with fireflies, telescope on tripod, blanket for stargazing, floating fireflies as golden dots
+MID: countryside silhouette - hills, cottage with lit windows, windmill, trees
+
+NEAR: wooden fence with lantern, wildflower silhouettes, telescope, fireflies as single pixels
 
 GROUND - bottom 25%:
-Dark blue-green moonlit grass as a FLAT HORIZONTAL BAND. The top edge is a PERFECTLY STRAIGHT LINE - no grass blades, no jagged edge. Just a clean flat rectangle in night tones with silvery highlights.
+Dark blue-green grass as a FLAT HORIZONTAL BAND with PERFECTLY STRAIGHT top edge. No grass blades, no jagged edge. Simple flat rectangle with silver highlights.
 
-Decorations ON TOP: closed flower buds, glowing mushrooms in blue, dewdrops, old books, steaming cocoa mug
+Sparse decorations: mushrooms, closed flowers, rocks
 
-STYLE: 16-bit SNES, dreamy night palette, peaceful atmosphere, mature pixel art, NOT childish
+STYLE: authentic 16-bit SNES, CHUNKY PIXELS visible, muted night blues and purples, NOT modern, NOT cute
 
-DO NOT INCLUDE: faces on moon, faces on anything, grass blade edges, ground cross-section, animals, people
+DO NOT INCLUDE: faces on moon, faces on anything, smooth gradients, anti-aliasing, animals, people
 ```
 
 ---
@@ -162,24 +175,26 @@ DO NOT INCLUDE: faces on moon, faces on anything, grass blade edges, ground cros
 ## CITYSCAPE
 
 ```
-2D pixel art game background, side-scrolling platformer, 1920x1080, 16:9, seamless horizontal tiling,
+RETRO PIXEL ART game background, 1920x1080, 16:9, seamless horizontal tiling,
 
-SKY: golden hour gradient from warm orange-gold at horizon through pink and coral to lavender above, puffy clouds catching warm light (NO FACES), hot air balloon in distance
+PIXEL STYLE: CLEARLY VISIBLE CHUNKY PIXELS, low resolution upscaled look, visible pixel grid, LIMITED COLOR PALETTE, dithering for gradients, like actual Super Nintendo graphics, NOT smooth, NOT anti-aliased,
 
-DISTANT: city skyline silhouette with varied building heights, water towers, clock tower, church dome, Ferris wheel, all backlit by sunset
+SKY: golden hour gradient using DITHERING from orange through pink to lavender, clouds (NO FACES), hot air balloon
 
-MID: multi-story buildings with colorful facades in terracotta, mint, yellow, brick red, unique windows, rooftop gardens, fire escapes with plants, clotheslines
+DISTANT: city skyline silhouette, water towers, clock tower, Ferris wheel, backlit by sunset
 
-NEAR: detailed storefronts - bakery with striped awning, bookshop, flower shop, cafe with bistro tables, vintage lamp post, hanging flower baskets, cafe string lights, neon signs
+MID: multi-story buildings in muted terracotta, green, yellow, brick, rooftop gardens, fire escapes, clotheslines
+
+NEAR: storefronts with awnings, lamp post, cafe tables, neon signs
 
 GROUND - bottom 25%:
-Gray cobblestone sidewalk as a FLAT HORIZONTAL BAND. The top edge is a PERFECTLY STRAIGHT LINE - no curb, no uneven stones at edge. Just a clean flat rectangle with brick pattern texture.
+Gray cobblestone as a FLAT HORIZONTAL BAND with PERFECTLY STRAIGHT top edge. No curb, no uneven edge. Simple flat rectangle with brick pattern.
 
-Decorations ON TOP: red fire hydrant, flower planter, sandwich board sign, autumn leaves, parked bicycle, newspapers, mailbox
+Sparse decorations: fire hydrant, planter, bicycle, mailbox
 
-STYLE: 16-bit SNES, warm golden hour palette, cozy urban atmosphere, mature pixel art, NOT childish
+STYLE: authentic 16-bit SNES, CHUNKY PIXELS visible, muted urban palette, NOT modern, NOT cute
 
-DO NOT INCLUDE: faces on anything, uneven ground edge, sidewalk cross-section, cars, people, vehicles
+DO NOT INCLUDE: faces on anything, smooth gradients, anti-aliasing, cars, people, vehicles
 ```
 
 ---
@@ -187,24 +202,26 @@ DO NOT INCLUDE: faces on anything, uneven ground edge, sidewalk cross-section, c
 ## JUNGLE
 
 ```
-2D pixel art game background, side-scrolling platformer, 1920x1080, 16:9, seamless horizontal tiling,
+RETRO PIXEL ART game background, 1920x1080, 16:9, seamless horizontal tiling,
 
-SKY: glimpses of blue through dense canopy, golden sun rays streaming through diagonally, ethereal mist, floating light particles
+PIXEL STYLE: CLEARLY VISIBLE CHUNKY PIXELS, low resolution upscaled look, visible pixel grid, LIMITED COLOR PALETTE, dithering for gradients, like actual Super Nintendo graphics, NOT smooth, NOT anti-aliased,
 
-DISTANT: ancient temple ruins reclaimed by jungle - crumbling stone walls with vines, carved stone face of deity, stone archway, distant waterfall
+SKY: glimpses of blue through canopy, golden sun rays using DITHERING, mist, light particles as single pixels
 
-MID: massive trees with buttress roots, hanging vines with exotic flowers in pink and orange, rope bridge, stone steps, glowing dots peeking from hollow trees
+DISTANT: ancient temple ruins with vines, carved stone face, stone archway, waterfall
 
-NEAR: huge tropical leaves in multiple greens, orchids in magenta and yellow, ancient stone pillar with runes, treasure chest with gold, hanging lantern
+MID: massive trees with buttress roots, hanging vines, rope bridge, stone steps
+
+NEAR: huge tropical leaves, orchids, stone pillar with runes, treasure chest, lantern
 
 GROUND - bottom 25%:
-Rich brown-green jungle floor as a FLAT HORIZONTAL BAND. The top edge is a PERFECTLY STRAIGHT LINE - no roots, no grass, no vegetation at edge. Just a clean flat rectangle with earthy moss texture.
+Brown-green jungle floor as a FLAT HORIZONTAL BAND with PERFECTLY STRAIGHT top edge. No roots, no vegetation at edge. Simple flat rectangle.
 
-Decorations ON TOP: gold coins and gems, ancient artifacts, exotic flowers, giant colorful mushrooms, reflecting pools, fallen stone blocks, treasure map
+Sparse decorations: coins, artifacts, mushrooms, fallen stones
 
-STYLE: 16-bit SNES like Donkey Kong Country, lush jungle palette, adventurous atmosphere, mature pixel art, NOT childish
+STYLE: authentic 16-bit SNES like Donkey Kong Country, CHUNKY PIXELS visible, muted jungle greens, NOT modern, NOT cute
 
-DO NOT INCLUDE: faces on anything, vegetation at ground edge, dirt cross-section, snakes, monkeys, spiders, people
+DO NOT INCLUDE: faces on anything, smooth gradients, anti-aliasing, snakes, monkeys, spiders, people
 ```
 
 ---
@@ -212,24 +229,26 @@ DO NOT INCLUDE: faces on anything, vegetation at ground edge, dirt cross-section
 ## UNDERWATER
 
 ```
-2D pixel art game background, side-scrolling platformer, 1920x1080, 16:9, seamless horizontal tiling,
+RETRO PIXEL ART game background, 1920x1080, 16:9, seamless horizontal tiling,
 
-SKY/WATER: gradient from bright turquoise surface down to deep blue, diagonal light rays through water, thousands of tiny bubbles rising, ship hull silhouette above, sun glow rippling
+PIXEL STYLE: CLEARLY VISIBLE CHUNKY PIXELS, low resolution upscaled look, visible pixel grid, LIMITED COLOR PALETTE, dithering for gradients, like actual Super Nintendo graphics, NOT smooth, NOT anti-aliased,
 
-DISTANT: underwater mountain range in deep blue and purple, ancient sunken city with glowing bioluminescent towers, whale silhouette, distant coral reef
+WATER: gradient using DITHERING from turquoise surface to deep blue, diagonal light rays, bubble pixels rising, ship hull silhouette above
 
-MID: kelp forest swaying (green and gold fronds), shipwreck with treasure, coral archway, giant clam shells, underwater hot springs with bubbles
+DISTANT: underwater mountains in blue-purple, sunken city with bioluminescent glow, whale silhouette, coral reef
 
-NEAR: colorful coral garden - brain coral in pink, fan coral in purple and orange, tube coral in yellow, sea anemones in pink and blue, giant seashells, anchor with seaweed
+MID: kelp forest swaying, shipwreck, coral archway, clam shells, hot springs with bubbles
+
+NEAR: coral garden - brain coral, fan coral, tube coral, anemones, giant seashells, anchor
 
 GROUND - bottom 25%:
-Pale golden sandy seabed as a FLAT HORIZONTAL BAND. The top edge is a PERFECTLY STRAIGHT LINE - no ripples, no seaweed at edge. Just a clean flat rectangle of sand with sparkle texture.
+Pale sand seabed as a FLAT HORIZONTAL BAND with PERFECTLY STRAIGHT top edge. No ripples, no seaweed at edge. Simple flat rectangle.
 
-Decorations ON TOP: spiral seashells, orange starfish, sea urchins, swaying sea grass, treasure chest with gems, sunken crown, ancient jars, pearl in oyster
+Sparse decorations: seashells, starfish, treasure chest, ancient jars
 
-STYLE: 16-bit SNES, magical ocean palette in teals and corals, enchanting atmosphere, mature pixel art, NOT childish
+STYLE: authentic 16-bit SNES, CHUNKY PIXELS visible, muted ocean teals and blues, NOT modern, NOT cute
 
-DO NOT INCLUDE: faces on anything, wavy ground edge, sand cross-section, fish, sharks, dolphins, any swimming creatures
+DO NOT INCLUDE: faces on anything, smooth gradients, anti-aliasing, fish, sharks, dolphins, any creatures
 ```
 
 ---
@@ -237,24 +256,26 @@ DO NOT INCLUDE: faces on anything, wavy ground edge, sand cross-section, fish, s
 ## AUTUMN FOREST
 
 ```
-2D pixel art game background, side-scrolling platformer, 1920x1080, 16:9, seamless horizontal tiling,
+RETRO PIXEL ART game background, 1920x1080, 16:9, seamless horizontal tiling,
 
-SKY: autumn gradient from soft golden at horizon through peachy pink to pale blue, clouds catching warm light (NO FACES), golden sun (NO FACE), V-formation of geese silhouettes, leaves blowing in wind
+PIXEL STYLE: CLEARLY VISIBLE CHUNKY PIXELS, low resolution upscaled look, visible pixel grid, LIMITED COLOR PALETTE, dithering for gradients, like actual Super Nintendo graphics, NOT smooth, NOT anti-aliased,
 
-DISTANT: rolling hills covered in autumn trees - tapestry of reds, oranges, golds, burgundies, farmhouse with chimney smoke, red barn, church steeple
+SKY: autumn gradient using DITHERING from golden through peach to blue, clouds (NO FACES), sun (NO FACE), geese silhouettes, falling leaf pixels
 
-MID: magnificent autumn trees - maple in red, oak in orange, birch in yellow, leaves falling, wooden gazebo with harvest garlands, stone bridge over stream, haystacks
+DISTANT: hills with autumn trees in reds, oranges, golds, farmhouse with smoke, red barn
 
-NEAR: detailed tree with bark texture and red-gold leaves, rustic fence with pumpkins, lamp post with warm glow, wheelbarrow of apples, corn stalks, harvest wreath
+MID: autumn trees - maple red, oak orange, birch yellow, leaves falling, gazebo, stone bridge, haystacks
+
+NEAR: detailed tree with red-gold leaves, rustic fence with pumpkins, lamp post, wheelbarrow
 
 GROUND - bottom 25%:
-Carpet of fallen autumn leaves as a FLAT HORIZONTAL BAND. The top edge is a PERFECTLY STRAIGHT LINE - no leaf pile texture at edge, no depth. Just a clean flat rectangle in crimson, orange, yellow, brown mix.
+Fallen leaves as a FLAT HORIZONTAL BAND with PERFECTLY STRAIGHT top edge. No leaf pile texture at edge. Simple flat rectangle in crimson, orange, brown mix.
 
-Decorations ON TOP: orange pumpkins, apple baskets, acorns and pinecones, brown mushrooms, plaid blanket, cider jug, old books
+Sparse decorations: pumpkins, apples, pinecones, mushrooms
 
-STYLE: 16-bit SNES, warm harvest palette, cozy atmosphere, mature pixel art, NOT childish
+STYLE: authentic 16-bit SNES, CHUNKY PIXELS visible, muted harvest oranges and browns, NOT modern, NOT cute
 
-DO NOT INCLUDE: faces on sun, faces on anything, textured ground edge, leaf cross-section, squirrels, animals, people
+DO NOT INCLUDE: faces on sun, faces on anything, smooth gradients, anti-aliasing, squirrels, animals, people
 ```
 
 ---
@@ -262,24 +283,26 @@ DO NOT INCLUDE: faces on sun, faces on anything, textured ground edge, leaf cros
 ## CHERRY BLOSSOM
 
 ```
-2D pixel art game background, side-scrolling platformer, 1920x1080, 16:9, seamless horizontal tiling,
+RETRO PIXEL ART game background, 1920x1080, 16:9, seamless horizontal tiling,
 
-SKY: dreamy gradient from soft peach at horizon through pink to lavender to pale blue, wispy clouds (NO FACES), Mount Fuji silhouette in purple-blue, cherry blossom petals floating everywhere like pink snow
+PIXEL STYLE: CLEARLY VISIBLE CHUNKY PIXELS, low resolution upscaled look, visible pixel grid, LIMITED COLOR PALETTE, dithering for gradients, like actual Super Nintendo graphics, NOT smooth, NOT anti-aliased,
 
-DISTANT: misty mountains in purple, lavender, blue, distant pagoda temple, Japanese castle silhouette, small crane silhouettes flying
+SKY: gradient using DITHERING from peach through pink to lavender to blue, wispy clouds (NO FACES), Mount Fuji silhouette, floating petal pixels
 
-MID: cherry blossom grove in full bloom - trees with pink and white flowers, red torii gate, arched wooden bridge over stream, stone lanterns glowing, paper lanterns in pink
+DISTANT: misty mountains in purple-lavender, pagoda temple, castle silhouette, crane silhouettes
 
-NEAR: cherry tree trunk with gnarled character, branches with cascading pink blossoms, red-white paper umbrella leaning, bamboo fountain, stone guardian statue, silk ribbons on branches
+MID: cherry blossom grove - trees with pink flowers, red torii gate, wooden bridge, stone lanterns
+
+NEAR: cherry tree trunk, branches with blossoms, paper umbrella, bamboo fountain, stone statue
 
 GROUND - bottom 25%:
-Soft green grass with scattered pink petals as a FLAT HORIZONTAL BAND. The top edge is a PERFECTLY STRAIGHT LINE - no grass blades, no texture at edge. Just a clean flat rectangle of green-pink.
+Green grass with pink petals as a FLAT HORIZONTAL BAND with PERFECTLY STRAIGHT top edge. No grass blades, no texture at edge. Simple flat rectangle.
 
-Decorations ON TOP: stepping stones, moss-covered boulders, purple wildflowers, koi pond (blue water and lily pads only - NO FISH), bento box, tea set, petal drifts
+Sparse decorations: stepping stones, boulders, pond (water only - NO FISH)
 
-STYLE: 16-bit SNES, soft sakura palette, tranquil atmosphere, mature pixel art, NOT childish
+STYLE: authentic 16-bit SNES, CHUNKY PIXELS visible, muted sakura pinks and greens, NOT modern, NOT cute
 
-DO NOT INCLUDE: faces on anything, grass blade edges, ground cross-section, koi fish, animals, people
+DO NOT INCLUDE: faces on anything, smooth gradients, anti-aliasing, koi fish, animals, people
 ```
 
 ---
@@ -287,24 +310,26 @@ DO NOT INCLUDE: faces on anything, grass blade edges, ground cross-section, koi 
 ## SPACE STATION
 
 ```
-2D pixel art game background, side-scrolling platformer, 1920x1080, 16:9, seamless horizontal tiling,
+RETRO PIXEL ART game background, 1920x1080, 16:9, seamless horizontal tiling,
 
-SPACE VIEW (through windows): deep gradient from purple-black to midnight blue, thousands of twinkling stars in white, blue, gold, colorful nebula in pink, purple, cyan, distant galaxy spiral, shooting stars
+PIXEL STYLE: CLEARLY VISIBLE CHUNKY PIXELS, low resolution upscaled look, visible pixel grid, LIMITED COLOR PALETTE, dithering for gradients, like actual Super Nintendo graphics, NOT smooth, NOT anti-aliased,
 
-DISTANT: planets through window - ringed planet like Saturn in gold and cream, red planet, blue-green planet, distant space station with blinking lights, asteroid belt
+SPACE VIEW: gradient using DITHERING from purple-black to midnight blue, pixel stars in white, blue, gold, nebula in pink-purple, galaxy spiral, shooting stars
 
-MID: space station interior - large curved window frames, metallic beams in silver and bronze, holographic displays with star maps, hanging plants in terrariums, viewing lounge with curved couch
+DISTANT: planets through window - ringed planet, red planet, blue-green planet, space station with blinking lights
 
-NEAR: control center - console panels with colorful blinking lights, screens with alien text, chrome machinery, robotic arm, space suit on wall, telescope, floating coffee mug, potted plant
+MID: space station interior - window frames, metallic beams, holographic displays, plants in terrariums
+
+NEAR: control center - console panels with blinking lights, screens, chrome machinery, space suit, telescope
 
 GROUND - bottom 25%:
-Metallic floor as a FLAT HORIZONTAL BAND in silver-gray with blue panel grid lines. The top edge is a PERFECTLY STRAIGHT LINE - no raised panels, no uneven surface. Just a clean flat rectangle.
+Metallic floor as a FLAT HORIZONTAL BAND in silver-gray with blue grid lines. PERFECTLY STRAIGHT top edge. No raised panels. Simple flat rectangle.
 
-Decorations ON TOP: storage crates with symbols, coiled cables, blue and magenta floor lights, space boots, tablet, toolbox, small robot (powered off), mission patches
+Sparse decorations: crates, cables, floor lights, tools, small robot
 
-STYLE: 16-bit SNES, retro 80s sci-fi palette, wonder and exploration atmosphere, mature pixel art, NOT childish
+STYLE: authentic 16-bit SNES, CHUNKY PIXELS visible, retro 80s sci-fi palette, NOT modern, NOT cute
 
-DO NOT INCLUDE: faces on anything, uneven floor edge, floor cross-section, aliens, astronauts, people
+DO NOT INCLUDE: faces on anything, smooth gradients, anti-aliasing, aliens, astronauts, people
 ```
 
 ---
@@ -312,24 +337,26 @@ DO NOT INCLUDE: faces on anything, uneven floor edge, floor cross-section, alien
 ## CASTLE
 
 ```
-2D pixel art game background, side-scrolling platformer, 1920x1080, 16:9, seamless horizontal tiling,
+RETRO PIXEL ART game background, 1920x1080, 16:9, seamless horizontal tiling,
 
-WINDOWS/SKY: tall arched windows showing night sky - deep blue with twinkling stars, full moon casting silver light (NO FACE), distant towers through glass, hints of aurora
+PIXEL STYLE: CLEARLY VISIBLE CHUNKY PIXELS, low resolution upscaled look, visible pixel grid, LIMITED COLOR PALETTE, dithering for gradients, like actual Super Nintendo graphics, NOT smooth, NOT anti-aliased,
 
-DISTANT: castle interior walls in warm stone with carvings, mounted shields in red, blue, gold, crossed swords, ornate tapestries, arched doorway to grand staircase with red carpet
+WINDOWS: tall arched windows showing night sky using DITHERING, pixel stars, moon (NO FACE), distant towers
 
-MID: royal decorations - massive chandeliers with glowing candles, velvet banners in red and purple with gold trim, stained glass casting colored light, grand fireplace with fire, ceremonial armor with plume
+DISTANT: castle walls in stone, mounted shields, crossed swords, tapestries, arched doorway with staircase
 
-NEAR: carved stone column with gold leaf, wall sconce with flickering torch, armor holding shield, royal portrait in gilded frame, flowering plant on pedestal, glowing crystal, bookshelf with tomes
+MID: chandeliers with candles, velvet banners in red and purple, stained glass, fireplace, armor with plume
+
+NEAR: stone column, wall sconce with torch, armor with shield, portrait, glowing crystal, bookshelf
 
 GROUND - bottom 25%:
-Elegant stone floor as a FLAT HORIZONTAL BAND in warm gray with ornate tile pattern. The top edge is a PERFECTLY STRAIGHT LINE - no raised stones, no uneven edge. Just a clean flat rectangle.
+Stone floor as a FLAT HORIZONTAL BAND in warm gray with tile pattern. PERFECTLY STRAIGHT top edge. No raised stones. Simple flat rectangle.
 
-Decorations ON TOP: red carpet runner with gold border and tassels, treasure chest with gold and gems, candelabra, scattered coins, crown on velvet pillow, sword in stone, glowing spellbook, dragon egg in nest
+Sparse decorations: red carpet, treasure chest, candelabra, coins, crown
 
-STYLE: 16-bit SNES, royal palette in reds, purples, gold, majestic atmosphere, mature pixel art, NOT childish
+STYLE: authentic 16-bit SNES, CHUNKY PIXELS visible, muted royal reds and purples, NOT modern, NOT cute
 
-DO NOT INCLUDE: faces on moon, faces on anything, uneven floor edge, floor cross-section, knights, guards, people, dragons
+DO NOT INCLUDE: faces on moon, faces on anything, smooth gradients, anti-aliasing, knights, guards, people, dragons
 ```
 
 ---
@@ -337,22 +364,24 @@ DO NOT INCLUDE: faces on moon, faces on anything, uneven floor edge, floor cross
 ## VOLCANO
 
 ```
-2D pixel art game background, side-scrolling platformer, 1920x1080, 16:9, seamless horizontal tiling,
+RETRO PIXEL ART game background, 1920x1080, 16:9, seamless horizontal tiling,
 
-SKY: dramatic gradient from blood red and orange at horizon through crimson to smoky purple-black, billowing ash clouds backlit with orange, lightning in clouds, floating embers and ash throughout
+PIXEL STYLE: CLEARLY VISIBLE CHUNKY PIXELS, low resolution upscaled look, visible pixel grid, LIMITED COLOR PALETTE, dithering for gradients, like actual Super Nintendo graphics, NOT smooth, NOT anti-aliased,
 
-DISTANT: massive erupting volcano - crater spewing orange-red lava fountain and smoke, lava rivers down mountainside, other volcanic peaks, red glow on clouds
+SKY: gradient using DITHERING from blood red through crimson to purple-black, ash clouds backlit orange, lightning, ember pixels floating
 
-MID: volcanic landscape - jagged obsidian formations silhouetted, ancient temple ruins half-consumed by lava, rope bridges over lava, steam geysers, floating rock islands, dragon skeleton fossil in rock
+DISTANT: erupting volcano - crater with lava fountain, lava rivers down mountainside, other peaks, red glow
 
-NEAR: volcanic rock pillar with crystals, steam vent with orange glow, bubbling lava pool in rock basin, fire shrine with eternal flame, metal treasure chest, fire crystals in orange and red
+MID: volcanic landscape - obsidian formations, temple ruins in lava, rope bridges, steam geysers, rock islands
+
+NEAR: rock pillar with crystals, steam vent, bubbling lava pool, fire shrine, treasure chest
 
 GROUND - bottom 25%:
-Dark volcanic rock as a FLAT HORIZONTAL BAND in charcoal gray and black with scattered glowing orange cracks. The top edge is a PERFECTLY STRAIGHT LINE - no rocky texture at edge. Just a clean flat rectangle.
+Dark volcanic rock as a FLAT HORIZONTAL BAND in charcoal-black with glowing orange crack pixels. PERFECTLY STRAIGHT top edge. No rocky texture at edge. Simple flat rectangle.
 
-Decorations ON TOP: fire crystals glowing orange, small lava pools, obsidian shards, steam wisps, charred artifacts, fire-flower plant, single dragon scale, melted gold coins
+Sparse decorations: fire crystals, small lava pools, obsidian shards, steam
 
-STYLE: 16-bit SNES, dramatic fire palette in oranges, reds, blacks, exciting atmosphere, mature pixel art, NOT childish
+STYLE: authentic 16-bit SNES, CHUNKY PIXELS visible, dramatic fire palette oranges and blacks, NOT modern, NOT cute
 
-DO NOT INCLUDE: faces on anything, rocky ground edge, rock cross-section, fire creatures, dragons, lava monsters, people
+DO NOT INCLUDE: faces on anything, smooth gradients, anti-aliasing, fire creatures, dragons, lava monsters, people
 ```
