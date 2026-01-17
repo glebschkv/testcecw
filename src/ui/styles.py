@@ -808,6 +808,13 @@ class Styles:
         "snow": "snow.png",
         "night": "night.png",
         "city": "city.png",
+        "jungle": "jungle.png",
+        "underwater": "underwater.png",
+        "autumn": "autumn.png",
+        "cherry": "cherry.png",
+        "space": "space.png",
+        "castle": "castle.png",
+        "volcano": "volcano.png",
     }
 
     @classmethod
