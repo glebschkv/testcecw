@@ -361,32 +361,20 @@ class ChatScreen(QWidget):
         layout.setContentsMargins(32, 24, 32, 20)
         layout.setSpacing(16)
 
-        # Chat header with refined styling
-        header_frame = QFrame()
-        header_frame.setStyleSheet("background-color: transparent; border: none;")
-        header_layout = QHBoxLayout(header_frame)
-        header_layout.setContentsMargins(0, 0, 0, 8)
-        header_layout.setSpacing(12)
-
+        # Chat header - minimal
         self.chat_header = QLabel("Welcome to InsightBot")
         self.chat_header.setObjectName("chatHeader")
-        header_layout.addWidget(self.chat_header)
+        self.chat_header.setStyleSheet("background: transparent;")
+        layout.addWidget(self.chat_header)
 
-        header_layout.addStretch()
-        layout.addWidget(header_frame)
-
-        # Messages scroll area with clean styling
+        # Messages scroll area - clean, no borders
         self.scroll_area = QScrollArea()
         self.scroll_area.setWidgetResizable(True)
-        self.scroll_area.setStyleSheet("""
-            QScrollArea {
-                border: none;
-                background-color: #FAFAFA;
-            }
-        """)
+        self.scroll_area.setStyleSheet("QScrollArea { border: none; background: transparent; }")
+        self.scroll_area.setFrameShape(QFrame.Shape.NoFrame)
 
         self.messages_container = QWidget()
-        self.messages_container.setStyleSheet("background-color: #FAFAFA;")
+        self.messages_container.setStyleSheet("background: transparent;")
         self.messages_layout = QVBoxLayout(self.messages_container)
         self.messages_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.messages_layout.setSpacing(12)
@@ -397,23 +385,23 @@ class ChatScreen(QWidget):
         # Welcome message
         self._show_welcome_message()
 
-        # Input area with refined design
+        # Input area - minimal, clean design
         input_frame = QFrame()
         input_frame.setObjectName("inputFrame")
         input_frame.setStyleSheet("""
             QFrame#inputFrame {
                 background-color: #FFFFFF;
-                border-radius: 16px;
-                border: 1px solid #E4E4E7;
+                border-radius: 24px;
+                border: 1.5px solid #E4E4E7;
             }
-            QFrame#inputFrame:focus-within {
-                border: 2px solid #6366F1;
+            QFrame#inputFrame:hover {
+                border-color: #D4D4D8;
             }
         """)
         input_layout = QHBoxLayout(input_frame)
-        input_layout.setContentsMargins(12, 8, 8, 8)
-        input_layout.setSpacing(8)
-        input_layout.setAlignment(Qt.AlignmentFlag.AlignBottom)
+        input_layout.setContentsMargins(16, 8, 8, 8)
+        input_layout.setSpacing(10)
+        input_layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
 
         # Text input with auto-resize
         self.message_input = QTextEdit()
@@ -443,7 +431,7 @@ class ChatScreen(QWidget):
         # Send button
         self.send_btn = QPushButton("➤")
         self.send_btn.setObjectName("sendButton")
-        self.send_btn.setFixedSize(40, 40)
+        self.send_btn.setFixedSize(44, 44)
         self.send_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         self.send_btn.clicked.connect(self._send_message)
         self.send_btn.setEnabled(False)
@@ -464,128 +452,69 @@ class ChatScreen(QWidget):
         return chat_frame
 
     def _show_welcome_message(self):
-        """Show initial welcome message with improved design."""
-        welcome_frame = QFrame()
-        welcome_frame.setStyleSheet("""
-            QFrame {
-                background-color: #FFFFFF;
-                border-radius: 16px;
-                border: 1px solid #E4E4E7;
-            }
-        """)
-        welcome_layout = QVBoxLayout(welcome_frame)
-        welcome_layout.setContentsMargins(48, 48, 48, 48)
-        welcome_layout.setSpacing(8)
+        """Show initial welcome message - clean, minimal design."""
+        # Container widget (no visible styling)
+        welcome_container = QWidget()
+        welcome_container.setStyleSheet("background: transparent;")
+        welcome_layout = QVBoxLayout(welcome_container)
+        welcome_layout.setContentsMargins(40, 60, 40, 40)
+        welcome_layout.setSpacing(0)
         welcome_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         # Logo
         logo = QLabel("◆")
         logo.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        logo.setStyleSheet("""
-            color: #6366F1;
-            font-size: 40px;
-            font-weight: bold;
-            background-color: transparent;
-        """)
+        logo.setStyleSheet("color: #6366F1; font-size: 48px; font-weight: bold; background: transparent;")
         welcome_layout.addWidget(logo)
 
-        welcome_layout.addSpacing(8)
+        welcome_layout.addSpacing(16)
 
         # Title
         title = QLabel("Welcome to InsightBot")
         title.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        title.setStyleSheet("""
-            color: #18181B;
-            font-size: 26px;
-            font-weight: 600;
-            letter-spacing: -0.5px;
-            background-color: transparent;
-        """)
+        title.setStyleSheet("color: #18181B; font-size: 28px; font-weight: 600; letter-spacing: -0.5px; background: transparent;")
         welcome_layout.addWidget(title)
+
+        welcome_layout.addSpacing(8)
 
         # Subtitle
         subtitle = QLabel("Your intelligent vehicle diagnostics assistant")
         subtitle.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        subtitle.setStyleSheet("""
-            color: #52525B;
-            font-size: 15px;
-            background-color: transparent;
-        """)
+        subtitle.setStyleSheet("color: #71717A; font-size: 15px; background: transparent;")
         welcome_layout.addWidget(subtitle)
 
-        welcome_layout.addSpacing(32)
+        welcome_layout.addSpacing(48)
 
-        # Steps container
-        steps_frame = QFrame()
-        steps_frame.setStyleSheet("""
-            QFrame {
-                background-color: #FAFAFA;
-                border-radius: 12px;
-                border: none;
-            }
-        """)
-        steps_layout = QVBoxLayout(steps_frame)
-        steps_layout.setContentsMargins(24, 20, 24, 20)
-        steps_layout.setSpacing(16)
-
-        # Steps header
+        # Steps - simple text, no boxes
         steps_header = QLabel("GET STARTED")
-        steps_header.setStyleSheet("""
-            color: #71717A;
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            background-color: transparent;
-        """)
-        steps_layout.addWidget(steps_header)
+        steps_header.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        steps_header.setStyleSheet("color: #A1A1AA; font-size: 11px; font-weight: 600; letter-spacing: 1.5px; background: transparent;")
+        welcome_layout.addWidget(steps_header)
 
-        # Steps
+        welcome_layout.addSpacing(20)
+
+        # Steps as simple numbered list
         steps = [
-            ("1", "Click \"+ New Chat\" in the sidebar"),
-            ("2", "Upload your OBD-II log file (.csv)"),
-            ("3", "Ask anything about your vehicle")
+            "Click  + New Chat  in the sidebar",
+            "Upload your OBD-II log file (.csv)",
+            "Ask anything about your vehicle"
         ]
-        for num, text in steps:
-            step_layout = QHBoxLayout()
-            step_layout.setSpacing(12)
+        for i, text in enumerate(steps, 1):
+            step_label = QLabel(f"{i}.  {text}")
+            step_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            step_label.setStyleSheet("color: #52525B; font-size: 14px; background: transparent; padding: 6px 0;")
+            welcome_layout.addWidget(step_label)
 
-            num_label = QLabel(num)
-            num_label.setFixedSize(24, 24)
-            num_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            num_label.setStyleSheet("""
-                background-color: #6366F1;
-                color: white;
-                border-radius: 12px;
-                font-size: 12px;
-                font-weight: 600;
-            """)
-            step_layout.addWidget(num_label)
-
-            text_label = QLabel(text)
-            text_label.setStyleSheet("""
-                color: #3F3F46;
-                font-size: 14px;
-                background-color: transparent;
-            """)
-            step_layout.addWidget(text_label)
-            step_layout.addStretch()
-            steps_layout.addLayout(step_layout)
-
-        welcome_layout.addWidget(steps_frame)
-
-        welcome_layout.addSpacing(24)
+        welcome_layout.addSpacing(48)
 
         # Footer
         footer = QLabel("Powered by IBM Granite AI")
         footer.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        footer.setStyleSheet("""
-            color: #A1A1AA;
-            font-size: 12px;
-            background-color: transparent;
-        """)
+        footer.setStyleSheet("color: #D4D4D8; font-size: 12px; background: transparent;")
         welcome_layout.addWidget(footer)
 
-        self.messages_layout.addWidget(welcome_frame)
+        welcome_layout.addStretch()
+        self.messages_layout.addWidget(welcome_container)
 
     def load_chat_history(self):
         """Load user's chat history (BR3.1)."""
