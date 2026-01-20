@@ -500,17 +500,19 @@ class Styles:
         border-radius: 8px;
         color: #A1A1AA;
         background-color: transparent;
-        margin: 2px 8px;
+        margin: 3px 4px;
         font-size: 13px;
+        border-left: 3px solid transparent;
     }
 
     QListWidget#chatList::item:selected {
         background-color: rgba(99, 102, 241, 0.15);
         color: #FFFFFF;
+        border-left: 3px solid #6366F1;
     }
 
     QListWidget#chatList::item:hover:!selected {
-        background-color: rgba(255, 255, 255, 0.05);
+        background-color: rgba(255, 255, 255, 0.08);
         color: #E4E4E7;
     }
 
@@ -627,6 +629,32 @@ class Styles:
     QPushButton#sendButton:disabled {
         background-color: #E4E4E7;
         color: #A1A1AA;
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       SIDEBAR SCROLLBAR - Dark theme variant
+       ───────────────────────────────────────────────────────────── */
+
+    QListWidget#chatList QScrollBar:vertical {
+        background-color: transparent;
+        width: 6px;
+        border-radius: 3px;
+        margin: 4px 2px;
+    }
+
+    QListWidget#chatList QScrollBar::handle:vertical {
+        background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 3px;
+        min-height: 40px;
+    }
+
+    QListWidget#chatList QScrollBar::handle:vertical:hover {
+        background-color: rgba(255, 255, 255, 0.3);
+    }
+
+    QListWidget#chatList QScrollBar::add-line:vertical,
+    QListWidget#chatList QScrollBar::sub-line:vertical {
+        height: 0px;
     }
 
     /* ─────────────────────────────────────────────────────────────
