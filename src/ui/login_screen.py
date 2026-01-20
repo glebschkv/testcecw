@@ -34,34 +34,28 @@ class LoginScreen(QWidget):
 
     def setup_ui(self):
         """Initialize the UI components."""
-        self.setStyleSheet(Styles.LOGIN_STYLE)
+        # Clean background
+        self.setStyleSheet("QWidget { background-color: #FAFAFA; }" + Styles.LOGIN_STYLE)
 
-        # Main layout with subtle background
+        # Main layout - centered
         main_layout = QVBoxLayout(self)
         main_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.setStyleSheet("""
-            QWidget {
-                background-color: #FAFAFA;
-            }
-        """ + Styles.LOGIN_STYLE)
 
-        # Container frame with refined card design
+        # Container - no visible border, just for layout
         container = QFrame()
         container.setObjectName("loginFrame")
-        container.setFixedWidth(400)
+        container.setFixedWidth(360)
         container_layout = QVBoxLayout(container)
-        container_layout.setSpacing(20)
-        container_layout.setContentsMargins(40, 40, 40, 40)
+        container_layout.setSpacing(0)
+        container_layout.setContentsMargins(0, 0, 0, 0)
 
-        # Logo/Icon area - refined diamond icon
+        # Logo
         icon_label = QLabel("◆")
-        icon_label.setStyleSheet("""
-            font-size: 36px;
-            color: #6366F1;
-            padding: 8px;
-        """)
+        icon_label.setStyleSheet("font-size: 44px; color: #6366F1; background: transparent;")
         icon_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         container_layout.addWidget(icon_label)
+
+        container_layout.addSpacing(16)
 
         # Title
         title = QLabel("InsightBot")
@@ -69,13 +63,15 @@ class LoginScreen(QWidget):
         title.setAlignment(Qt.AlignmentFlag.AlignCenter)
         container_layout.addWidget(title)
 
+        container_layout.addSpacing(4)
+
         # Subtitle
         subtitle = QLabel("Smart Vehicle Diagnostics")
         subtitle.setObjectName("subtitleLabel")
         subtitle.setAlignment(Qt.AlignmentFlag.AlignCenter)
         container_layout.addWidget(subtitle)
 
-        container_layout.addSpacing(12)
+        container_layout.addSpacing(32)
 
         # Stacked widget for login/register forms
         self.stacked_widget = QStackedWidget()
@@ -95,8 +91,10 @@ class LoginScreen(QWidget):
     def _create_login_form(self) -> QWidget:
         """Create the login form."""
         form = QWidget()
+        form.setStyleSheet("background: transparent;")
         layout = QVBoxLayout(form)
-        layout.setSpacing(14)
+        layout.setSpacing(12)
+        layout.setContentsMargins(0, 0, 0, 0)
 
         # Username
         self.login_username = QLineEdit()
@@ -109,38 +107,46 @@ class LoginScreen(QWidget):
         self.login_password.setEchoMode(QLineEdit.EchoMode.Password)
         layout.addWidget(self.login_password)
 
-        # Error label with refined styling
+        # Error label
         self.login_error = QLabel()
         self.login_error.setObjectName("errorLabel")
+        self.login_error.setWordWrap(True)
         self.login_error.hide()
         layout.addWidget(self.login_error)
 
-        layout.addSpacing(4)
+        layout.addSpacing(8)
 
         # Login button
         login_btn = QPushButton("Sign In")
         login_btn.setObjectName("loginButton")
+        login_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         login_btn.clicked.connect(self._handle_login)
         layout.addWidget(login_btn)
 
-        # Divider with text
+        layout.addSpacing(16)
+
+        # Divider
         divider_layout = QHBoxLayout()
+        divider_layout.setSpacing(16)
         divider_left = QFrame()
-        divider_left.setFrameShape(QFrame.Shape.HLine)
+        divider_left.setFixedHeight(1)
         divider_left.setStyleSheet("background-color: #E4E4E7;")
         divider_layout.addWidget(divider_left)
         or_label = QLabel("or")
-        or_label.setStyleSheet("color: #A1A1AA; font-size: 12px; padding: 0 12px;")
+        or_label.setStyleSheet("color: #A1A1AA; font-size: 13px; background: transparent;")
         divider_layout.addWidget(or_label)
         divider_right = QFrame()
-        divider_right.setFrameShape(QFrame.Shape.HLine)
+        divider_right.setFixedHeight(1)
         divider_right.setStyleSheet("background-color: #E4E4E7;")
         divider_layout.addWidget(divider_right)
         layout.addLayout(divider_layout)
 
+        layout.addSpacing(16)
+
         # Register link
         register_btn = QPushButton("Create Account")
         register_btn.setObjectName("registerButton")
+        register_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         register_btn.clicked.connect(lambda: self.stacked_widget.setCurrentIndex(1))
         layout.addWidget(register_btn)
 
@@ -152,8 +158,10 @@ class LoginScreen(QWidget):
     def _create_register_form(self) -> QWidget:
         """Create the registration form."""
         form = QWidget()
+        form.setStyleSheet("background: transparent;")
         layout = QVBoxLayout(form)
-        layout.setSpacing(14)
+        layout.setSpacing(12)
+        layout.setContentsMargins(0, 0, 0, 0)
 
         # Username
         self.register_username = QLineEdit()
@@ -172,23 +180,28 @@ class LoginScreen(QWidget):
         self.register_confirm.setEchoMode(QLineEdit.EchoMode.Password)
         layout.addWidget(self.register_confirm)
 
-        # Error label with refined styling
+        # Error label
         self.register_error = QLabel()
         self.register_error.setObjectName("errorLabel")
+        self.register_error.setWordWrap(True)
         self.register_error.hide()
         layout.addWidget(self.register_error)
 
-        layout.addSpacing(4)
+        layout.addSpacing(8)
 
         # Register button
         register_btn = QPushButton("Create Account")
         register_btn.setObjectName("loginButton")
+        register_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         register_btn.clicked.connect(self._handle_register)
         layout.addWidget(register_btn)
+
+        layout.addSpacing(12)
 
         # Back to login
         back_btn = QPushButton("Back to Sign In")
         back_btn.setObjectName("registerButton")
+        back_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         back_btn.clicked.connect(lambda: self.stacked_widget.setCurrentIndex(0))
         layout.addWidget(back_btn)
 

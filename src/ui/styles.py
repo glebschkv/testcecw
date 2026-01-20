@@ -361,9 +361,8 @@ class Styles:
 
     LOGIN_STYLE = """
     QFrame#loginFrame {
-        background-color: #FFFFFF;
-        border-radius: 16px;
-        border: 1px solid #E4E4E7;
+        background-color: transparent;
+        border: none;
     }
 
     QLabel#titleLabel {
@@ -371,62 +370,72 @@ class Styles:
         font-weight: 600;
         color: #18181B;
         letter-spacing: -0.5px;
+        background: transparent;
     }
 
     QLabel#subtitleLabel {
         font-size: 14px;
-        color: #52525B;
+        color: #71717A;
         font-weight: 400;
+        background: transparent;
     }
 
     QLabel#errorLabel {
         color: #DC2626;
         font-size: 13px;
         font-weight: 500;
-        padding: 8px 12px;
+        padding: 10px 14px;
         background-color: #FEF2F2;
-        border-radius: 6px;
+        border-radius: 8px;
+        border: 1px solid #FECACA;
     }
 
     QLineEdit {
-        min-height: 44px;
+        min-height: 48px;
         font-size: 14px;
-        border-radius: 8px;
-        border: 1px solid #E4E4E7;
+        border-radius: 10px;
+        border: 1.5px solid #E4E4E7;
         padding: 0 16px;
+        background-color: #FFFFFF;
+    }
+
+    QLineEdit:hover {
+        border-color: #D4D4D8;
     }
 
     QLineEdit:focus {
         border: 2px solid #6366F1;
         padding: 0 15px;
+        background-color: #FFFFFF;
     }
 
     QPushButton#loginButton {
-        min-height: 44px;
+        min-height: 48px;
         font-size: 14px;
-        font-weight: 500;
-        border-radius: 8px;
+        font-weight: 600;
+        border-radius: 10px;
         background-color: #6366F1;
         color: white;
         border: none;
     }
 
     QPushButton#loginButton:hover {
-        background-color: #4F46E5;
+        background-color: #5558E8;
     }
 
     QPushButton#loginButton:pressed {
         background-color: #4338CA;
+        padding-top: 2px;
     }
 
     QPushButton#registerButton {
         background-color: transparent;
         color: #52525B;
-        border: 1px solid #E4E4E7;
-        min-height: 44px;
+        border: 1.5px solid #E4E4E7;
+        min-height: 48px;
         font-size: 14px;
         font-weight: 500;
-        border-radius: 8px;
+        border-radius: 10px;
     }
 
     QPushButton#registerButton:hover {
@@ -437,6 +446,7 @@ class Styles:
 
     QPushButton#registerButton:pressed {
         background-color: #E4E4E7;
+        padding-top: 2px;
     }
     """
 
@@ -451,7 +461,7 @@ class Styles:
 
     QFrame#chatFrame {
         background-color: #FAFAFA;
-        border-radius: 0px;
+        border: none;
     }
 
     /* ─────────────────────────────────────────────────────────────
@@ -523,19 +533,21 @@ class Styles:
     QPushButton#newChatButton {
         background-color: #6366F1;
         color: white;
-        border-radius: 8px;
+        border-radius: 10px;
         padding: 14px 16px;
         font-size: 14px;
-        font-weight: 500;
+        font-weight: 600;
         border: none;
     }
 
     QPushButton#newChatButton:hover {
-        background-color: #4F46E5;
+        background-color: #5558E8;
     }
 
     QPushButton#newChatButton:pressed {
         background-color: #4338CA;
+        padding-top: 16px;
+        padding-bottom: 12px;
     }
 
     /* ─────────────────────────────────────────────────────────────
@@ -608,18 +620,18 @@ class Styles:
 
     QPushButton#sendButton {
         background-color: #6366F1;
-        border-radius: 10px;
-        min-width: 40px;
-        max-width: 40px;
-        min-height: 40px;
-        max-height: 40px;
+        border-radius: 12px;
+        min-width: 44px;
+        max-width: 44px;
+        min-height: 44px;
+        max-height: 44px;
         font-size: 16px;
         border: none;
         color: white;
     }
 
     QPushButton#sendButton:hover {
-        background-color: #4F46E5;
+        background-color: #5558E8;
     }
 
     QPushButton#sendButton:pressed {
@@ -627,8 +639,8 @@ class Styles:
     }
 
     QPushButton#sendButton:disabled {
-        background-color: #E4E4E7;
-        color: #A1A1AA;
+        background-color: #F4F4F5;
+        color: #D4D4D8;
     }
 
     /* ─────────────────────────────────────────────────────────────
