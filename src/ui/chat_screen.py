@@ -10,8 +10,8 @@ from PyQt6.QtWidgets import (
     QFileDialog, QMessageBox, QScrollArea, QSplitter,
     QMenu, QInputDialog, QApplication
 )
-from PyQt6.QtCore import Qt, pyqtSignal, QThread, QTimer
-from PyQt6.QtGui import QFont, QAction, QTextCursor
+from PyQt6.QtCore import Qt, pyqtSignal, QThread, QTimer, QEvent
+from PyQt6.QtGui import QFont, QAction, QTextCursor, QKeyEvent
 
 from .styles import Styles, SeverityStyles
 from ..models.user import User
@@ -25,6 +25,68 @@ from ..config.logging_config import get_logger
 logger = get_logger(__name__)
 
 
+class ThinkingIndicator(QFrame):
+    """Animated thinking indicator shown when AI is processing."""
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.dots = 0
+        self.setup_ui()
+        self.setup_animation()
+
+    def setup_ui(self):
+        """Set up the thinking indicator UI."""
+        layout = QHBoxLayout(self)
+        layout.setContentsMargins(16, 14, 16, 14)
+        layout.setSpacing(12)
+
+        # AI avatar/icon
+        avatar = QLabel("◆")
+        avatar.setStyleSheet("""
+            color: #6366F1;
+            font-size: 16px;
+            font-weight: bold;
+        """)
+        avatar.setFixedWidth(20)
+        layout.addWidget(avatar)
+
+        # Thinking text with animated dots
+        self.thinking_label = QLabel("InsightBot is thinking")
+        self.thinking_label.setStyleSheet("""
+            color: #52525B;
+            font-size: 14px;
+            font-weight: 500;
+        """)
+        layout.addWidget(self.thinking_label)
+        layout.addStretch()
+
+        # Style the frame
+        self.setStyleSheet("""
+            QFrame {
+                background-color: #FFFFFF;
+                border: 1px solid #E4E4E7;
+                border-left: 3px solid #6366F1;
+                border-radius: 12px;
+            }
+        """)
+
+    def setup_animation(self):
+        """Set up the dot animation timer."""
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self._animate_dots)
+        self.timer.start(500)  # Update every 500ms
+
+    def _animate_dots(self):
+        """Animate the thinking dots."""
+        self.dots = (self.dots + 1) % 4
+        dots_text = "." * self.dots
+        self.thinking_label.setText(f"InsightBot is thinking{dots_text}")
+
+    def stop(self):
+        """Stop the animation."""
+        self.timer.stop()
+
+
 class MessageWidget(QFrame):
     """Widget for displaying a single message with severity styling (BR8)."""
 
@@ -35,84 +97,101 @@ class MessageWidget(QFrame):
 
     def setup_ui(self):
         """Set up the message widget UI."""
-        layout = QVBoxLayout(self)
-        layout.setContentsMargins(16, 14, 16, 14)
-        layout.setSpacing(6)
-
         role = self.message.get("role", "assistant")
         content = self.message.get("content", "")
         severity = self.message.get("severity", "normal")
 
-        # Apply severity styling for assistant messages (BR8)
+        # Main horizontal layout with avatar
+        main_layout = QHBoxLayout(self)
+        main_layout.setContentsMargins(0, 0, 0, 0)
+        main_layout.setSpacing(12)
+        main_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+
+        # Avatar
+        avatar = QLabel("◆" if role == "assistant" else "●")
+        avatar.setFixedSize(32, 32)
+        avatar.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        if role == "assistant":
+            avatar.setStyleSheet("""
+                background-color: #EEF2FF;
+                color: #6366F1;
+                border-radius: 16px;
+                font-size: 14px;
+                font-weight: bold;
+            """)
+        else:
+            avatar.setStyleSheet("""
+                background-color: #18181B;
+                color: #FFFFFF;
+                border-radius: 16px;
+                font-size: 10px;
+            """)
+        main_layout.addWidget(avatar)
+
+        # Content container
+        content_frame = QFrame()
+        content_layout = QVBoxLayout(content_frame)
+        content_layout.setContentsMargins(0, 0, 0, 0)
+        content_layout.setSpacing(6)
+
+        # Header row with name and severity badge
+        header_layout = QHBoxLayout()
+        header_layout.setSpacing(10)
+
+        # Role name
+        role_name = "InsightBot" if role == "assistant" else "You"
+        name_label = QLabel(role_name)
+        name_label.setStyleSheet("""
+            font-weight: 600;
+            color: #18181B;
+            font-size: 13px;
+            background-color: transparent;
+        """)
+        header_layout.addWidget(name_label)
+
+        # Severity badge for assistant messages (non-normal)
+        if role == "assistant" and severity and severity.lower() != "normal":
+            style = SeverityStyles.get(severity)
+            severity_badge = QLabel(style['name'])
+            severity_badge.setStyleSheet(f"""
+                background-color: {style['badge_bg']};
+                color: {style['badge_text']};
+                border-radius: 10px;
+                padding: 3px 10px;
+                font-size: 11px;
+                font-weight: 600;
+            """)
+            severity_badge.setFixedHeight(20)
+            header_layout.addWidget(severity_badge)
+
+        header_layout.addStretch()
+        content_layout.addLayout(header_layout)
+
+        # Message content bubble
+        bubble = QFrame()
+        bubble_layout = QVBoxLayout(bubble)
+        bubble_layout.setContentsMargins(14, 12, 14, 12)
+        bubble_layout.setSpacing(0)
+
+        # Apply styling based on role and severity
         if role == "assistant":
             style = SeverityStyles.get(severity)
-            self.setStyleSheet(f"""
+            bubble.setStyleSheet(f"""
                 QFrame {{
                     background-color: {style['background']};
                     border-left: 3px solid {style['border']};
                     border-radius: 12px;
                 }}
-                QLabel {{
-                    color: #18181B;
-                    background-color: transparent;
-                }}
             """)
-
-            # Header with severity badge for non-normal
-            header_layout = QHBoxLayout()
-            header_layout.setSpacing(10)
-
-            # Severity badge (pill style)
-            if severity and severity.lower() != "normal":
-                severity_badge = QLabel(style['name'])
-                severity_badge.setStyleSheet(f"""
-                    background-color: {style['badge_bg']};
-                    color: {style['badge_text']};
-                    border-radius: 10px;
-                    padding: 4px 10px;
-                    font-size: 11px;
-                    font-weight: 600;
-                """)
-                severity_badge.setFixedHeight(22)
-                header_layout.addWidget(severity_badge)
-
-            header_layout.addStretch()
-
-            # Role label
-            role_label = QLabel("InsightBot")
-            role_label.setStyleSheet("""
-                font-weight: 500;
-                color: #52525B;
-                font-size: 12px;
-                background-color: transparent;
-            """)
-            header_layout.addWidget(role_label)
-
-            layout.addLayout(header_layout)
         else:
-            # User message styling - subtle indigo tint
-            self.setStyleSheet("""
+            bubble.setStyleSheet("""
                 QFrame {
                     background-color: #EEF2FF;
                     border-radius: 12px;
                 }
-                QLabel {
-                    color: #18181B;
-                    background-color: transparent;
-                }
             """)
 
-            # Role label for user
-            role_label = QLabel("You")
-            role_label.setStyleSheet("""
-                font-weight: 500;
-                color: #52525B;
-                font-size: 12px;
-                background-color: transparent;
-            """)
-            layout.addWidget(role_label)
-
-        # Content with improved readability
+        # Content text
         content_label = QLabel(content)
         content_label.setWordWrap(True)
         content_label.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
@@ -120,9 +199,15 @@ class MessageWidget(QFrame):
             color: #18181B;
             background-color: transparent;
             font-size: 14px;
-            line-height: 1.5;
+            line-height: 1.6;
         """)
-        layout.addWidget(content_label)
+        bubble_layout.addWidget(content_label)
+
+        content_layout.addWidget(bubble)
+        main_layout.addWidget(content_frame, stretch=1)
+
+        # Transparent frame background
+        self.setStyleSheet("QFrame { background-color: transparent; }")
 
 
 class ChatWorker(QThread):
@@ -277,9 +362,18 @@ class ChatScreen(QWidget):
         layout.setSpacing(16)
 
         # Chat header with refined styling
+        header_frame = QFrame()
+        header_frame.setStyleSheet("background-color: transparent; border: none;")
+        header_layout = QHBoxLayout(header_frame)
+        header_layout.setContentsMargins(0, 0, 0, 8)
+        header_layout.setSpacing(12)
+
         self.chat_header = QLabel("Welcome to InsightBot")
         self.chat_header.setObjectName("chatHeader")
-        layout.addWidget(self.chat_header)
+        header_layout.addWidget(self.chat_header)
+
+        header_layout.addStretch()
+        layout.addWidget(header_frame)
 
         # Messages scroll area with clean styling
         self.scroll_area = QScrollArea()
@@ -305,28 +399,34 @@ class ChatScreen(QWidget):
 
         # Input area with refined design
         input_frame = QFrame()
+        input_frame.setObjectName("inputFrame")
         input_frame.setStyleSheet("""
-            QFrame {
+            QFrame#inputFrame {
                 background-color: #FFFFFF;
                 border-radius: 16px;
                 border: 1px solid #E4E4E7;
             }
+            QFrame#inputFrame:focus-within {
+                border: 2px solid #6366F1;
+            }
         """)
         input_layout = QHBoxLayout(input_frame)
-        input_layout.setContentsMargins(6, 6, 6, 6)
+        input_layout.setContentsMargins(12, 8, 8, 8)
         input_layout.setSpacing(8)
+        input_layout.setAlignment(Qt.AlignmentFlag.AlignBottom)
 
-        # Text input
+        # Text input with auto-resize
         self.message_input = QTextEdit()
         self.message_input.setObjectName("messageInput")
         self.message_input.setPlaceholderText("Ask about your vehicle...")
-        self.message_input.setFixedHeight(40)
+        self.message_input.setMinimumHeight(36)
+        self.message_input.setMaximumHeight(120)
         self.message_input.setEnabled(False)
         self.message_input.setStyleSheet("""
             QTextEdit {
                 border: none;
                 background-color: transparent;
-                padding: 8px 12px;
+                padding: 6px 4px;
                 font-size: 14px;
                 color: #18181B;
             }
@@ -335,60 +435,157 @@ class ChatScreen(QWidget):
                 color: #A1A1AA;
             }
         """)
+        self.message_input.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        self.message_input.textChanged.connect(self._adjust_input_height)
+        self.message_input.installEventFilter(self)
         input_layout.addWidget(self.message_input, stretch=1)
 
         # Send button
         self.send_btn = QPushButton("➤")
         self.send_btn.setObjectName("sendButton")
         self.send_btn.setFixedSize(40, 40)
+        self.send_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         self.send_btn.clicked.connect(self._send_message)
         self.send_btn.setEnabled(False)
         input_layout.addWidget(self.send_btn)
 
         layout.addWidget(input_frame)
 
+        # Keyboard hint
+        hint_label = QLabel("Press Enter to send • Shift+Enter for new line")
+        hint_label.setStyleSheet("""
+            color: #A1A1AA;
+            font-size: 11px;
+            background-color: transparent;
+            padding-left: 4px;
+        """)
+        layout.addWidget(hint_label)
+
         return chat_frame
 
     def _show_welcome_message(self):
-        """Show initial welcome message."""
-        welcome = QLabel("""
-            <div style="text-align: center; padding: 16px;">
-                <p style="color: #6366F1; font-size: 32px; margin-bottom: 8px;">◆</p>
-                <h2 style="color: #18181B; font-size: 24px; font-weight: 600; margin-bottom: 8px; letter-spacing: -0.5px;">
-                    Welcome to InsightBot
-                </h2>
-                <p style="color: #52525B; font-size: 14px; margin-bottom: 28px;">
-                    Your intelligent vehicle diagnostics assistant
-                </p>
-                <div style="text-align: left; max-width: 360px; margin: 0 auto;">
-                    <p style="color: #18181B; font-size: 13px; font-weight: 600; margin-bottom: 14px; letter-spacing: 0.3px;">
-                        GET STARTED
-                    </p>
-                    <p style="color: #52525B; font-size: 14px; margin-bottom: 10px;">
-                        <span style="color: #6366F1; font-weight: 600;">1.</span>&nbsp;&nbsp;Click "New Chat" in the sidebar
-                    </p>
-                    <p style="color: #52525B; font-size: 14px; margin-bottom: 10px;">
-                        <span style="color: #6366F1; font-weight: 600;">2.</span>&nbsp;&nbsp;Upload your OBD-II log file (.csv)
-                    </p>
-                    <p style="color: #52525B; font-size: 14px; margin-bottom: 20px;">
-                        <span style="color: #6366F1; font-weight: 600;">3.</span>&nbsp;&nbsp;Ask anything about your vehicle
-                    </p>
-                </div>
-                <p style="color: #A1A1AA; font-size: 12px; margin-top: 20px;">
-                    Powered by IBM Granite AI
-                </p>
-            </div>
-        """)
-        welcome.setWordWrap(True)
-        welcome.setStyleSheet("""
-            QLabel {
+        """Show initial welcome message with improved design."""
+        welcome_frame = QFrame()
+        welcome_frame.setStyleSheet("""
+            QFrame {
                 background-color: #FFFFFF;
-                padding: 40px 32px;
-                border-radius: 12px;
+                border-radius: 16px;
                 border: 1px solid #E4E4E7;
             }
         """)
-        self.messages_layout.addWidget(welcome)
+        welcome_layout = QVBoxLayout(welcome_frame)
+        welcome_layout.setContentsMargins(48, 48, 48, 48)
+        welcome_layout.setSpacing(8)
+        welcome_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        # Logo
+        logo = QLabel("◆")
+        logo.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        logo.setStyleSheet("""
+            color: #6366F1;
+            font-size: 40px;
+            font-weight: bold;
+            background-color: transparent;
+        """)
+        welcome_layout.addWidget(logo)
+
+        welcome_layout.addSpacing(8)
+
+        # Title
+        title = QLabel("Welcome to InsightBot")
+        title.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        title.setStyleSheet("""
+            color: #18181B;
+            font-size: 26px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            background-color: transparent;
+        """)
+        welcome_layout.addWidget(title)
+
+        # Subtitle
+        subtitle = QLabel("Your intelligent vehicle diagnostics assistant")
+        subtitle.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        subtitle.setStyleSheet("""
+            color: #52525B;
+            font-size: 15px;
+            background-color: transparent;
+        """)
+        welcome_layout.addWidget(subtitle)
+
+        welcome_layout.addSpacing(32)
+
+        # Steps container
+        steps_frame = QFrame()
+        steps_frame.setStyleSheet("""
+            QFrame {
+                background-color: #FAFAFA;
+                border-radius: 12px;
+                border: none;
+            }
+        """)
+        steps_layout = QVBoxLayout(steps_frame)
+        steps_layout.setContentsMargins(24, 20, 24, 20)
+        steps_layout.setSpacing(16)
+
+        # Steps header
+        steps_header = QLabel("GET STARTED")
+        steps_header.setStyleSheet("""
+            color: #71717A;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            background-color: transparent;
+        """)
+        steps_layout.addWidget(steps_header)
+
+        # Steps
+        steps = [
+            ("1", "Click \"+ New Chat\" in the sidebar"),
+            ("2", "Upload your OBD-II log file (.csv)"),
+            ("3", "Ask anything about your vehicle")
+        ]
+        for num, text in steps:
+            step_layout = QHBoxLayout()
+            step_layout.setSpacing(12)
+
+            num_label = QLabel(num)
+            num_label.setFixedSize(24, 24)
+            num_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            num_label.setStyleSheet("""
+                background-color: #6366F1;
+                color: white;
+                border-radius: 12px;
+                font-size: 12px;
+                font-weight: 600;
+            """)
+            step_layout.addWidget(num_label)
+
+            text_label = QLabel(text)
+            text_label.setStyleSheet("""
+                color: #3F3F46;
+                font-size: 14px;
+                background-color: transparent;
+            """)
+            step_layout.addWidget(text_label)
+            step_layout.addStretch()
+            steps_layout.addLayout(step_layout)
+
+        welcome_layout.addWidget(steps_frame)
+
+        welcome_layout.addSpacing(24)
+
+        # Footer
+        footer = QLabel("Powered by IBM Granite AI")
+        footer.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        footer.setStyleSheet("""
+            color: #A1A1AA;
+            font-size: 12px;
+            background-color: transparent;
+        """)
+        welcome_layout.addWidget(footer)
+
+        self.messages_layout.addWidget(welcome_frame)
 
     def load_chat_history(self):
         """Load user's chat history (BR3.1)."""
@@ -396,8 +593,13 @@ class ChatScreen(QWidget):
         chats = ChatService.get_user_chats(self.user.id)
 
         for chat in chats:
-            item = QListWidgetItem(f"○  {chat.name}")
+            # Truncate long names for sidebar
+            display_name = chat.name
+            if len(display_name) > 28:
+                display_name = display_name[:25] + "..."
+            item = QListWidgetItem(f"○  {display_name}")
             item.setData(Qt.ItemDataRole.UserRole, chat.id)
+            item.setToolTip(chat.name)  # Show full name on hover
             self.chat_list.addItem(item)
 
     def _create_new_chat(self):
@@ -527,6 +729,21 @@ class ChatScreen(QWidget):
         except Exception as e:
             logger.debug(f"Could not scroll to bottom: {e}")
 
+    def _adjust_input_height(self):
+        """Adjust input height based on content."""
+        doc_height = self.message_input.document().size().height()
+        new_height = min(max(36, int(doc_height) + 12), 120)
+        self.message_input.setFixedHeight(new_height)
+
+    def eventFilter(self, obj, event):
+        """Handle Enter key to send message (Shift+Enter for new line)."""
+        if obj == self.message_input and event.type() == QEvent.Type.KeyPress:
+            if event.key() == Qt.Key.Key_Return or event.key() == Qt.Key.Key_Enter:
+                if event.modifiers() != Qt.KeyboardModifier.ShiftModifier:
+                    self._send_message()
+                    return True
+        return super().eventFilter(obj, event)
+
     def _send_message(self):
         """Send a message and get response (BR4, BR5)."""
         if not self.current_chat:
@@ -572,14 +789,25 @@ class ChatScreen(QWidget):
             })
 
     def _show_loading(self):
-        """Show loading indicator."""
+        """Show loading indicator with thinking animation."""
         self.send_btn.setEnabled(False)
         self.message_input.setEnabled(False)
+
+        # Add thinking indicator
+        self.thinking_indicator = ThinkingIndicator()
+        self.messages_layout.addWidget(self.thinking_indicator)
+        QTimer.singleShot(100, self._scroll_to_bottom)
 
     def _hide_loading(self):
         """Hide loading indicator."""
         self.send_btn.setEnabled(True)
         self.message_input.setEnabled(True)
+
+        # Remove thinking indicator
+        if hasattr(self, 'thinking_indicator') and self.thinking_indicator:
+            self.thinking_indicator.stop()
+            self.thinking_indicator.deleteLater()
+            self.thinking_indicator = None
 
     def _on_response_ready(self, response: dict):
         """Handle response from worker."""
