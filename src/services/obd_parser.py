@@ -336,6 +336,17 @@ class OBDParser:
         metrics = []
         column_map = self._find_valid_columns(df)
 
+        # Metrics that should only be evaluated when engine is running
+        engine_dependent_metrics = ["engine_rpm", "maf_rate", "engine_load"]
+
+        # Get engine RPM column to filter engine-off rows
+        rpm_column = column_map.get("engine_rpm")
+        engine_running_mask = None
+        if rpm_column is not None:
+            rpm_values = pd.to_numeric(df[rpm_column], errors="coerce")
+            # Engine is considered "running" when RPM > 100
+            engine_running_mask = rpm_values > 100
+
         for metric_name, column_name in column_map.items():
             if metric_name in ["fault_codes", "timestamp"]:
                 continue
@@ -344,6 +355,12 @@ class OBDParser:
                 values = pd.to_numeric(df[column_name], errors="coerce").dropna()
                 if values.empty:
                     continue
+
+                # For engine-dependent metrics, only consider values when engine is running
+                if metric_name in engine_dependent_metrics and engine_running_mask is not None:
+                    running_values = values[engine_running_mask.reindex(values.index, fill_value=False)]
+                    if not running_values.empty:
+                        values = running_values
 
                 # Calculate average value
                 avg_value = values.mean()
