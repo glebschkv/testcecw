@@ -70,6 +70,9 @@ class AuthService:
             session.flush()  # Get the user ID
 
             logger.info(f"New user registered: {username} (ID: {user.id})")
+
+            # Detach user from session for return
+            session.expunge(user)
             return user
 
     @classmethod
