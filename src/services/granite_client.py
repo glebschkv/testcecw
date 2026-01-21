@@ -1,17 +1,151 @@
 """
 IBM Granite Client - Supports both local Ollama and watsonx.ai API.
 Prioritizes local Ollama for running without API keys.
+Enhanced with retry logic, caching, and better error handling.
 """
 
-from typing import Optional, List, Dict, Any
+from typing import Optional, List, Dict, Any, Callable
 import os
 import json
+import time
+import hashlib
 import requests
+from functools import wraps
+from datetime import datetime, timedelta
 
 from ..config.settings import get_settings
 from ..config.logging_config import get_logger
 
 logger = get_logger(__name__)
+
+
+def retry_with_backoff(
+    max_retries: int = 3,
+    initial_delay: float = 1.0,
+    max_delay: float = 30.0,
+    exponential_base: float = 2.0,
+    retryable_exceptions: tuple = (requests.exceptions.RequestException,)
+):
+    """
+    Decorator that retries a function with exponential backoff.
+
+    Args:
+        max_retries: Maximum number of retry attempts
+        initial_delay: Initial delay in seconds
+        max_delay: Maximum delay in seconds
+        exponential_base: Base for exponential backoff
+        retryable_exceptions: Tuple of exceptions to retry on
+    """
+    def decorator(func: Callable):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            delay = initial_delay
+            last_exception = None
+
+            for attempt in range(max_retries + 1):
+                try:
+                    return func(*args, **kwargs)
+                except retryable_exceptions as e:
+                    last_exception = e
+
+                    if attempt == max_retries:
+                        logger.error(f"{func.__name__} failed after {max_retries + 1} attempts: {e}")
+                        raise
+
+                    logger.warning(
+                        f"{func.__name__} attempt {attempt + 1} failed: {e}. "
+                        f"Retrying in {delay:.1f}s..."
+                    )
+
+                    time.sleep(delay)
+                    delay = min(delay * exponential_base, max_delay)
+
+            raise last_exception
+
+        return wrapper
+    return decorator
+
+
+class ResponseCache:
+    """Simple in-memory cache for AI responses with TTL."""
+
+    def __init__(self, max_size: int = 100, default_ttl: int = 3600):
+        """
+        Initialize the cache.
+
+        Args:
+            max_size: Maximum number of entries to cache
+            default_ttl: Default time-to-live in seconds
+        """
+        self.max_size = max_size
+        self.default_ttl = default_ttl
+        self._cache: Dict[str, Dict[str, Any]] = {}
+
+    def _generate_key(self, prompt: str, context: str, system_prompt: str = None) -> str:
+        """Generate a cache key from the input parameters."""
+        key_data = f"{prompt}|{context}|{system_prompt or ''}"
+        return hashlib.sha256(key_data.encode()).hexdigest()[:16]
+
+    def get(self, prompt: str, context: str, system_prompt: str = None) -> Optional[str]:
+        """
+        Get a cached response if available and not expired.
+
+        Returns:
+            Cached response string or None
+        """
+        key = self._generate_key(prompt, context, system_prompt)
+
+        if key not in self._cache:
+            return None
+
+        entry = self._cache[key]
+        if datetime.utcnow() > entry['expires_at']:
+            del self._cache[key]
+            return None
+
+        logger.debug(f"Cache hit for key {key[:8]}...")
+        return entry['response']
+
+    def set(self, prompt: str, context: str, response: str, system_prompt: str = None, ttl: int = None) -> None:
+        """
+        Cache a response.
+
+        Args:
+            prompt: The user prompt
+            context: The context string
+            response: The response to cache
+            system_prompt: Optional system prompt
+            ttl: Time-to-live in seconds (uses default if not specified)
+        """
+        # Evict oldest entries if cache is full
+        if len(self._cache) >= self.max_size:
+            self._evict_oldest()
+
+        key = self._generate_key(prompt, context, system_prompt)
+        ttl = ttl or self.default_ttl
+
+        self._cache[key] = {
+            'response': response,
+            'expires_at': datetime.utcnow() + timedelta(seconds=ttl),
+            'created_at': datetime.utcnow()
+        }
+        logger.debug(f"Cached response for key {key[:8]}...")
+
+    def _evict_oldest(self) -> None:
+        """Evict the oldest cache entry."""
+        if not self._cache:
+            return
+
+        oldest_key = min(self._cache.keys(), key=lambda k: self._cache[k]['created_at'])
+        del self._cache[oldest_key]
+
+    def clear(self) -> None:
+        """Clear all cached entries."""
+        self._cache.clear()
+
+    def size(self) -> int:
+        """Return the current cache size."""
+        return len(self._cache)
 
 # Try to import Ollama library
 try:
@@ -44,24 +178,37 @@ class GraniteClient:
     1. Local Ollama (recommended - no API key needed)
     2. IBM watsonx.ai API (cloud deployment)
     3. Mock mode (fallback for demo)
+
+    Features:
+    - Automatic retry with exponential backoff
+    - Response caching for repeated queries
+    - Graceful degradation to mock mode
     """
 
     # Default Ollama settings
     OLLAMA_BASE_URL = "http://localhost:11434"
     OLLAMA_MODEL = "granite3.3:2b"  # Default model, can be changed
 
-    def __init__(self, ollama_model: str = None):
+    # Request configuration
+    REQUEST_TIMEOUT = 120  # seconds
+    MAX_RETRIES = 3
+
+    def __init__(self, ollama_model: str = None, enable_cache: bool = True):
         """
         Initialize the Granite client.
 
         Args:
             ollama_model: Override the default Ollama model (e.g., "granite3.3:8b")
+            enable_cache: Enable response caching (default: True)
         """
         self.settings = get_settings()
         self._chat_model = None
         self._embeddings = None
         self._api_client = None
         self._initialized = False
+
+        # Response cache
+        self._cache = ResponseCache(max_size=100, default_ttl=3600) if enable_cache else None
 
         # Ollama configuration
         self.ollama_model = ollama_model or os.getenv("OLLAMA_MODEL", self.OLLAMA_MODEL)
@@ -144,7 +291,7 @@ class GraniteClient:
             logger.error(f"Failed to initialize watsonx.ai client: {e}")
             return False
 
-    def generate_response(self, prompt: str, context: str = "", system_prompt: str = None) -> str:
+    def generate_response(self, prompt: str, context: str = "", system_prompt: str = None, use_cache: bool = True) -> str:
         """
         Generate a response using IBM Granite.
 
@@ -152,31 +299,46 @@ class GraniteClient:
             prompt: User's input prompt
             context: Additional context (e.g., OBD data)
             system_prompt: Optional system prompt override
+            use_cache: Whether to use cached responses (default: True)
 
         Returns:
             Generated response text
         """
+        # Check cache first
+        if use_cache and self._cache:
+            cached = self._cache.get(prompt, context, system_prompt)
+            if cached:
+                return cached
+
+        response = None
+
         # Try Ollama first
         if self._use_ollama:
-            return self._generate_ollama(prompt, context, system_prompt)
-
+            response = self._generate_ollama(prompt, context, system_prompt)
         # Try watsonx.ai
-        if self.is_configured:
+        elif self.is_configured:
             if not self._initialized:
                 self.initialize()
             try:
                 full_prompt = self._build_prompt(prompt, context, system_prompt)
                 if self._chat_model:
-                    response = self._chat_model.invoke(full_prompt)
-                    return response.content
+                    result = self._chat_model.invoke(full_prompt)
+                    response = result.content
             except Exception as e:
                 logger.error(f"watsonx.ai error: {e}")
 
         # Fallback to mock
-        return self._mock_response(prompt, context)
+        if response is None:
+            response = self._mock_response(prompt, context)
+
+        # Cache the response
+        if use_cache and self._cache and response:
+            self._cache.set(prompt, context, response, system_prompt)
+
+        return response
 
     def _generate_ollama(self, prompt: str, context: str = "", system_prompt: str = None) -> str:
-        """Generate response using local Ollama."""
+        """Generate response using local Ollama with retry logic."""
         if system_prompt is None:
             system_prompt = self._get_default_system_prompt()
 
@@ -198,34 +360,44 @@ class GraniteClient:
         messages.append({"role": "user", "content": prompt})
 
         try:
-            # Use HTTP API directly (works without ollama package)
-            response = requests.post(
-                f"{self.ollama_url}/api/chat",
-                json={
-                    "model": self.ollama_model,
-                    "messages": messages,
-                    "stream": False,
-                    "options": {
-                        "temperature": 0.7,
-                        "top_p": 0.9,
-                    }
-                },
-                timeout=120
-            )
-
-            if response.status_code == 200:
-                result = response.json()
-                return result.get("message", {}).get("content", "")
-            else:
-                logger.error(f"Ollama error: {response.status_code} - {response.text}")
-                return self._mock_response(prompt, context)
-
+            response = self._make_ollama_request(messages)
+            return response
         except requests.exceptions.Timeout:
-            logger.error("Ollama request timed out")
+            logger.error("Ollama request timed out after retries")
             return "I'm sorry, the request timed out. Please try again with a shorter question."
         except Exception as e:
-            logger.error(f"Ollama error: {e}")
+            logger.error(f"Ollama error after retries: {e}")
             return self._mock_response(prompt, context)
+
+    @retry_with_backoff(max_retries=3, initial_delay=1.0, max_delay=10.0)
+    def _make_ollama_request(self, messages: List[Dict[str, str]]) -> str:
+        """Make an Ollama API request with retry logic."""
+        response = requests.post(
+            f"{self.ollama_url}/api/chat",
+            json={
+                "model": self.ollama_model,
+                "messages": messages,
+                "stream": False,
+                "options": {
+                    "temperature": 0.7,
+                    "top_p": 0.9,
+                }
+            },
+            timeout=self.REQUEST_TIMEOUT
+        )
+
+        if response.status_code == 200:
+            result = response.json()
+            return result.get("message", {}).get("content", "")
+        elif response.status_code >= 500:
+            # Server error - retry
+            raise requests.exceptions.RequestException(
+                f"Ollama server error: {response.status_code}"
+            )
+        else:
+            # Client error - don't retry
+            logger.error(f"Ollama client error: {response.status_code} - {response.text}")
+            return ""
 
     def generate_streaming(self, prompt: str, context: str = ""):
         """Generate a streaming response."""
@@ -283,27 +455,55 @@ class GraniteClient:
         return [[hash(t) % 100 / 100.0 for _ in range(384)] for t in texts]
 
     def _get_ollama_embeddings(self, texts: List[str]) -> List[List[float]]:
-        """Get embeddings using Ollama."""
+        """Get embeddings using Ollama with retry logic."""
         embeddings = []
         for text in texts:
             try:
-                response = requests.post(
-                    f"{self.ollama_url}/api/embeddings",
-                    json={
-                        "model": self.ollama_model,
-                        "prompt": text
-                    },
-                    timeout=30
-                )
-                if response.status_code == 200:
-                    embedding = response.json().get("embedding", [])
-                    embeddings.append(embedding if embedding else [0.0] * 384)
-                else:
-                    embeddings.append([hash(text) % 100 / 100.0 for _ in range(384)])
+                embedding = self._make_embedding_request(text)
+                embeddings.append(embedding)
             except Exception as e:
-                logger.error(f"Embedding error: {e}")
+                logger.error(f"Embedding error for text: {e}")
+                # Fallback to deterministic mock embedding
                 embeddings.append([hash(text) % 100 / 100.0 for _ in range(384)])
         return embeddings
+
+    @retry_with_backoff(max_retries=2, initial_delay=0.5, max_delay=5.0)
+    def _make_embedding_request(self, text: str) -> List[float]:
+        """Make an embedding request with retry logic."""
+        response = requests.post(
+            f"{self.ollama_url}/api/embeddings",
+            json={
+                "model": self.ollama_model,
+                "prompt": text
+            },
+            timeout=30
+        )
+
+        if response.status_code == 200:
+            embedding = response.json().get("embedding", [])
+            return embedding if embedding else [0.0] * 384
+        elif response.status_code >= 500:
+            raise requests.exceptions.RequestException(
+                f"Ollama embedding server error: {response.status_code}"
+            )
+        else:
+            return [hash(text) % 100 / 100.0 for _ in range(384)]
+
+    def clear_cache(self) -> None:
+        """Clear the response cache."""
+        if self._cache:
+            self._cache.clear()
+            logger.info("Response cache cleared")
+
+    def get_cache_stats(self) -> Dict[str, Any]:
+        """Get cache statistics."""
+        if not self._cache:
+            return {"enabled": False}
+        return {
+            "enabled": True,
+            "size": self._cache.size(),
+            "max_size": self._cache.max_size
+        }
 
     def get_embedding(self, text: str) -> List[float]:
         """Get embedding for a single text."""

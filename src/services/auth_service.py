@@ -1,6 +1,7 @@
 """
 Authentication service for user management.
 Implements BR1: Account Management
+Enhanced with rate limiting and security features.
 """
 
 from typing import Optional, Tuple, Dict
@@ -13,6 +14,7 @@ from datetime import datetime, timedelta
 from ..models.base import get_session, DatabaseSession
 from ..models.user import User
 from ..config.logging_config import get_logger
+from ..utils.validators import RateLimiter, InputSanitizer
 
 logger = get_logger(__name__)
 
@@ -20,6 +22,14 @@ logger = get_logger(__name__)
 class AuthenticationError(Exception):
     """Custom exception for authentication errors."""
     pass
+
+
+class RateLimitError(Exception):
+    """Exception raised when rate limit is exceeded."""
+
+    def __init__(self, message: str, retry_after: int = 0):
+        super().__init__(message)
+        self.retry_after = retry_after
 
 
 class AuthService:
@@ -31,29 +41,54 @@ class AuthService:
     - BR1.2: User logs-in to their account
     - BR1.3: User logs-out of their account
     - BR1.4: User deletes their account
+
+    Security features:
+    - Rate limiting for login attempts
+    - Secure session token generation
+    - Password hashing with bcrypt
     """
 
-    # Active sessions: {session_token: user_id}
+    # Active sessions: {session_token: (user_id, created_at)}
     _sessions: Dict[str, Tuple[int, datetime]] = {}
 
     # Session expiry time (24 hours)
     SESSION_EXPIRY_HOURS = 24
 
+    # Rate limiter for login attempts (5 attempts per 5 minutes)
+    _login_limiter = RateLimiter(max_attempts=5, window_seconds=300)
+
+    # Rate limiter for registration (3 registrations per hour)
+    _register_limiter = RateLimiter(max_attempts=3, window_seconds=3600)
+
     @classmethod
-    def register(cls, username: str, password: str) -> User:
+    def register(cls, username: str, password: str, client_id: str = "default") -> User:
         """
         Register a new user account (BR1.1).
 
         Args:
             username: Unique username (3-50 characters)
             password: Password (minimum 6 characters)
+            client_id: Client identifier for rate limiting (optional)
 
         Returns:
             Created User object
 
         Raises:
             AuthenticationError: If registration fails
+            RateLimitError: If too many registration attempts
         """
+        # Sanitize inputs
+        username = InputSanitizer.sanitize_string(username, max_length=50)
+
+        # Check rate limit for registration
+        if cls._register_limiter.is_rate_limited(client_id):
+            retry_after = cls._register_limiter.get_remaining_lockout_time(client_id)
+            logger.warning(f"Registration rate limit exceeded for client '{client_id}'")
+            raise RateLimitError(
+                f"Too many registration attempts. Please try again later.",
+                retry_after=retry_after
+            )
+
         # Validate input
         cls._validate_username(username)
         cls._validate_password(password)
@@ -63,6 +98,9 @@ class AuthService:
             existing = session.query(User).filter(User.username == username).first()
             if existing:
                 raise AuthenticationError(f"Username '{username}' is already taken")
+
+            # Record registration attempt
+            cls._register_limiter.record_attempt(client_id)
 
             # Create new user
             user = User.create(username=username, password=password)
@@ -89,12 +127,26 @@ class AuthService:
 
         Raises:
             AuthenticationError: If login fails
+            RateLimitError: If too many failed attempts
         """
+        # Sanitize username
+        username = InputSanitizer.sanitize_string(username, max_length=50)
+
+        # Check rate limit
+        if cls._login_limiter.is_rate_limited(username):
+            retry_after = cls._login_limiter.get_remaining_lockout_time(username)
+            logger.warning(f"Rate limit exceeded for user '{username}'")
+            raise RateLimitError(
+                f"Too many login attempts. Please try again in {retry_after} seconds.",
+                retry_after=retry_after
+            )
+
         with DatabaseSession() as session:
             # Find user
             user = session.query(User).filter(User.username == username).first()
 
             if not user:
+                cls._login_limiter.record_attempt(username)
                 logger.warning(f"Login failed: User '{username}' not found")
                 raise AuthenticationError("Invalid username or password")
 
@@ -104,8 +156,12 @@ class AuthService:
 
             # Verify password
             if not user.check_password(password):
+                cls._login_limiter.record_attempt(username)
                 logger.warning(f"Login failed: Invalid password for '{username}'")
                 raise AuthenticationError("Invalid username or password")
+
+            # Successful login - reset rate limiter
+            cls._login_limiter.reset(username)
 
             # Update last login
             user.update_last_login()
