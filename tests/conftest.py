@@ -107,11 +107,27 @@ def non_csv_file(tmp_path):
     return str(txt_file)
 
 
+def _reset_auth_state():
+    """Reset AuthService state including rate limiters."""
+    from src.services.auth_service import AuthService
+    AuthService._sessions.clear()
+    AuthService._login_limiter._attempts.clear()
+    AuthService._register_limiter._attempts.clear()
+
+
+@pytest.fixture(autouse=True)
+def reset_rate_limiters():
+    """Reset rate limiters before and after each test."""
+    _reset_auth_state()
+    yield
+    _reset_auth_state()
+
+
 @pytest.fixture
 def auth_service():
     """Get AuthService with clean state."""
     from src.services.auth_service import AuthService
-    AuthService._sessions.clear()
+    _reset_auth_state()
     return AuthService
 
 
