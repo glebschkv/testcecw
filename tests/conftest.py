@@ -13,13 +13,34 @@ PROJECT_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 
-@pytest.fixture(scope="session")
-def test_db():
-    """Create a temporary database for testing."""
-    with tempfile.TemporaryDirectory() as tmpdir:
-        db_path = os.path.join(tmpdir, "test.db")
-        os.environ["DATABASE_PATH"] = db_path
-        yield db_path
+def _reset_database_state():
+    """Reset the global database state (engine, session factory, and settings)."""
+    import src.models.base as base_module
+    import src.config.settings as settings_module
+
+    # Reset database engine and session factory
+    if base_module._engine is not None:
+        base_module._engine.dispose()
+        base_module._engine = None
+    base_module._SessionFactory = None
+
+    # Reset settings singleton so it re-reads DATABASE_PATH
+    settings_module._settings = None
+
+
+@pytest.fixture(scope="function")
+def test_db(tmp_path):
+    """Create a temporary database for testing (function-scoped for isolation)."""
+    db_path = os.path.join(str(tmp_path), "test.db")
+    os.environ["DATABASE_PATH"] = db_path
+
+    # Reset any existing database state
+    _reset_database_state()
+
+    yield db_path
+
+    # Cleanup: reset database state to release file handles
+    _reset_database_state()
 
 
 @pytest.fixture

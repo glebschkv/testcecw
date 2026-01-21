@@ -166,21 +166,46 @@ class SeverityClassifier:
         """Check response text for severity indicators."""
         response_lower = response.lower()
 
-        # Count keyword matches
-        critical_count = sum(1 for kw in self.CRITICAL_KEYWORDS if kw in response_lower)
+        # Negation patterns to check before counting critical keywords
+        negation_patterns = [
+            "not ", "no ", "isn't ", "aren't ", "wasn't ", "weren't ",
+            "don't ", "doesn't ", "didn't ", "won't ", "wouldn't ",
+            "can't ", "cannot ", "couldn't ", "shouldn't "
+        ]
+
+        # Count keyword matches, excluding negated critical keywords
+        critical_count = 0
+        for kw in self.CRITICAL_KEYWORDS:
+            if kw in response_lower:
+                # Check if keyword is negated
+                kw_pos = response_lower.find(kw)
+                is_negated = False
+                # Check for negation within 20 characters before the keyword
+                check_start = max(0, kw_pos - 20)
+                prefix = response_lower[check_start:kw_pos]
+                for neg in negation_patterns:
+                    if neg in prefix:
+                        is_negated = True
+                        break
+                if not is_negated:
+                    critical_count += 1
+
         warning_count = sum(1 for kw in self.WARNING_KEYWORDS if kw in response_lower)
         normal_count = sum(1 for kw in self.NORMAL_KEYWORDS if kw in response_lower)
 
         # Apply scoring with thresholds
         if critical_count >= 2:
             return "critical"
-        elif critical_count >= 1 and warning_count >= 2:
+        elif critical_count >= 1 and warning_count >= 2 and normal_count < 2:
             return "critical"
+        elif normal_count >= 3 and normal_count > warning_count:
+            # Strong normal signal overrides mild warnings
+            return "normal"
         elif warning_count >= 3 or (warning_count >= 2 and normal_count < warning_count):
             return "warning"
         elif normal_count > warning_count:
             return "normal"
-        elif warning_count >= 1:
+        elif warning_count >= 2:
             return "warning"
         else:
             return "normal"
