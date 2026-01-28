@@ -20,12 +20,12 @@ class Settings:
     # Local Granite Model Configuration (llama-cpp-python)
     granite_model_repo: str = field(
         default_factory=lambda: os.getenv(
-            "GRANITE_MODEL_REPO", "ibm-granite/granite-3.3-2b-instruct-GGUF"
+            "GRANITE_MODEL_REPO", "ibm-granite/granite-4.0-tiny-preview-GGUF"
         )
     )
     granite_model_file: str = field(
         default_factory=lambda: os.getenv(
-            "GRANITE_MODEL_FILE", "granite-3.3-2b-instruct.Q4_K_M.gguf"
+            "GRANITE_MODEL_FILE", "granite-4.0-tiny-preview.Q4_K_M.gguf"
         )
     )
     granite_model_path: str = field(
