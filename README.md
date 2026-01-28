@@ -22,7 +22,7 @@ venv\Scripts\activate
 # 3. Install dependencies
 pip install -r requirements.txt
 
-# 4. Run the app
+# 4. Run the app (model downloads automatically on first run)
 python src/main.py
 ```
 
@@ -40,62 +40,50 @@ source venv/bin/activate
 # 3. Install dependencies
 pip install -r requirements.txt
 
-# 4. Run the app
+# 4. Run the app (model downloads automatically on first run)
 python src/main.py
 ```
 
 ---
 
-## Install Ollama + IBM Granite AI (Optional but Recommended)
+## How the AI Works
 
-The app works in demo mode without AI. For full AI-powered responses:
+The app runs IBM Granite models **directly on your machine** using `llama-cpp-python`. No external server, no API keys, no Ollama needed.
 
-### Windows (PowerShell - Run as Administrator)
+- On first launch, the Granite model (~1.5 GB) is automatically downloaded from HuggingFace
+- The model runs locally in your Python process
+- Works offline after the initial download
+- Falls back to demo mode if the model can't be loaded
 
-```powershell
-# 1. Download Ollama installer
-Invoke-WebRequest -Uri "https://ollama.com/download/OllamaSetup.exe" -OutFile "$env:TEMP\OllamaSetup.exe"
+### Pre-download the Model (Optional)
 
-# 2. Install Ollama (follow the installer)
-Start-Process "$env:TEMP\OllamaSetup.exe" -Wait
-
-# 3. Close and reopen PowerShell, then pull the AI model
-ollama pull granite3.3:2b
-
-# 4. Verify it works
-ollama run granite3.3:2b "Hello"
-```
-
-### macOS
+If you want to download the model before running the app:
 
 ```bash
-# 1. Download and install Ollama
-curl -fsSL https://ollama.com/install.sh | sh
-
-# 2. Pull the IBM Granite model
-ollama pull granite3.3:2b
-
-# 3. Verify it works
-ollama run granite3.3:2b "Hello"
+pip install huggingface-hub
+huggingface-cli download ibm-granite/granite-3.3-2b-instruct-GGUF granite-3.3-2b-instruct.Q4_K_M.gguf --local-dir models
 ```
 
-### Linux (Ubuntu/Debian)
+### Use a Larger Model
+
+For better quality responses (requires ~5 GB disk + more RAM):
 
 ```bash
-# 1. Download and install Ollama
-curl -fsSL https://ollama.com/install.sh | sh
-
-# 2. Start Ollama service
-sudo systemctl start ollama
-
-# 3. Pull the IBM Granite model
-ollama pull granite3.3:2b
-
-# 4. Verify it works
-ollama run granite3.3:2b "Hello"
+# Download the 8B model
+huggingface-cli download ibm-granite/granite-3.3-8b-instruct-GGUF granite-3.3-8b-instruct.Q4_K_M.gguf --local-dir models
 ```
 
-**That's it!** The app auto-detects Ollama when running. No configuration needed.
+Then set in your `.env` file:
+```
+GRANITE_MODEL_REPO=ibm-granite/granite-3.3-8b-instruct-GGUF
+GRANITE_MODEL_FILE=granite-3.3-8b-instruct.Q4_K_M.gguf
+```
+
+### Verify Setup
+
+```bash
+python scripts/test_granite.py
+```
 
 ---
 
@@ -114,7 +102,7 @@ ollama run granite3.3:2b "Hello"
 
 - Python 3.8 or higher
 - pip (Python package manager)
-- ~2GB disk space for AI model (optional)
+- ~2GB disk space for AI model
 
 ---
 
@@ -133,8 +121,12 @@ pip install PyQt6
 pip install -r requirements.txt
 ```
 
-### "ollama is not recognized" (Windows)
-Close and reopen PowerShell after installing Ollama.
+### Model download fails
+Download the model manually:
+```bash
+pip install huggingface-hub
+huggingface-cli download ibm-granite/granite-3.3-2b-instruct-GGUF granite-3.3-2b-instruct.Q4_K_M.gguf --local-dir models
+```
 
 ### App won't start
 Make sure virtual environment is activated:
@@ -154,7 +146,7 @@ source venv/bin/activate
 |-----------|------------|
 | Language | Python 3.8+ |
 | GUI | PyQt6 |
-| AI | IBM Granite (via Ollama) |
+| AI | IBM Granite (via llama-cpp-python) |
 | Database | SQLite |
 
 ---

@@ -70,7 +70,7 @@ class HealthChecker:
 
     Checks:
     - Database connectivity
-    - AI backend availability (Ollama or watsonx.ai)
+    - AI backend availability (local model or watsonx.ai)
     - Disk space
     - Configuration validity
     - Required dependencies
@@ -150,28 +150,59 @@ class HealthChecker:
     def check_ai_backend(self) -> ComponentHealth:
         """Check AI backend availability."""
         try:
-            import requests
+            # Check local Granite model (llama-cpp-python)
+            model_path = self.settings.granite_model_path
+            models_dir = self.settings.models_dir
+            model_file = self.settings.granite_model_file
 
-            # Check Ollama first
-            ollama_url = os.getenv("OLLAMA_URL", "http://localhost:11434")
+            # Check if model file exists at explicit path or in models dir
+            local_model_found = False
+            found_path = None
 
-            try:
-                response = requests.get(f"{ollama_url}/api/tags", timeout=5)
-                if response.status_code == 200:
-                    models = response.json().get("models", [])
+            if model_path and Path(model_path).is_file():
+                local_model_found = True
+                found_path = model_path
+            else:
+                candidate = models_dir / model_file
+                if candidate.is_file():
+                    local_model_found = True
+                    found_path = str(candidate)
+
+            if local_model_found:
+                model_size = Path(found_path).stat().st_size
+                model_size_mb = round(model_size / (1024 * 1024), 1)
+
+                # Check if llama-cpp-python is installed
+                try:
+                    import llama_cpp
+                    has_runtime = True
+                except ImportError:
+                    has_runtime = False
+
+                if has_runtime:
                     return ComponentHealth(
                         name="ai_backend",
                         status=HealthStatus.HEALTHY,
-                        message="Ollama is available",
+                        message="Local Granite model available",
                         details={
-                            "backend": "ollama",
-                            "url": ollama_url,
-                            "models_count": len(models),
-                            "models": [m.get("name") for m in models[:5]]  # First 5 models
+                            "backend": "llama-cpp-python",
+                            "model_path": found_path,
+                            "model_file": model_file,
+                            "model_size_mb": model_size_mb,
                         }
                     )
-            except requests.exceptions.RequestException:
-                pass
+                else:
+                    return ComponentHealth(
+                        name="ai_backend",
+                        status=HealthStatus.DEGRADED,
+                        message="Model file found but llama-cpp-python not installed",
+                        details={
+                            "backend": "llama-cpp-python",
+                            "model_path": found_path,
+                            "model_size_mb": model_size_mb,
+                            "error": "pip install llama-cpp-python"
+                        }
+                    )
 
             # Check watsonx.ai configuration
             is_valid, errors = self.settings.validate()
@@ -193,7 +224,7 @@ class HealthChecker:
                 message="Running in mock mode (no AI backend)",
                 details={
                     "backend": "mock",
-                    "ollama_error": "Not accessible",
+                    "local_model_error": f"Model not found at {models_dir / model_file}",
                     "watsonx_errors": errors
                 }
             )

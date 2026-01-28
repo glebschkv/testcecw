@@ -13,7 +13,7 @@ from src.services.granite_client import GraniteClient
 @pytest.fixture
 def mock_granite_client():
     """Create a mock GraniteClient."""
-    with patch.object(GraniteClient, '_check_ollama_available', return_value=False):
+    with patch.object(GraniteClient, '_check_local_model_available', return_value=False):
         client = GraniteClient(enable_cache=False)
     return client
 
@@ -40,7 +40,7 @@ def sample_parsed_data():
             {
                 "name": "coolant_temp",
                 "value": 95,
-                "unit": "°C",
+                "unit": "\u00b0C",
                 "status": "normal",
                 "description": "Engine coolant temperature",
                 "normal_range": "70-105"
@@ -90,7 +90,7 @@ def healthy_parsed_data():
             {
                 "name": "coolant_temp",
                 "value": 90,
-                "unit": "°C",
+                "unit": "\u00b0C",
                 "status": "normal",
                 "description": "Engine coolant temperature",
                 "normal_range": "70-105"
@@ -118,7 +118,7 @@ class TestRAGPipelineInitialization:
 
     def test_pipeline_with_custom_client(self):
         """Test pipeline accepts custom GraniteClient."""
-        with patch.object(GraniteClient, '_check_ollama_available', return_value=False):
+        with patch.object(GraniteClient, '_check_local_model_available', return_value=False):
             client = GraniteClient()
         pipeline = RAGPipeline(granite_client=client)
 

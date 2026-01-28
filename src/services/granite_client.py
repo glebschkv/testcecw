@@ -1,7 +1,6 @@
 """
-IBM Granite Client - Supports both local Ollama and watsonx.ai API.
-Prioritizes local Ollama for running without API keys.
-Enhanced with retry logic, caching, and better error handling.
+IBM Granite Client - Runs Granite models locally via llama-cpp-python.
+No external server (like Ollama) required. Falls back to watsonx.ai or mock mode.
 """
 
 from typing import Optional, List, Dict, Any, Callable
@@ -9,9 +8,9 @@ import os
 import json
 import time
 import hashlib
-import requests
 from functools import wraps
 from datetime import datetime, timedelta
+from pathlib import Path
 
 from ..config.settings import get_settings
 from ..config.logging_config import get_logger
@@ -24,7 +23,7 @@ def retry_with_backoff(
     initial_delay: float = 1.0,
     max_delay: float = 30.0,
     exponential_base: float = 2.0,
-    retryable_exceptions: tuple = (requests.exceptions.RequestException,)
+    retryable_exceptions: tuple = (Exception,)
 ):
     """
     Decorator that retries a function with exponential backoff.
@@ -147,13 +146,22 @@ class ResponseCache:
         """Return the current cache size."""
         return len(self._cache)
 
-# Try to import Ollama library
+
+# Try to import llama-cpp-python
 try:
-    import ollama
-    HAS_OLLAMA = True
+    from llama_cpp import Llama
+    HAS_LLAMA_CPP = True
 except ImportError:
-    HAS_OLLAMA = False
-    logger.info("ollama package not installed. Will use HTTP API.")
+    HAS_LLAMA_CPP = False
+    logger.info("llama-cpp-python not installed. pip install llama-cpp-python")
+
+# Try to import huggingface_hub for model downloads
+try:
+    from huggingface_hub import hf_hub_download
+    HAS_HF_HUB = True
+except ImportError:
+    HAS_HF_HUB = False
+    logger.info("huggingface-hub not installed. pip install huggingface-hub")
 
 # Try to import IBM watsonx libraries (optional, for cloud deployment)
 try:
@@ -175,33 +183,30 @@ class GraniteClient:
     Client for IBM Granite models.
 
     Supports:
-    1. Local Ollama (recommended - no API key needed)
+    1. Local llama-cpp-python (recommended - no server or API key needed)
     2. IBM watsonx.ai API (cloud deployment)
     3. Mock mode (fallback for demo)
 
     Features:
-    - Automatic retry with exponential backoff
+    - Automatic model download from HuggingFace
     - Response caching for repeated queries
     - Graceful degradation to mock mode
     """
 
-    # Default Ollama settings
-    OLLAMA_BASE_URL = "http://localhost:11434"
-    OLLAMA_MODEL = "granite3.3:2b"  # Default model, can be changed
+    # Default model settings
+    DEFAULT_MODEL_REPO = "ibm-granite/granite-3.3-2b-instruct-GGUF"
+    DEFAULT_MODEL_FILE = "granite-3.3-2b-instruct.Q4_K_M.gguf"
 
-    # Request configuration
-    REQUEST_TIMEOUT = 120  # seconds
-    MAX_RETRIES = 3
-
-    def __init__(self, ollama_model: str = None, enable_cache: bool = True):
+    def __init__(self, model_path: str = None, enable_cache: bool = True):
         """
         Initialize the Granite client.
 
         Args:
-            ollama_model: Override the default Ollama model (e.g., "granite3.3:8b")
+            model_path: Path to a local GGUF model file (auto-downloads if not provided)
             enable_cache: Enable response caching (default: True)
         """
         self.settings = get_settings()
+        self._llm = None
         self._chat_model = None
         self._embeddings = None
         self._api_client = None
@@ -210,57 +215,116 @@ class GraniteClient:
         # Response cache
         self._cache = ResponseCache(max_size=100, default_ttl=3600) if enable_cache else None
 
-        # Ollama configuration
-        self.ollama_model = ollama_model or os.getenv("OLLAMA_MODEL", self.OLLAMA_MODEL)
-        self.ollama_url = os.getenv("OLLAMA_URL", self.OLLAMA_BASE_URL)
+        # Model configuration
+        self._model_path = model_path or self.settings.granite_model_path or None
+        self._model_repo = self.settings.granite_model_repo or self.DEFAULT_MODEL_REPO
+        self._model_file = self.settings.granite_model_file or self.DEFAULT_MODEL_FILE
+        self._n_ctx = self.settings.granite_n_ctx
+        self._n_gpu_layers = self.settings.granite_n_gpu_layers
 
         # Check what's available
-        self._use_ollama = self._check_ollama_available()
+        self._use_local = self._check_local_model_available()
 
-        if self._use_ollama:
-            logger.info(f"Using local Ollama with model: {self.ollama_model}")
+        if self._use_local:
+            logger.info(f"Using local Granite model: {self._model_path}")
         else:
-            logger.info("Ollama not available, checking watsonx.ai...")
+            logger.info("Local model not available, checking watsonx.ai...")
             is_valid, errors = self.settings.validate()
             if not is_valid:
                 logger.warning(f"watsonx.ai not configured: {errors}")
                 logger.info("Running in demo mode with mock responses")
 
-    def _check_ollama_available(self) -> bool:
-        """Check if Ollama is running locally."""
-        try:
-            response = requests.get(f"{self.ollama_url}/api/tags", timeout=2)
-            if response.status_code == 200:
-                models = response.json().get("models", [])
-                model_names = [m.get("name", "") for m in models]
-                logger.info(f"Ollama available with models: {model_names}")
+    def _check_local_model_available(self) -> bool:
+        """Check if a local GGUF model is available (or can be downloaded)."""
+        if not HAS_LLAMA_CPP:
+            logger.info("llama-cpp-python not installed")
+            return False
+
+        # If explicit path provided, check it exists
+        if self._model_path and Path(self._model_path).is_file():
+            return True
+
+        # Try to find model in models directory
+        models_dir = self.settings.models_dir
+        candidate = models_dir / self._model_file
+        if candidate.is_file():
+            self._model_path = str(candidate)
+            return True
+
+        # Try to download from HuggingFace
+        if HAS_HF_HUB:
+            try:
+                logger.info(
+                    f"Downloading Granite model: {self._model_repo}/{self._model_file} ..."
+                )
+                downloaded_path = hf_hub_download(
+                    repo_id=self._model_repo,
+                    filename=self._model_file,
+                    cache_dir=str(models_dir),
+                    local_dir=str(models_dir),
+                )
+                self._model_path = downloaded_path
+                logger.info(f"Model downloaded to: {self._model_path}")
                 return True
-        except requests.exceptions.RequestException:
-            pass
+            except Exception as e:
+                logger.warning(f"Failed to download model: {e}")
+
         return False
+
+    def _load_model(self) -> bool:
+        """Load the GGUF model into memory."""
+        if self._llm is not None:
+            return True
+
+        if not self._model_path:
+            return False
+
+        try:
+            logger.info(f"Loading model from {self._model_path} ...")
+            self._llm = Llama(
+                model_path=self._model_path,
+                n_ctx=self._n_ctx,
+                n_gpu_layers=self._n_gpu_layers,
+                verbose=False,
+                embedding=True,
+            )
+            logger.info("Model loaded successfully")
+            return True
+        except Exception as e:
+            logger.error(f"Failed to load model: {e}")
+            return False
 
     @property
     def is_configured(self) -> bool:
         """Check if the client is properly configured."""
-        if self._use_ollama:
+        if self._use_local:
             return True
         is_valid, _ = self.settings.validate()
         return is_valid and HAS_WATSONX
 
     @property
-    def is_using_ollama(self) -> bool:
-        """Check if using local Ollama."""
-        return self._use_ollama
+    def is_using_local(self) -> bool:
+        """Check if using local llama-cpp-python model."""
+        return self._use_local
+
+    @property
+    def model_path(self) -> Optional[str]:
+        """Get the path to the loaded model."""
+        return self._model_path
 
     def initialize(self) -> bool:
         """Initialize the client."""
         if self._initialized:
             return True
 
-        if self._use_ollama:
-            self._initialized = True
-            logger.info("Granite client initialized with Ollama")
-            return True
+        if self._use_local:
+            if self._load_model():
+                self._initialized = True
+                logger.info("Granite client initialized with local model")
+                return True
+            else:
+                logger.warning("Failed to load local model, falling back...")
+                self._use_local = False
 
         if not self.is_configured:
             logger.warning("Granite client not configured. Using mock mode.")
@@ -312,9 +376,9 @@ class GraniteClient:
 
         response = None
 
-        # Try Ollama first
-        if self._use_ollama:
-            response = self._generate_ollama(prompt, context, system_prompt)
+        # Try local model first
+        if self._use_local:
+            response = self._generate_local(prompt, context, system_prompt)
         # Try watsonx.ai
         elif self.is_configured:
             if not self._initialized:
@@ -337,8 +401,11 @@ class GraniteClient:
 
         return response
 
-    def _generate_ollama(self, prompt: str, context: str = "", system_prompt: str = None) -> str:
-        """Generate response using local Ollama with retry logic."""
+    def _generate_local(self, prompt: str, context: str = "", system_prompt: str = None) -> str:
+        """Generate response using local llama-cpp-python model."""
+        if not self._load_model():
+            return None
+
         if system_prompt is None:
             system_prompt = self._get_default_system_prompt()
 
@@ -360,49 +427,22 @@ class GraniteClient:
         messages.append({"role": "user", "content": prompt})
 
         try:
-            response = self._make_ollama_request(messages)
-            return response
-        except requests.exceptions.Timeout:
-            logger.error("Ollama request timed out after retries")
-            return "I'm sorry, the request timed out. Please try again with a shorter question."
-        except Exception as e:
-            logger.error(f"Ollama error after retries: {e}")
-            return self._mock_response(prompt, context)
-
-    @retry_with_backoff(max_retries=3, initial_delay=1.0, max_delay=10.0)
-    def _make_ollama_request(self, messages: List[Dict[str, str]]) -> str:
-        """Make an Ollama API request with retry logic."""
-        response = requests.post(
-            f"{self.ollama_url}/api/chat",
-            json={
-                "model": self.ollama_model,
-                "messages": messages,
-                "stream": False,
-                "options": {
-                    "temperature": 0.7,
-                    "top_p": 0.9,
-                }
-            },
-            timeout=self.REQUEST_TIMEOUT
-        )
-
-        if response.status_code == 200:
-            result = response.json()
-            return result.get("message", {}).get("content", "")
-        elif response.status_code >= 500:
-            # Server error - retry
-            raise requests.exceptions.RequestException(
-                f"Ollama server error: {response.status_code}"
+            result = self._llm.create_chat_completion(
+                messages=messages,
+                max_tokens=self.settings.max_new_tokens,
+                temperature=self.settings.temperature,
+                top_p=self.settings.top_p,
+                repeat_penalty=self.settings.repetition_penalty,
             )
-        else:
-            # Client error - don't retry
-            logger.error(f"Ollama client error: {response.status_code} - {response.text}")
-            return ""
+            return result["choices"][0]["message"]["content"]
+        except Exception as e:
+            logger.error(f"Local model generation error: {e}")
+            return self._mock_response(prompt, context)
 
     def generate_streaming(self, prompt: str, context: str = ""):
         """Generate a streaming response."""
-        if self._use_ollama:
-            yield from self._generate_ollama_streaming(prompt, context)
+        if self._use_local:
+            yield from self._generate_local_streaming(prompt, context)
             return
 
         # Mock streaming fallback
@@ -410,8 +450,12 @@ class GraniteClient:
         for word in response.split():
             yield word + " "
 
-    def _generate_ollama_streaming(self, prompt: str, context: str = ""):
-        """Generate streaming response from Ollama."""
+    def _generate_local_streaming(self, prompt: str, context: str = ""):
+        """Generate streaming response from local model."""
+        if not self._load_model():
+            yield self._mock_response(prompt, context)
+            return
+
         system_prompt = self._get_default_system_prompt()
 
         messages = [{"role": "system", "content": system_prompt}]
@@ -421,73 +465,51 @@ class GraniteClient:
         messages.append({"role": "user", "content": prompt})
 
         try:
-            response = requests.post(
-                f"{self.ollama_url}/api/chat",
-                json={
-                    "model": self.ollama_model,
-                    "messages": messages,
-                    "stream": True,
-                },
+            stream = self._llm.create_chat_completion(
+                messages=messages,
+                max_tokens=self.settings.max_new_tokens,
+                temperature=self.settings.temperature,
+                top_p=self.settings.top_p,
+                repeat_penalty=self.settings.repetition_penalty,
                 stream=True,
-                timeout=120
             )
 
-            for line in response.iter_lines():
-                if line:
-                    try:
-                        data = json.loads(line)
-                        content = data.get("message", {}).get("content", "")
-                        if content:
-                            yield content
-                    except json.JSONDecodeError:
-                        pass
+            for chunk in stream:
+                delta = chunk.get("choices", [{}])[0].get("delta", {})
+                content = delta.get("content", "")
+                if content:
+                    yield content
 
         except Exception as e:
-            logger.error(f"Ollama streaming error: {e}")
+            logger.error(f"Local model streaming error: {e}")
             yield f"Error: {str(e)}"
 
     def get_embeddings(self, texts: List[str]) -> List[List[float]]:
         """Get embeddings for texts."""
-        if self._use_ollama:
-            return self._get_ollama_embeddings(texts)
+        if self._use_local:
+            return self._get_local_embeddings(texts)
 
         # Return deterministic mock embeddings
         return [[hash(t) % 100 / 100.0 for _ in range(384)] for t in texts]
 
-    def _get_ollama_embeddings(self, texts: List[str]) -> List[List[float]]:
-        """Get embeddings using Ollama with retry logic."""
+    def _get_local_embeddings(self, texts: List[str]) -> List[List[float]]:
+        """Get embeddings using local model."""
+        if not self._load_model():
+            return [[hash(t) % 100 / 100.0 for _ in range(384)] for t in texts]
+
         embeddings = []
         for text in texts:
             try:
-                embedding = self._make_embedding_request(text)
-                embeddings.append(embedding)
+                result = self._llm.embed(text)
+                # llama-cpp-python embed() returns a list of floats or list of list of floats
+                if result and isinstance(result[0], list):
+                    embeddings.append(result[0])
+                else:
+                    embeddings.append(result)
             except Exception as e:
                 logger.error(f"Embedding error for text: {e}")
-                # Fallback to deterministic mock embedding
                 embeddings.append([hash(text) % 100 / 100.0 for _ in range(384)])
         return embeddings
-
-    @retry_with_backoff(max_retries=2, initial_delay=0.5, max_delay=5.0)
-    def _make_embedding_request(self, text: str) -> List[float]:
-        """Make an embedding request with retry logic."""
-        response = requests.post(
-            f"{self.ollama_url}/api/embeddings",
-            json={
-                "model": self.ollama_model,
-                "prompt": text
-            },
-            timeout=30
-        )
-
-        if response.status_code == 200:
-            embedding = response.json().get("embedding", [])
-            return embedding if embedding else [0.0] * 384
-        elif response.status_code >= 500:
-            raise requests.exceptions.RequestException(
-                f"Ollama embedding server error: {response.status_code}"
-            )
-        else:
-            return [hash(text) % 100 / 100.0 for _ in range(384)]
 
     def clear_cache(self) -> None:
         """Clear the response cache."""
@@ -510,29 +532,25 @@ class GraniteClient:
         embeddings = self.get_embeddings([text])
         return embeddings[0] if embeddings else [0.0] * 384
 
-    def list_available_models(self) -> List[str]:
-        """List available Ollama models."""
-        try:
-            response = requests.get(f"{self.ollama_url}/api/tags", timeout=5)
-            if response.status_code == 200:
-                models = response.json().get("models", [])
-                return [m.get("name", "") for m in models]
-        except Exception:
-            pass
-        return []
-
-    def pull_model(self, model_name: str) -> bool:
-        """Pull a model from Ollama registry."""
-        try:
-            response = requests.post(
-                f"{self.ollama_url}/api/pull",
-                json={"name": model_name},
-                timeout=600  # Models can take a while to download
-            )
-            return response.status_code == 200
-        except Exception as e:
-            logger.error(f"Failed to pull model: {e}")
-            return False
+    def get_model_info(self) -> Dict[str, Any]:
+        """Get information about the loaded model."""
+        if self._use_local and self._model_path:
+            model_size = Path(self._model_path).stat().st_size if Path(self._model_path).exists() else 0
+            return {
+                "backend": "llama-cpp-python",
+                "model_path": self._model_path,
+                "model_repo": self._model_repo,
+                "model_file": self._model_file,
+                "model_size_mb": round(model_size / (1024 * 1024), 1),
+                "n_ctx": self._n_ctx,
+                "n_gpu_layers": self._n_gpu_layers,
+                "loaded": self._llm is not None,
+            }
+        return {
+            "backend": "mock",
+            "model_path": None,
+            "loaded": False,
+        }
 
     def _build_prompt(self, user_prompt: str, context: str = "", system_prompt: str = None) -> str:
         """Build the full prompt with system instructions."""
