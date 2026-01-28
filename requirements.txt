@@ -2,7 +2,7 @@
 # python>=3.11
 
 # Local Granite AI (llama-cpp-python - no server needed)
-llama-cpp-python>=0.2.0
+llama-cpp-python>=0.3.0
 huggingface-hub>=0.20.0
 
 # IBM watsonx.ai & Granite (Cloud - Optional)

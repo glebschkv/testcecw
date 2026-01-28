@@ -194,8 +194,8 @@ class GraniteClient:
     """
 
     # Default model settings
-    DEFAULT_MODEL_REPO = "ibm-granite/granite-3.3-2b-instruct-GGUF"
-    DEFAULT_MODEL_FILE = "granite-3.3-2b-instruct.Q4_K_M.gguf"
+    DEFAULT_MODEL_REPO = "ibm-granite/granite-4.0-tiny-preview-GGUF"
+    DEFAULT_MODEL_FILE = "granite-4.0-tiny-preview.Q4_K_M.gguf"
 
     def __init__(self, model_path: str = None, enable_cache: bool = True):
         """

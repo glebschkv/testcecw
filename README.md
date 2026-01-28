@@ -50,7 +50,8 @@ python src/main.py
 
 The app runs IBM Granite models **directly on your machine** using `llama-cpp-python`. No external server, no API keys, no Ollama needed.
 
-- On first launch, the Granite model (~1.5 GB) is automatically downloaded from HuggingFace
+- On first launch, the **Granite 4.0 Tiny Preview** model (~4 GB) is automatically downloaded from HuggingFace
+- This is a 7B hybrid MoE model with only ~1B active parameters — fast and memory-efficient
 - The model runs locally in your Python process
 - Works offline after the initial download
 - Falls back to demo mode if the model can't be loaded
@@ -61,22 +62,22 @@ If you want to download the model before running the app:
 
 ```bash
 pip install huggingface-hub
-huggingface-cli download ibm-granite/granite-3.3-2b-instruct-GGUF granite-3.3-2b-instruct.Q4_K_M.gguf --local-dir models
+huggingface-cli download ibm-granite/granite-4.0-tiny-preview-GGUF granite-4.0-tiny-preview.Q4_K_M.gguf --local-dir models
 ```
 
-### Use a Larger Model
+### Use a Smaller Model
 
-For better quality responses (requires ~5 GB disk + more RAM):
+For lower disk/RAM usage (~2 GB):
 
 ```bash
-# Download the 8B model
-huggingface-cli download ibm-granite/granite-3.3-8b-instruct-GGUF granite-3.3-8b-instruct.Q4_K_M.gguf --local-dir models
+# Download the 3B dense model
+huggingface-cli download ibm-granite/granite-4.0-micro-GGUF granite-4.0-micro.Q4_K_M.gguf --local-dir models
 ```
 
 Then set in your `.env` file:
 ```
-GRANITE_MODEL_REPO=ibm-granite/granite-3.3-8b-instruct-GGUF
-GRANITE_MODEL_FILE=granite-3.3-8b-instruct.Q4_K_M.gguf
+GRANITE_MODEL_REPO=ibm-granite/granite-4.0-micro-GGUF
+GRANITE_MODEL_FILE=granite-4.0-micro.Q4_K_M.gguf
 ```
 
 ### Verify Setup
@@ -102,7 +103,7 @@ python scripts/test_granite.py
 
 - Python 3.8 or higher
 - pip (Python package manager)
-- ~2GB disk space for AI model
+- ~4GB disk space for AI model (or ~2GB with smaller model)
 
 ---
 
@@ -125,7 +126,7 @@ pip install -r requirements.txt
 Download the model manually:
 ```bash
 pip install huggingface-hub
-huggingface-cli download ibm-granite/granite-3.3-2b-instruct-GGUF granite-3.3-2b-instruct.Q4_K_M.gguf --local-dir models
+huggingface-cli download ibm-granite/granite-4.0-tiny-preview-GGUF granite-4.0-tiny-preview.Q4_K_M.gguf --local-dir models
 ```
 
 ### App won't start
@@ -146,7 +147,7 @@ source venv/bin/activate
 |-----------|------------|
 | Language | Python 3.8+ |
 | GUI | PyQt6 |
-| AI | IBM Granite (via llama-cpp-python) |
+| AI | IBM Granite 4.0 (via llama-cpp-python) |
 | Database | SQLite |
 
 ---
