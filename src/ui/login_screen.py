@@ -41,21 +41,13 @@ class LoginScreen(QWidget):
         main_layout = QVBoxLayout(self)
         main_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        # Container - no visible border, just for layout
+        # Container
         container = QFrame()
         container.setObjectName("loginFrame")
-        container.setFixedWidth(360)
+        container.setFixedWidth(380)
         container_layout = QVBoxLayout(container)
         container_layout.setSpacing(0)
         container_layout.setContentsMargins(0, 0, 0, 0)
-
-        # Logo
-        icon_label = QLabel("◆")
-        icon_label.setStyleSheet("font-size: 44px; color: #6366F1; background: transparent;")
-        icon_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        container_layout.addWidget(icon_label)
-
-        container_layout.addSpacing(16)
 
         # Title
         title = QLabel("InsightBot")
@@ -63,7 +55,7 @@ class LoginScreen(QWidget):
         title.setAlignment(Qt.AlignmentFlag.AlignCenter)
         container_layout.addWidget(title)
 
-        container_layout.addSpacing(4)
+        container_layout.addSpacing(6)
 
         # Subtitle
         subtitle = QLabel("Smart Vehicle Diagnostics")
@@ -71,7 +63,7 @@ class LoginScreen(QWidget):
         subtitle.setAlignment(Qt.AlignmentFlag.AlignCenter)
         container_layout.addWidget(subtitle)
 
-        container_layout.addSpacing(32)
+        container_layout.addSpacing(36)
 
         # Stacked widget for login/register forms
         self.stacked_widget = QStackedWidget()
@@ -123,17 +115,17 @@ class LoginScreen(QWidget):
         login_btn.clicked.connect(self._handle_login)
         layout.addWidget(login_btn)
 
-        layout.addSpacing(16)
+        layout.addSpacing(12)
 
         # Divider
         divider_layout = QHBoxLayout()
-        divider_layout.setSpacing(16)
+        divider_layout.setSpacing(14)
         divider_left = QFrame()
         divider_left.setFixedHeight(1)
         divider_left.setStyleSheet("background-color: #E4E4E7;")
         divider_layout.addWidget(divider_left)
         or_label = QLabel("or")
-        or_label.setStyleSheet("color: #A1A1AA; font-size: 13px; background: transparent;")
+        or_label.setStyleSheet("color: #D4D4D8; font-size: 12px; background: transparent;")
         divider_layout.addWidget(or_label)
         divider_right = QFrame()
         divider_right.setFixedHeight(1)
@@ -141,7 +133,7 @@ class LoginScreen(QWidget):
         divider_layout.addWidget(divider_right)
         layout.addLayout(divider_layout)
 
-        layout.addSpacing(16)
+        layout.addSpacing(12)
 
         # Register link
         register_btn = QPushButton("Create Account")
