@@ -1,7 +1,11 @@
 # Core
 # python>=3.11
 
-# IBM watsonx.ai & Granite
+# Local Granite AI (llama-cpp-python - no server needed)
+llama-cpp-python>=0.2.0
+huggingface-hub>=0.20.0
+
+# IBM watsonx.ai & Granite (Cloud - Optional)
 ibm-watsonx-ai>=1.0.0
 langchain-ibm>=0.1.0
 ibm-watson>=8.0.0

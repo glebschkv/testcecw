@@ -17,7 +17,28 @@ load_dotenv()
 class Settings:
     """Application configuration settings."""
 
-    # IBM watsonx.ai Configuration
+    # Local Granite Model Configuration (llama-cpp-python)
+    granite_model_repo: str = field(
+        default_factory=lambda: os.getenv(
+            "GRANITE_MODEL_REPO", "ibm-granite/granite-3.3-2b-instruct-GGUF"
+        )
+    )
+    granite_model_file: str = field(
+        default_factory=lambda: os.getenv(
+            "GRANITE_MODEL_FILE", "granite-3.3-2b-instruct.Q4_K_M.gguf"
+        )
+    )
+    granite_model_path: str = field(
+        default_factory=lambda: os.getenv("GRANITE_MODEL_PATH", "")
+    )
+    granite_n_ctx: int = field(
+        default_factory=lambda: int(os.getenv("GRANITE_N_CTX", "2048"))
+    )
+    granite_n_gpu_layers: int = field(
+        default_factory=lambda: int(os.getenv("GRANITE_N_GPU_LAYERS", "0"))
+    )
+
+    # IBM watsonx.ai Configuration (Cloud - Optional fallback)
     watsonx_url: str = field(
         default_factory=lambda: os.getenv("WATSONX_URL", "https://us-south.ml.cloud.ibm.com")
     )
@@ -39,7 +60,7 @@ class Settings:
         )
     )
 
-    # Model IDs
+    # Model IDs (for watsonx.ai cloud fallback)
     granite_chat_model: str = "ibm/granite-3-8b-instruct"
     granite_embedding_model: str = "ibm/granite-embedding-107m-multilingual"
 
@@ -66,14 +87,18 @@ class Settings:
     # Paths
     base_dir: Path = field(default_factory=lambda: Path(__file__).parent.parent.parent)
     data_dir: Path = field(default_factory=lambda: Path(__file__).parent.parent.parent / "data")
+    models_dir: Path = field(
+        default_factory=lambda: Path(__file__).parent.parent.parent / "models"
+    )
 
     # Voice Settings
     silence_threshold_seconds: float = 3.0
     wake_word: str = "Hey InsightBot"
 
     def __post_init__(self):
-        """Ensure data directory exists."""
+        """Ensure data and models directories exist."""
         self.data_dir.mkdir(parents=True, exist_ok=True)
+        self.models_dir.mkdir(parents=True, exist_ok=True)
 
         # Ensure database directory exists
         db_path = Path(self.database_path)
