@@ -1,6 +1,6 @@
 """
 UI Styles and Themes for OBD InsightBot.
-Sophisticated, refined design with modern aesthetics.
+Clean, minimalistic design with excellent contrast and visibility.
 Implements BR8: Severity color coding.
 """
 
@@ -49,20 +49,20 @@ class SeverityStyles:
 
 
 class Styles:
-    """Application-wide styles - Sophisticated Design System."""
+    """Application-wide styles - Clean Minimalist Design System."""
 
     # ═══════════════════════════════════════════════════════════════
-    # COLOR PALETTE - Refined & Sophisticated
+    # COLOR PALETTE
     # ═══════════════════════════════════════════════════════════════
 
-    # Primary Accent (Indigo - sophisticated, less corporate)
+    # Primary Accent (Indigo)
     ACCENT = "#6366F1"
     ACCENT_DARK = "#4F46E5"
     ACCENT_DARKER = "#4338CA"
     ACCENT_LIGHT = "#818CF8"
     ACCENT_SUBTLE = "#EEF2FF"
 
-    # Neutral Colors (Zinc-based for warmth)
+    # Neutral Colors (Zinc-based)
     BG_PRIMARY = "#FAFAFA"
     BG_SECONDARY = "#F4F4F5"
     SURFACE = "#FFFFFF"
@@ -84,7 +84,7 @@ class Styles:
     SIDEBAR_BG_DARK = "#09090B"
     SIDEBAR_TEXT = "#FAFAFA"
     SIDEBAR_TEXT_MUTED = "#A1A1AA"
-    SIDEBAR_HOVER = "rgba(255, 255, 255, 0.05)"
+    SIDEBAR_HOVER = "rgba(255, 255, 255, 0.08)"
     SIDEBAR_SELECTED = "rgba(99, 102, 241, 0.2)"
 
     # Status Colors
@@ -112,12 +112,12 @@ class Styles:
     }
 
     /* ─────────────────────────────────────────────────────────────
-       BUTTONS - Refined, no gradients
+       BUTTONS - Clean, visible defaults
        ───────────────────────────────────────────────────────────── */
 
     QPushButton {
         background-color: #6366F1;
-        color: white;
+        color: #FFFFFF;
         border: none;
         padding: 10px 20px;
         border-radius: 8px;
@@ -144,8 +144,8 @@ class Styles:
 
     QLineEdit {
         padding: 12px 16px;
-        border: 1px solid #E4E4E7;
-        border-radius: 8px;
+        border: 1.5px solid #E4E4E7;
+        border-radius: 10px;
         background-color: #FFFFFF;
         color: #18181B;
         font-size: 14px;
@@ -169,8 +169,8 @@ class Styles:
 
     QTextEdit {
         padding: 12px 16px;
-        border: 1px solid #E4E4E7;
-        border-radius: 8px;
+        border: 1.5px solid #E4E4E7;
+        border-radius: 10px;
         background-color: #FFFFFF;
         color: #18181B;
         font-size: 14px;
@@ -198,7 +198,7 @@ class Styles:
     }
 
     /* ─────────────────────────────────────────────────────────────
-       LIST WIDGETS - Refined selection states
+       LIST WIDGETS
        ───────────────────────────────────────────────────────────── */
 
     QListWidget {
@@ -229,7 +229,7 @@ class Styles:
     }
 
     /* ─────────────────────────────────────────────────────────────
-       SCROLL AREAS & SCROLLBARS - Minimal, elegant
+       SCROLL AREAS & SCROLLBARS - Minimal
        ───────────────────────────────────────────────────────────── */
 
     QScrollArea {
@@ -295,8 +295,9 @@ class Styles:
     }
 
     QMessageBox QPushButton {
-        min-width: 80px;
-        padding: 8px 16px;
+        min-width: 90px;
+        padding: 8px 20px;
+        border-radius: 8px;
     }
 
     QDialog {
@@ -304,22 +305,23 @@ class Styles:
     }
 
     /* ─────────────────────────────────────────────────────────────
-       MENUS - Clean, sophisticated dropdowns
+       MENUS - Clean dropdowns
        ───────────────────────────────────────────────────────────── */
 
     QMenu {
         background-color: #FFFFFF;
         border: 1px solid #E4E4E7;
-        border-radius: 8px;
+        border-radius: 10px;
         padding: 6px;
     }
 
     QMenu::item {
-        padding: 10px 16px;
+        padding: 10px 20px;
         border-radius: 6px;
         color: #18181B;
         background-color: transparent;
         margin: 2px;
+        font-size: 13px;
     }
 
     QMenu::item:selected {
@@ -356,7 +358,7 @@ class Styles:
     """
 
     # ═══════════════════════════════════════════════════════════════
-    # LOGIN SCREEN STYLE - Elegant, centered
+    # LOGIN SCREEN STYLE
     # ═══════════════════════════════════════════════════════════════
 
     LOGIN_STYLE = """
@@ -374,7 +376,7 @@ class Styles:
     }
 
     QLabel#subtitleLabel {
-        font-size: 14px;
+        font-size: 15px;
         color: #71717A;
         font-weight: 400;
         background: transparent;
@@ -415,17 +417,21 @@ class Styles:
         font-weight: 600;
         border-radius: 10px;
         background-color: #6366F1;
-        color: white;
+        color: #FFFFFF;
         border: none;
     }
 
     QPushButton#loginButton:hover {
-        background-color: #5558E8;
+        background-color: #4F46E5;
     }
 
     QPushButton#loginButton:pressed {
         background-color: #4338CA;
-        padding-top: 2px;
+    }
+
+    QPushButton#loginButton:disabled {
+        background-color: #C7D2FE;
+        color: #FFFFFF;
     }
 
     QPushButton#registerButton {
@@ -446,12 +452,11 @@ class Styles:
 
     QPushButton#registerButton:pressed {
         background-color: #E4E4E7;
-        padding-top: 2px;
     }
     """
 
     # ═══════════════════════════════════════════════════════════════
-    # CHAT SCREEN STYLE - Sophisticated sidebar and chat
+    # CHAT SCREEN STYLE
     # ═══════════════════════════════════════════════════════════════
 
     CHAT_STYLE = """
@@ -465,7 +470,7 @@ class Styles:
     }
 
     /* ─────────────────────────────────────────────────────────────
-       SIDEBAR - Dark, sophisticated
+       SIDEBAR - Dark, clean
        ───────────────────────────────────────────────────────────── */
 
     QFrame#sidebarFrame {
@@ -495,7 +500,7 @@ class Styles:
     }
 
     /* ─────────────────────────────────────────────────────────────
-       CHAT LIST - Refined items
+       CHAT LIST
        ───────────────────────────────────────────────────────────── */
 
     QListWidget#chatList {
@@ -510,7 +515,7 @@ class Styles:
         border-radius: 8px;
         color: #A1A1AA;
         background-color: transparent;
-        margin: 3px 4px;
+        margin: 2px 4px;
         font-size: 13px;
         border-left: 3px solid transparent;
     }
@@ -527,12 +532,12 @@ class Styles:
     }
 
     /* ─────────────────────────────────────────────────────────────
-       NEW CHAT BUTTON - Solid, no gradient
+       NEW CHAT BUTTON - Solid, prominent
        ───────────────────────────────────────────────────────────── */
 
     QPushButton#newChatButton {
         background-color: #6366F1;
-        color: white;
+        color: #FFFFFF;
         border-radius: 10px;
         padding: 14px 16px;
         font-size: 14px;
@@ -541,35 +546,36 @@ class Styles:
     }
 
     QPushButton#newChatButton:hover {
-        background-color: #5558E8;
+        background-color: #4F46E5;
     }
 
     QPushButton#newChatButton:pressed {
         background-color: #4338CA;
-        padding-top: 16px;
-        padding-bottom: 12px;
     }
 
     /* ─────────────────────────────────────────────────────────────
-       LOGOUT BUTTON - Subtle, icon-style
+       SETTINGS/LOGOUT BUTTON - Clearly visible on dark sidebar
        ───────────────────────────────────────────────────────────── */
 
     QPushButton#logoutButton {
-        background-color: transparent;
-        color: #71717A;
-        border: none;
-        border-radius: 6px;
-        padding: 8px;
-        font-size: 14px;
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #E4E4E7;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 8px;
+        padding: 6px;
+        font-size: 15px;
+        font-weight: 500;
     }
 
     QPushButton#logoutButton:hover {
-        background-color: rgba(255, 255, 255, 0.1);
-        color: #FAFAFA;
+        background-color: rgba(255, 255, 255, 0.18);
+        color: #FFFFFF;
+        border-color: rgba(255, 255, 255, 0.25);
     }
 
     QPushButton#logoutButton:pressed {
-        background-color: rgba(255, 255, 255, 0.05);
+        background-color: rgba(255, 255, 255, 0.08);
+        color: #FAFAFA;
     }
 
     /* ─────────────────────────────────────────────────────────────
@@ -584,38 +590,37 @@ class Styles:
     }
 
     /* ─────────────────────────────────────────────────────────────
-       MESSAGE INPUT - Clean, refined
+       MESSAGE INPUT - Clean, borderless inside input frame
        ───────────────────────────────────────────────────────────── */
 
     QTextEdit#messageInput {
-        border: 1px solid #E4E4E7;
-        border-radius: 12px;
-        padding: 12px 16px;
+        border: none;
+        border-radius: 0px;
+        padding: 8px 4px;
         font-size: 14px;
-        background-color: #FFFFFF;
+        background-color: transparent;
         color: #18181B;
         selection-background-color: #6366F1;
         selection-color: white;
     }
 
     QTextEdit#messageInput:hover {
-        border-color: #D4D4D8;
+        border: none;
     }
 
     QTextEdit#messageInput:focus {
-        border-color: #6366F1;
-        border-width: 2px;
-        padding: 11px 15px;
+        border: none;
+        padding: 8px 4px;
     }
 
     QTextEdit#messageInput:disabled {
-        background-color: #F4F4F5;
+        background-color: transparent;
         color: #A1A1AA;
-        border-color: #E4E4E7;
+        border: none;
     }
 
     /* ─────────────────────────────────────────────────────────────
-       SEND BUTTON - Solid accent color
+       SEND BUTTON - Always clearly visible
        ───────────────────────────────────────────────────────────── */
 
     QPushButton#sendButton {
@@ -625,13 +630,14 @@ class Styles:
         max-width: 44px;
         min-height: 44px;
         max-height: 44px;
-        font-size: 16px;
+        font-size: 18px;
         border: none;
-        color: white;
+        color: #FFFFFF;
+        font-weight: bold;
     }
 
     QPushButton#sendButton:hover {
-        background-color: #5558E8;
+        background-color: #4F46E5;
     }
 
     QPushButton#sendButton:pressed {
@@ -639,8 +645,8 @@ class Styles:
     }
 
     QPushButton#sendButton:disabled {
-        background-color: #F4F4F5;
-        color: #D4D4D8;
+        background-color: #E4E4E7;
+        color: #A1A1AA;
     }
 
     /* ─────────────────────────────────────────────────────────────
@@ -670,7 +676,7 @@ class Styles:
     }
 
     /* ─────────────────────────────────────────────────────────────
-       MIC BUTTON - Subtle secondary
+       MIC BUTTON
        ───────────────────────────────────────────────────────────── */
 
     QPushButton#micButton {
@@ -682,12 +688,13 @@ class Styles:
         min-height: 40px;
         max-height: 40px;
         font-size: 16px;
-        border: none;
+        border: 1px solid #E4E4E7;
     }
 
     QPushButton#micButton:hover {
         background-color: #E4E4E7;
         color: #18181B;
+        border-color: #D4D4D8;
     }
 
     QPushButton#micButton:pressed {
@@ -701,7 +708,7 @@ class Styles:
     QPushButton#uploadButton {
         background-color: transparent;
         color: #52525B;
-        border: 1px solid #E4E4E7;
+        border: 1.5px solid #E4E4E7;
         border-radius: 8px;
         padding: 8px 16px;
         font-size: 13px;
@@ -717,10 +724,34 @@ class Styles:
     QPushButton#uploadButton:pressed {
         background-color: #E4E4E7;
     }
+
+    /* ─────────────────────────────────────────────────────────────
+       DELETE BUTTON - Danger action in context menus
+       ───────────────────────────────────────────────────────────── */
+
+    QPushButton#deleteButton {
+        background-color: transparent;
+        color: #DC2626;
+        border: 1.5px solid #FECACA;
+        border-radius: 8px;
+        padding: 8px 16px;
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    QPushButton#deleteButton:hover {
+        background-color: #FEF2F2;
+        border-color: #F87171;
+        color: #B91C1C;
+    }
+
+    QPushButton#deleteButton:pressed {
+        background-color: #FEE2E2;
+    }
     """
 
     # ═══════════════════════════════════════════════════════════════
-    # MESSAGE BUBBLE STYLES - Refined, subtle shadows
+    # MESSAGE BUBBLE STYLES
     # ═══════════════════════════════════════════════════════════════
 
     USER_MESSAGE_STYLE = """
@@ -753,7 +784,7 @@ class Styles:
 
     @classmethod
     def get_message_style(cls, severity: str) -> str:
-        """Get message style based on severity (BR8) - Refined design."""
+        """Get message style based on severity (BR8)."""
         colors = SeverityStyles.get(severity)
         return f"""
         QFrame {{
@@ -786,7 +817,7 @@ class Styles:
 
     @classmethod
     def get_severity_indicator(cls, severity: str) -> str:
-        """Get severity indicator HTML - Refined badge style."""
+        """Get severity indicator HTML."""
         colors = SeverityStyles.get(severity)
         return f"""
         <span style="

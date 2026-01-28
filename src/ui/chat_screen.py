@@ -40,30 +40,20 @@ class ThinkingIndicator(QFrame):
         layout.setContentsMargins(16, 14, 16, 14)
         layout.setSpacing(12)
 
-        # AI avatar/icon
-        avatar = QLabel("◆")
-        avatar.setStyleSheet("""
-            color: #6366F1;
-            font-size: 16px;
-            font-weight: bold;
-        """)
-        avatar.setFixedWidth(20)
-        layout.addWidget(avatar)
-
         # Thinking text with animated dots
-        self.thinking_label = QLabel("InsightBot is thinking")
+        self.thinking_label = QLabel("Thinking")
         self.thinking_label.setStyleSheet("""
-            color: #52525B;
+            color: #71717A;
             font-size: 14px;
             font-weight: 500;
         """)
         layout.addWidget(self.thinking_label)
         layout.addStretch()
 
-        # Style the frame
+        # Style the frame - subtle indicator
         self.setStyleSheet("""
             QFrame {
-                background-color: #FFFFFF;
+                background-color: #FAFAFA;
                 border: 1px solid #E4E4E7;
                 border-left: 3px solid #6366F1;
                 border-radius: 12px;
@@ -80,7 +70,7 @@ class ThinkingIndicator(QFrame):
         """Animate the thinking dots."""
         self.dots = (self.dots + 1) % 4
         dots_text = "." * self.dots
-        self.thinking_label.setText(f"InsightBot is thinking{dots_text}")
+        self.thinking_label.setText(f"Thinking{dots_text}")
 
     def stop(self):
         """Stop the animation."""
@@ -107,8 +97,8 @@ class MessageWidget(QFrame):
         main_layout.setSpacing(12)
         main_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
-        # Avatar
-        avatar = QLabel("◆" if role == "assistant" else "●")
+        # Avatar - clean text-based
+        avatar = QLabel("AI" if role == "assistant" else "U")
         avatar.setFixedSize(32, 32)
         avatar.setAlignment(Qt.AlignmentFlag.AlignCenter)
         if role == "assistant":
@@ -116,15 +106,16 @@ class MessageWidget(QFrame):
                 background-color: #EEF2FF;
                 color: #6366F1;
                 border-radius: 16px;
-                font-size: 14px;
-                font-weight: bold;
+                font-size: 11px;
+                font-weight: 700;
             """)
         else:
             avatar.setStyleSheet("""
                 background-color: #18181B;
                 color: #FFFFFF;
                 border-radius: 16px;
-                font-size: 10px;
+                font-size: 12px;
+                font-weight: 600;
             """)
         main_layout.addWidget(avatar)
 
@@ -294,29 +285,21 @@ class ChatScreen(QWidget):
         layout.setContentsMargins(16, 20, 16, 20)
         layout.setSpacing(16)
 
-        # Header with user info
+        # Header with app title
         header = QHBoxLayout()
-        header.setSpacing(12)
-
-        # App icon/logo placeholder
-        logo_label = QLabel("◆")
-        logo_label.setStyleSheet("""
-            color: #6366F1;
-            font-size: 20px;
-            font-weight: bold;
-        """)
-        header.addWidget(logo_label)
+        header.setSpacing(10)
 
         title = QLabel("InsightBot")
         title.setObjectName("sidebarTitle")
         header.addWidget(title)
         header.addStretch()
 
-        # Settings/Logout button - subtle icon style
-        logout_btn = QPushButton("⚙")
+        # Settings/Logout button - visible on dark sidebar
+        logout_btn = QPushButton("Settings")
         logout_btn.setObjectName("logoutButton")
-        logout_btn.setFixedSize(32, 32)
-        logout_btn.setToolTip("Settings")
+        logout_btn.setFixedSize(72, 32)
+        logout_btn.setToolTip("Settings & Logout")
+        logout_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         logout_btn.clicked.connect(self._show_settings_menu)
         header.addWidget(logout_btn)
         layout.addLayout(header)
@@ -330,8 +313,9 @@ class ChatScreen(QWidget):
         layout.addSpacing(8)
 
         # New chat button
-        new_chat_btn = QPushButton("＋  New Chat")
+        new_chat_btn = QPushButton("+  New Chat")
         new_chat_btn.setObjectName("newChatButton")
+        new_chat_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         new_chat_btn.clicked.connect(self._create_new_chat)
         layout.addWidget(new_chat_btn)
 
@@ -385,7 +369,7 @@ class ChatScreen(QWidget):
         # Welcome message
         self._show_welcome_message()
 
-        # Input area - minimal, clean design
+        # Input area - clean pill shape with shadow-like border
         input_frame = QFrame()
         input_frame.setObjectName("inputFrame")
         input_frame.setStyleSheet("""
@@ -394,13 +378,13 @@ class ChatScreen(QWidget):
                 border-radius: 24px;
                 border: 1.5px solid #E4E4E7;
             }
-            QFrame#inputFrame:hover {
-                border-color: #D4D4D8;
+            QFrame#inputFrame:focus-within {
+                border-color: #6366F1;
             }
         """)
         input_layout = QHBoxLayout(input_frame)
-        input_layout.setContentsMargins(16, 8, 8, 8)
-        input_layout.setSpacing(10)
+        input_layout.setContentsMargins(20, 8, 8, 8)
+        input_layout.setSpacing(12)
         input_layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
 
         # Text input with auto-resize
@@ -414,9 +398,16 @@ class ChatScreen(QWidget):
             QTextEdit {
                 border: none;
                 background-color: transparent;
-                padding: 6px 4px;
+                padding: 8px 4px;
                 font-size: 14px;
                 color: #18181B;
+            }
+            QTextEdit:focus {
+                border: none;
+                padding: 8px 4px;
+            }
+            QTextEdit:hover {
+                border: none;
             }
             QTextEdit:disabled {
                 background-color: transparent;
@@ -428,8 +419,8 @@ class ChatScreen(QWidget):
         self.message_input.installEventFilter(self)
         input_layout.addWidget(self.message_input, stretch=1)
 
-        # Send button
-        self.send_btn = QPushButton("➤")
+        # Send button - uses a reliable arrow character
+        self.send_btn = QPushButton(">")
         self.send_btn.setObjectName("sendButton")
         self.send_btn.setFixedSize(44, 44)
         self.send_btn.setCursor(Qt.CursorShape.PointingHandCursor)
@@ -440,12 +431,13 @@ class ChatScreen(QWidget):
         layout.addWidget(input_frame)
 
         # Keyboard hint
-        hint_label = QLabel("Press Enter to send • Shift+Enter for new line")
+        hint_label = QLabel("Enter to send  |  Shift+Enter for new line")
+        hint_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         hint_label.setStyleSheet("""
-            color: #A1A1AA;
+            color: #D4D4D8;
             font-size: 11px;
             background-color: transparent;
-            padding-left: 4px;
+            padding: 4px 0;
         """)
         layout.addWidget(hint_label)
 
@@ -453,26 +445,24 @@ class ChatScreen(QWidget):
 
     def _show_welcome_message(self):
         """Show initial welcome message - clean, minimal design."""
-        # Container widget (no visible styling)
+        # Container widget
         welcome_container = QWidget()
         welcome_container.setStyleSheet("background: transparent;")
         welcome_layout = QVBoxLayout(welcome_container)
-        welcome_layout.setContentsMargins(40, 60, 40, 40)
+        welcome_layout.setContentsMargins(40, 80, 40, 40)
         welcome_layout.setSpacing(0)
         welcome_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        # Logo
-        logo = QLabel("◆")
-        logo.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        logo.setStyleSheet("color: #6366F1; font-size: 48px; font-weight: bold; background: transparent;")
-        welcome_layout.addWidget(logo)
-
-        welcome_layout.addSpacing(16)
-
-        # Title
-        title = QLabel("Welcome to InsightBot")
+        # Title - large, clean
+        title = QLabel("InsightBot")
         title.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        title.setStyleSheet("color: #18181B; font-size: 28px; font-weight: 600; letter-spacing: -0.5px; background: transparent;")
+        title.setStyleSheet("""
+            color: #18181B;
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: transparent;
+        """)
         welcome_layout.addWidget(title)
 
         welcome_layout.addSpacing(8)
@@ -480,37 +470,112 @@ class ChatScreen(QWidget):
         # Subtitle
         subtitle = QLabel("Your intelligent vehicle diagnostics assistant")
         subtitle.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        subtitle.setStyleSheet("color: #71717A; font-size: 15px; background: transparent;")
+        subtitle.setStyleSheet("""
+            color: #71717A;
+            font-size: 15px;
+            font-weight: 400;
+            background: transparent;
+        """)
         welcome_layout.addWidget(subtitle)
 
-        welcome_layout.addSpacing(48)
+        welcome_layout.addSpacing(56)
 
-        # Steps - simple text, no boxes
+        # Steps card - subtle background
+        steps_card = QFrame()
+        steps_card.setStyleSheet("""
+            QFrame {
+                background-color: #FFFFFF;
+                border: 1px solid #E4E4E7;
+                border-radius: 16px;
+            }
+        """)
+        steps_card.setFixedWidth(400)
+        steps_layout = QVBoxLayout(steps_card)
+        steps_layout.setContentsMargins(32, 28, 32, 28)
+        steps_layout.setSpacing(0)
+
+        # Steps header
         steps_header = QLabel("GET STARTED")
-        steps_header.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        steps_header.setStyleSheet("color: #A1A1AA; font-size: 11px; font-weight: 600; letter-spacing: 1.5px; background: transparent;")
-        welcome_layout.addWidget(steps_header)
+        steps_header.setAlignment(Qt.AlignmentFlag.AlignLeft)
+        steps_header.setStyleSheet("""
+            color: #A1A1AA;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            background: transparent;
+        """)
+        steps_layout.addWidget(steps_header)
 
-        welcome_layout.addSpacing(20)
+        steps_layout.addSpacing(20)
 
-        # Steps as simple numbered list
+        # Steps as numbered list
         steps = [
-            "Click  + New Chat  in the sidebar",
-            "Upload your OBD-II log file (.csv)",
-            "Ask anything about your vehicle"
+            ("+ New Chat", "Create a new diagnostic session"),
+            ("Upload CSV", "Add your OBD-II log file"),
+            ("Ask Away", "Query anything about your vehicle")
         ]
-        for i, text in enumerate(steps, 1):
-            step_label = QLabel(f"{i}.  {text}")
-            step_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            step_label.setStyleSheet("color: #52525B; font-size: 14px; background: transparent; padding: 6px 0;")
-            welcome_layout.addWidget(step_label)
+        for i, (label, desc) in enumerate(steps, 1):
+            step_row = QHBoxLayout()
+            step_row.setSpacing(14)
 
-        welcome_layout.addSpacing(48)
+            # Step number circle
+            num_label = QLabel(str(i))
+            num_label.setFixedSize(28, 28)
+            num_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            num_label.setStyleSheet("""
+                background-color: #EEF2FF;
+                color: #6366F1;
+                border-radius: 14px;
+                font-size: 13px;
+                font-weight: 600;
+            """)
+            step_row.addWidget(num_label)
+
+            # Step text
+            text_layout = QVBoxLayout()
+            text_layout.setSpacing(2)
+
+            title_label = QLabel(label)
+            title_label.setStyleSheet("""
+                color: #18181B;
+                font-size: 14px;
+                font-weight: 600;
+                background: transparent;
+            """)
+            text_layout.addWidget(title_label)
+
+            desc_label = QLabel(desc)
+            desc_label.setStyleSheet("""
+                color: #71717A;
+                font-size: 13px;
+                background: transparent;
+            """)
+            text_layout.addWidget(desc_label)
+
+            step_row.addLayout(text_layout)
+            step_row.addStretch()
+            steps_layout.addLayout(step_row)
+
+            if i < len(steps):
+                steps_layout.addSpacing(16)
+
+        # Center the card
+        card_container = QHBoxLayout()
+        card_container.addStretch()
+        card_container.addWidget(steps_card)
+        card_container.addStretch()
+        welcome_layout.addLayout(card_container)
+
+        welcome_layout.addSpacing(40)
 
         # Footer
         footer = QLabel("Powered by IBM Granite AI")
         footer.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        footer.setStyleSheet("color: #D4D4D8; font-size: 12px; background: transparent;")
+        footer.setStyleSheet("""
+            color: #D4D4D8;
+            font-size: 12px;
+            background: transparent;
+        """)
         welcome_layout.addWidget(footer)
 
         welcome_layout.addStretch()
@@ -526,9 +591,9 @@ class ChatScreen(QWidget):
             display_name = chat.name
             if len(display_name) > 28:
                 display_name = display_name[:25] + "..."
-            item = QListWidgetItem(f"○  {display_name}")
+            item = QListWidgetItem(display_name)
             item.setData(Qt.ItemDataRole.UserRole, chat.id)
-            item.setToolTip(chat.name)  # Show full name on hover
+            item.setToolTip(chat.name)
             self.chat_list.addItem(item)
 
     def _create_new_chat(self):
@@ -818,12 +883,12 @@ class ChatScreen(QWidget):
         """Rename a chat (BR3.3)."""
         new_name, ok = QInputDialog.getText(
             self, "Rename Chat", "Enter new name:",
-            text=item.text().replace("○  ", "")
+            text=item.text()
         )
 
         if ok and new_name:
             ChatService.rename_chat(chat_id, self.user.id, new_name)
-            item.setText(f"○  {new_name}")
+            item.setText(new_name)
 
             if self.current_chat and self.current_chat.id == chat_id:
                 self.chat_header.setText(new_name)
