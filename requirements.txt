@@ -29,6 +29,13 @@ python-dotenv>=1.0.0
 pyaudio>=0.2.13
 sounddevice>=0.4.6
 
+# Local Speech-to-Text (IBM Granite Speech)
+torch>=2.0.0
+transformers>=4.52.4
+torchaudio>=2.0.0
+peft>=0.6.0
+soundfile>=0.12.0
+
 # Testing
 pytest>=7.0.0
 pytest-qt>=4.2.0

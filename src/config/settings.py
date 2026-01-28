@@ -71,6 +71,12 @@ class Settings:
     silence_threshold_seconds: float = 3.0
     wake_word: str = "Hey InsightBot"
 
+    # Local Speech-to-Text (IBM Granite Speech)
+    # "2b" = CPU-friendly (~4 GB), "8b" = GPU recommended (~16 GB)
+    granite_speech_model_size: str = field(
+        default_factory=lambda: os.getenv("GRANITE_SPEECH_MODEL_SIZE", "2b")
+    )
+
     def __post_init__(self):
         """Ensure data directory exists."""
         self.data_dir.mkdir(parents=True, exist_ok=True)

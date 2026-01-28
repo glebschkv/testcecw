@@ -676,7 +676,7 @@ class Styles:
     }
 
     /* ─────────────────────────────────────────────────────────────
-       MIC BUTTON
+       MIC BUTTON — Voice dictation toggle (BR6)
        ───────────────────────────────────────────────────────────── */
 
     QPushButton#micButton {
@@ -687,18 +687,32 @@ class Styles:
         max-width: 40px;
         min-height: 40px;
         max-height: 40px;
-        font-size: 16px;
-        border: 1px solid #E4E4E7;
+        font-size: 11px;
+        font-weight: 600;
+        border: 1.5px solid #E4E4E7;
     }
 
     QPushButton#micButton:hover {
-        background-color: #E4E4E7;
-        color: #18181B;
-        border-color: #D4D4D8;
+        background-color: #EEF2FF;
+        color: #6366F1;
+        border-color: #C7D2FE;
     }
 
     QPushButton#micButton:pressed {
-        background-color: #D4D4D8;
+        background-color: #E0E7FF;
+        color: #4F46E5;
+    }
+
+    QPushButton#micButton:checked {
+        background-color: #FEE2E2;
+        color: #DC2626;
+        border: 2px solid #EF4444;
+    }
+
+    QPushButton#micButton:disabled {
+        background-color: #FAFAFA;
+        color: #D4D4D8;
+        border-color: #F4F4F5;
     }
 
     /* ─────────────────────────────────────────────────────────────

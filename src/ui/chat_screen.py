@@ -1,6 +1,6 @@
 """
 Main Chat Screen.
-Implements BR2, BR3, BR4, BR5, BR8
+Implements BR2, BR3, BR4, BR5, BR6, BR8
 """
 
 from typing import Optional, List
@@ -20,6 +20,7 @@ from ..services.chat_service import ChatService
 from ..services.obd_parser import OBDParser, OBDParseError
 from ..services.granite_client import GraniteClient
 from ..services.rag_pipeline import RAGPipeline
+from ..services.voice_service import get_voice_service
 from ..config.logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -231,6 +232,44 @@ class ChatWorker(QThread):
             self.error_occurred.emit(str(e))
 
 
+class DictationWorker(QThread):
+    """Worker thread for speech-to-text dictation (BR6)."""
+
+    transcription_ready = pyqtSignal(str)
+    status_update = pyqtSignal(str)
+    recording_started = pyqtSignal()
+    finished_recording = pyqtSignal()
+
+    def __init__(self):
+        super().__init__()
+        self._voice_service = get_voice_service()
+
+    def run(self):
+        """Load model (if needed), record audio, and transcribe."""
+        try:
+            # Lazy-load the speech model
+            self.status_update.emit("Loading speech model...")
+            ready, msg = self._voice_service._ensure_model_loaded()
+            if not ready:
+                self.transcription_ready.emit(f"[{msg}]")
+                return
+
+            self.recording_started.emit()
+            self.status_update.emit("Listening...")
+
+            # Record and transcribe — callback delivers text
+            self._voice_service.start_dictation(
+                callback=lambda text: self.transcription_ready.emit(text)
+            )
+        except Exception as e:
+            logger.error(f"Dictation worker error: {e}")
+            self.transcription_ready.emit(f"[Error: {str(e)}]")
+
+    def stop(self):
+        """Stop recording."""
+        self._voice_service.stop_dictation()
+
+
 class ChatScreen(QWidget):
     """
     Main chat interface.
@@ -240,6 +279,7 @@ class ChatScreen(QWidget):
     - BR3: Chat history management
     - BR4: Vehicle status queries
     - BR5: Fault code explanation
+    - BR6: Speech-to-text dictation
     - BR8: Severity color coding
     """
 
@@ -418,6 +458,17 @@ class ChatScreen(QWidget):
         self.message_input.textChanged.connect(self._adjust_input_height)
         self.message_input.installEventFilter(self)
         input_layout.addWidget(self.message_input, stretch=1)
+
+        # Microphone button for voice dictation (BR6)
+        self.mic_btn = QPushButton("Mic")
+        self.mic_btn.setObjectName("micButton")
+        self.mic_btn.setFixedSize(40, 40)
+        self.mic_btn.setCheckable(True)
+        self.mic_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.mic_btn.setToolTip("Voice dictation — click to start, click again to stop")
+        self.mic_btn.clicked.connect(self._toggle_dictation)
+        self.mic_btn.setEnabled(False)
+        input_layout.addWidget(self.mic_btn)
 
         # Send button - uses a reliable arrow character
         self.send_btn = QPushButton(">")
@@ -684,6 +735,7 @@ class ChatScreen(QWidget):
             # Enable input
             self.message_input.setEnabled(True)
             self.send_btn.setEnabled(True)
+            self.mic_btn.setEnabled(True)
 
             # Re-index data for RAG if needed (with error handling)
             try:
@@ -929,6 +981,70 @@ class ChatScreen(QWidget):
                 self.chat_header.setText("Welcome to OBD InsightBot")
                 self.message_input.setEnabled(False)
                 self.send_btn.setEnabled(False)
+                self.mic_btn.setEnabled(False)
+
+    # ── Voice Dictation (BR6) ────────────────────────────────
+
+    def _toggle_dictation(self):
+        """Toggle voice dictation on/off (BR6.1)."""
+        if self.mic_btn.isChecked():
+            self._start_dictation()
+        else:
+            self._stop_dictation()
+
+    def _start_dictation(self):
+        """Start recording via DictationWorker."""
+        # Visual feedback: recording state
+        self.mic_btn.setStyleSheet("""
+            QPushButton#micButton {
+                background-color: #FEE2E2;
+                color: #DC2626;
+                border: 2px solid #EF4444;
+                border-radius: 10px;
+                font-size: 12px;
+                font-weight: 600;
+            }
+        """)
+        self.mic_btn.setText("Rec")
+        self.mic_btn.setToolTip("Recording... click to stop")
+
+        self.dictation_worker = DictationWorker()
+        self.dictation_worker.transcription_ready.connect(self._on_dictation_result)
+        self.dictation_worker.status_update.connect(self._on_dictation_status)
+        self.dictation_worker.finished.connect(self._on_dictation_finished)
+        self.dictation_worker.start()
+
+    def _stop_dictation(self):
+        """Stop recording and reset button."""
+        if hasattr(self, 'dictation_worker') and self.dictation_worker:
+            self.dictation_worker.stop()
+        self._reset_mic_button()
+
+    def _on_dictation_result(self, text: str):
+        """Insert transcribed text into the message input (BR6.2)."""
+        if text and not text.startswith("["):
+            cursor = self.message_input.textCursor()
+            cursor.insertText(text)
+            self.message_input.setTextCursor(cursor)
+        self._reset_mic_button()
+
+    def _on_dictation_status(self, status: str):
+        """Update mic button tooltip with status."""
+        self.mic_btn.setToolTip(status)
+
+    def _on_dictation_finished(self):
+        """Clean up after dictation worker finishes."""
+        self._reset_mic_button()
+
+    def _reset_mic_button(self):
+        """Reset mic button to default state."""
+        self.mic_btn.setChecked(False)
+        self.mic_btn.setText("Mic")
+        self.mic_btn.setToolTip("Voice dictation — click to start, click again to stop")
+        # Clear inline style so the stylesheet-level style takes over
+        self.mic_btn.setStyleSheet("")
+
+    # ── Settings / Logout ─────────────────────────────────
 
     def _show_settings_menu(self):
         """Show settings/logout menu."""
