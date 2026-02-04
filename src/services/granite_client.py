@@ -586,20 +586,67 @@ Response Severity Levels:
 
 Always be helpful and provide actionable advice."""
 
+    def _parse_context(self, context: str) -> dict:
+        """Parse the context string to extract actual metrics and fault codes."""
+        result = {
+            "metrics": [],
+            "fault_codes": [],
+            "critical_items": [],
+            "warning_items": [],
+            "normal_items": []
+        }
+
+        if not context:
+            return result
+
+        lines = context.split('\n')
+        current_section = None
+
+        for line in lines:
+            line = line.strip()
+            if "VEHICLE METRICS:" in line:
+                current_section = "metrics"
+            elif "FAULT CODES:" in line:
+                current_section = "faults"
+            elif current_section == "metrics" and line.startswith(("🔴", "🟡", "🟢", "⚪")):
+                # Parse metric line: "🔴 Engine RPM: 5500 rpm (critical)"
+                result["metrics"].append(line)
+                if "🔴" in line or "(critical)" in line.lower():
+                    result["critical_items"].append(line)
+                elif "🟡" in line or "(warning)" in line.lower():
+                    result["warning_items"].append(line)
+                else:
+                    result["normal_items"].append(line)
+            elif current_section == "faults" and line.startswith("-"):
+                # Parse fault line: "- P0300: Random misfire [critical]"
+                if "None detected" not in line:
+                    result["fault_codes"].append(line)
+                    if "[critical]" in line.lower():
+                        result["critical_items"].append(line)
+                    elif "[warning]" in line.lower():
+                        result["warning_items"].append(line)
+
+        return result
+
     def _mock_response(self, prompt: str, context: str) -> str:
         """Generate a mock response for demo mode."""
         prompt_lower = prompt.lower()
 
+        # Parse context to get actual data
+        parsed = self._parse_context(context)
+
+        # Check for queries about problems/issues - show actual data
+        problem_keywords = ["wrong", "problem", "issue", "bad", "fix", "broken", "failing", "fail"]
+        if any(kw in prompt_lower for kw in problem_keywords):
+            return self._mock_problems_response(parsed, context)
+
         # More specific keyword matching to avoid false positives
-        # Check for fault code queries first (must have "fault" or specific code patterns)
         fault_keywords = ["fault code", "error code", "dtc", "diagnostic code", "trouble code"]
-        code_pattern = any(f"p0" in prompt_lower or f"p1" in prompt_lower or
-                          f"c0" in prompt_lower or f"b0" in prompt_lower or
-                          f"u0" in prompt_lower for _ in [1])
+        code_pattern = "p0" in prompt_lower or "p1" in prompt_lower or "c0" in prompt_lower or "b0" in prompt_lower or "u0" in prompt_lower
 
         if any(kw in prompt_lower for kw in fault_keywords) or code_pattern:
             return self._mock_fault_code_response(context)
-        elif any(kw in prompt_lower for kw in ["summary", "health", "status", "overview", "how is my", "check my"]):
+        elif any(kw in prompt_lower for kw in ["summary", "health", "status", "overview", "how is my", "check my", "all"]):
             return self._mock_summary_response(context)
         elif "rpm" in prompt_lower or "revolution" in prompt_lower:
             return self._mock_metric_response("engine_rpm", context)
@@ -614,129 +661,221 @@ Always be helpful and provide actionable advice."""
         else:
             return self._mock_general_response(prompt, context)
 
+    def _mock_problems_response(self, parsed: dict, context: str) -> str:
+        """Generate response showing actual problems found in the data."""
+        critical = parsed["critical_items"]
+        warnings = parsed["warning_items"]
+        faults = parsed["fault_codes"]
+
+        total_issues = len(critical) + len(warnings)
+
+        if total_issues == 0 and not faults:
+            return """**Vehicle Problem Analysis**
+
+Great news! **No significant problems detected** in your vehicle's diagnostic data.
+
+All monitored systems are operating within normal parameters:
+- ✅ No critical readings
+- ✅ No warning indicators
+- ✅ No fault codes stored
+
+**Recommendations:**
+- Continue with regular maintenance
+- Monitor for any changes in vehicle behavior
+- Your vehicle appears to be running well!
+
+Is there a specific system you'd like me to check?"""
+
+        response = f"""**Vehicle Problem Analysis**
+
+Based on your OBD-II diagnostic data, here's what needs attention:
+
+**Issues Found: {total_issues} total**
+
+"""
+        if critical:
+            response += "**🔴 CRITICAL ISSUES (Immediate Attention Required):**\n"
+            for i, item in enumerate(critical, 1):
+                # Clean up the display
+                clean_item = item.replace("🔴 ", "").replace("🟡 ", "").replace("🟢 ", "")
+                response += f"{i}. {clean_item}\n"
+            response += "\n"
+
+        if warnings:
+            response += "**🟡 WARNINGS (Should Be Addressed Soon):**\n"
+            for i, item in enumerate(warnings, 1):
+                clean_item = item.replace("🔴 ", "").replace("🟡 ", "").replace("🟢 ", "")
+                response += f"{i}. {clean_item}\n"
+            response += "\n"
+
+        if faults:
+            response += "**Fault Codes Stored:**\n"
+            for fault in faults:
+                response += f"{fault}\n"
+            response += "\n"
+
+        response += """**Recommendations:**
+"""
+        if critical:
+            response += """- ⚠️ Address critical issues immediately
+- Consider having vehicle inspected by a professional
+- Avoid long trips until issues are diagnosed
+"""
+        elif warnings:
+            response += """- Schedule a service appointment soon
+- Monitor these readings for changes
+- Keep an eye on dashboard warning lights
+"""
+
+        response += "\nWould you like me to explain any of these issues in more detail?"
+
+        return response
+
     def _mock_summary_response(self, context: str) -> str:
-        """Generate context-aware summary response."""
-        # Parse context to determine actual status
-        has_critical = "🔴" in context or "(critical)" in context.lower() if context else False
-        has_warning = "🟡" in context or "(warning)" in context.lower() if context else False
-        has_faults = "FAULT CODES:" in context and "None detected" not in context if context else False
+        """Generate context-aware summary response with actual data."""
+        # Parse context to get actual data
+        parsed = self._parse_context(context)
+
+        critical = parsed["critical_items"]
+        warnings = parsed["warning_items"]
+        normal = parsed["normal_items"]
+        faults = parsed["fault_codes"]
+
+        has_critical = len(critical) > 0
+        has_warning = len(warnings) > 0
+        has_faults = len(faults) > 0
 
         if has_critical:
             status = "Needs Immediate Attention"
             status_emoji = "🔴"
-            status_detail = "Critical issues were detected that require prompt attention."
         elif has_warning:
             status = "Needs Attention"
             status_emoji = "🟡"
-            status_detail = "Some readings are outside normal ranges and should be monitored."
         else:
             status = "Generally Good"
             status_emoji = "🟢"
-            status_detail = "Your vehicle appears to be running within normal parameters."
 
-        response = f"""Based on the OBD-II data from your vehicle, here's a summary of your vehicle's health:
+        response = f"""**Vehicle Health Summary**
 
 **Overall Status: {status_emoji} {status}**
 
-{status_detail}
+**Statistics:**
+- Critical Issues: {len(critical)}
+- Warnings: {len(warnings)}
+- Normal Readings: {len(normal)}
+- Fault Codes: {len(faults)}
 
-**Key Findings:**
 """
-        if has_critical:
-            response += """- ⚠️ Critical readings detected - see details below
-- Recommend having vehicle inspected soon
-"""
-        if has_warning:
-            response += """- Some metrics are showing warning-level values
-- Monitor these readings and consider service if they persist
-"""
-        if has_faults:
-            response += """- Fault codes are present in the system
-- Ask me about "fault codes" for detailed explanations
-"""
-        if not has_critical and not has_warning and not has_faults:
-            response += """- Engine performance metrics are within normal ranges
-- No fault codes detected
-- Temperature readings are normal
-"""
+        # Show actual critical items
+        if critical:
+            response += "**🔴 Critical Readings:**\n"
+            for item in critical:
+                clean = item.replace("🔴 ", "").replace("🟡 ", "").replace("🟢 ", "")
+                response += f"  • {clean}\n"
+            response += "\n"
 
-        response += """
-**Recommendations:**
-"""
+        # Show actual warnings
+        if warnings:
+            response += "**🟡 Warning Readings:**\n"
+            for item in warnings:
+                clean = item.replace("🔴 ", "").replace("🟡 ", "").replace("🟢 ", "")
+                response += f"  • {clean}\n"
+            response += "\n"
+
+        # Show fault codes
+        if faults:
+            response += "**Fault Codes:**\n"
+            for fault in faults:
+                response += f"  {fault}\n"
+            response += "\n"
+
+        # Show some normal readings (limit to 5)
+        if normal and not has_critical and not has_warning:
+            response += "**✅ Sample Normal Readings:**\n"
+            for item in normal[:5]:
+                clean = item.replace("🔴 ", "").replace("🟡 ", "").replace("🟢 ", "")
+                response += f"  • {clean}\n"
+            if len(normal) > 5:
+                response += f"  • ...and {len(normal) - 5} more normal readings\n"
+            response += "\n"
+
+        response += "**Recommendations:**\n"
         if has_critical:
-            response += """- Have vehicle inspected by a professional soon
-- Avoid long trips until issues are diagnosed
-- Monitor for any unusual sounds or behavior
+            response += """- ⚠️ Have vehicle inspected immediately
+- Avoid driving until critical issues are addressed
+- Contact a professional mechanic
 """
         elif has_warning:
-            response += """- Schedule a maintenance check when convenient
-- Continue monitoring the warning indicators
-- Keep an eye on your dashboard warning lights
+            response += """- Schedule a service appointment soon
+- Monitor warning readings for changes
+- Check dashboard for related warning lights
 """
         else:
-            response += """- Continue with regular maintenance schedule
-- Monitor any warning lights that may appear
-- Your vehicle is performing well!
+            response += """- Continue regular maintenance schedule
+- Vehicle is running within normal parameters
+- No immediate action required
 """
 
-        response += """
-Is there a specific aspect of your vehicle's diagnostics you'd like me to explain in more detail?"""
+        response += "\nAsk me about specific readings or fault codes for more details!"
 
         return response
 
     def _mock_fault_code_response(self, context: str) -> str:
-        """Generate context-aware fault code response."""
-        # Check if there are actual fault codes in the context
-        has_faults = "FAULT CODES:" in context and "None detected" not in context if context else False
+        """Generate context-aware fault code response with actual codes."""
+        parsed = self._parse_context(context)
+        faults = parsed["fault_codes"]
 
-        if has_faults:
-            # Extract fault code info from context if available
-            response = """**Fault Code Analysis**
+        if faults:
+            response = f"""**Fault Code Analysis**
 
-Based on your vehicle's diagnostic data, fault codes have been detected.
+**{len(faults)} Fault Code(s) Detected:**
 
-**Understanding Fault Codes:**
-Fault codes (also called DTCs - Diagnostic Trouble Codes) are stored by your vehicle's computer when it detects a problem. They follow a standard format:
+"""
+            for fault in faults:
+                response += f"{fault}\n"
 
+            response += """
+**Understanding These Codes:**
+Fault codes (DTCs) are stored by your vehicle's computer when it detects a problem:
 - **P codes** - Powertrain (engine, transmission)
 - **C codes** - Chassis (ABS, steering)
 - **B codes** - Body (airbags, A/C)
 - **U codes** - Network (communication issues)
 
-**Severity Levels:**
-- 🔴 **Critical** - Should be addressed immediately
+**Severity Guide:**
+- 🔴 **Critical** - Address immediately
 - 🟡 **Warning** - Schedule service soon
 - 🟢 **Minor** - Monitor but not urgent
 
 **Recommendations:**
-1. Note down any codes shown in your data
-2. Research the specific code meanings
-3. Consider having a mechanic diagnose the root cause
-4. Don't ignore persistent check engine lights
+1. Don't ignore these codes - they indicate real issues
+2. Have a mechanic diagnose the root cause
+3. Clearing codes without fixing issues will cause them to return
 
-Would you like me to explain a specific fault code? Just ask about it by name (e.g., "What does P0300 mean?")."""
+Ask me about a specific code for a detailed explanation!"""
         else:
             response = """**Fault Code Analysis**
 
-Great news! **No active fault codes** were detected in your vehicle's diagnostic data.
+**✅ No Fault Codes Detected**
+
+Great news! Your vehicle has no diagnostic trouble codes (DTCs) stored.
 
 **What This Means:**
-✅ The engine management system hasn't flagged any problems
-✅ All monitored systems are operating within acceptable parameters
-✅ No pending diagnostic trouble codes (DTCs)
+- The engine management system hasn't flagged any problems
+- All monitored systems are operating within acceptable parameters
+- No pending codes waiting to trigger
 
-**Important Notes:**
-- This doesn't guarantee everything is perfect mechanically
+**Keep In Mind:**
+- This doesn't guarantee everything is mechanically perfect
 - Some issues may not trigger fault codes
-- Cleared codes won't show until the issue recurs
+- Previously cleared codes won't show until the issue recurs
 
 **Recommendations:**
 - Continue regular maintenance schedule
-- If your check engine light comes on, have it scanned promptly
-- Pay attention to any unusual sounds, smells, or performance changes
+- If check engine light comes on, have it scanned promptly
+- Pay attention to unusual sounds, smells, or performance changes
 
-**Want to know more?**
-Ask me about your vehicle's health summary or specific sensor readings!"""
+Ask me about your vehicle health summary for more details!"""
 
         return response
 
