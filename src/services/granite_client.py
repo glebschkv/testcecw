@@ -590,60 +590,155 @@ Always be helpful and provide actionable advice."""
         """Generate a mock response for demo mode."""
         prompt_lower = prompt.lower()
 
-        if "summary" in prompt_lower or "health" in prompt_lower or "status" in prompt_lower:
-            return self._mock_summary_response(context)
-        elif "fault" in prompt_lower or "code" in prompt_lower or "error" in prompt_lower:
+        # More specific keyword matching to avoid false positives
+        # Check for fault code queries first (must have "fault" or specific code patterns)
+        fault_keywords = ["fault code", "error code", "dtc", "diagnostic code", "trouble code"]
+        code_pattern = any(f"p0" in prompt_lower or f"p1" in prompt_lower or
+                          f"c0" in prompt_lower or f"b0" in prompt_lower or
+                          f"u0" in prompt_lower for _ in [1])
+
+        if any(kw in prompt_lower for kw in fault_keywords) or code_pattern:
             return self._mock_fault_code_response(context)
-        elif "rpm" in prompt_lower:
+        elif any(kw in prompt_lower for kw in ["summary", "health", "status", "overview", "how is my", "check my"]):
+            return self._mock_summary_response(context)
+        elif "rpm" in prompt_lower or "revolution" in prompt_lower:
             return self._mock_metric_response("engine_rpm", context)
-        elif "coolant" in prompt_lower or "temperature" in prompt_lower:
+        elif "coolant" in prompt_lower or "temperature" in prompt_lower or "overheating" in prompt_lower:
             return self._mock_metric_response("coolant_temp", context)
-        elif "speed" in prompt_lower:
+        elif "speed" in prompt_lower or "mph" in prompt_lower or "kph" in prompt_lower:
             return self._mock_metric_response("vehicle_speed", context)
+        elif "battery" in prompt_lower or "voltage" in prompt_lower:
+            return self._mock_battery_response(context)
+        elif "fuel" in prompt_lower or "gas" in prompt_lower or "mileage" in prompt_lower:
+            return self._mock_fuel_response(context)
         else:
-            return self._mock_general_response(prompt)
+            return self._mock_general_response(prompt, context)
 
     def _mock_summary_response(self, context: str) -> str:
-        return """Based on the OBD-II data from your vehicle, here's a summary of your vehicle's health:
+        """Generate context-aware summary response."""
+        # Parse context to determine actual status
+        has_critical = "🔴" in context or "(critical)" in context.lower() if context else False
+        has_warning = "🟡" in context or "(warning)" in context.lower() if context else False
+        has_faults = "FAULT CODES:" in context and "None detected" not in context if context else False
 
-**Overall Status: Generally Good**
+        if has_critical:
+            status = "Needs Immediate Attention"
+            status_emoji = "🔴"
+            status_detail = "Critical issues were detected that require prompt attention."
+        elif has_warning:
+            status = "Needs Attention"
+            status_emoji = "🟡"
+            status_detail = "Some readings are outside normal ranges and should be monitored."
+        else:
+            status = "Generally Good"
+            status_emoji = "🟢"
+            status_detail = "Your vehicle appears to be running within normal parameters."
 
-Your vehicle appears to be running within normal parameters for most metrics. Here are the key findings:
+        response = f"""Based on the OBD-II data from your vehicle, here's a summary of your vehicle's health:
 
-**Engine Performance:**
-- Engine RPM is stable and within the normal operating range
-- Engine load is at acceptable levels
+**Overall Status: {status_emoji} {status}**
 
-**Temperature:**
-- Coolant temperature is within the normal range, indicating the cooling system is working properly
+{status_detail}
 
+**Key Findings:**
+"""
+        if has_critical:
+            response += """- ⚠️ Critical readings detected - see details below
+- Recommend having vehicle inspected soon
+"""
+        if has_warning:
+            response += """- Some metrics are showing warning-level values
+- Monitor these readings and consider service if they persist
+"""
+        if has_faults:
+            response += """- Fault codes are present in the system
+- Ask me about "fault codes" for detailed explanations
+"""
+        if not has_critical and not has_warning and not has_faults:
+            response += """- Engine performance metrics are within normal ranges
+- No fault codes detected
+- Temperature readings are normal
+"""
+
+        response += """
 **Recommendations:**
-- Continue with regular maintenance schedule
-- Monitor any warning lights that may appear on your dashboard
-- If you notice any unusual sounds or behavior, have it checked by a professional
+"""
+        if has_critical:
+            response += """- Have vehicle inspected by a professional soon
+- Avoid long trips until issues are diagnosed
+- Monitor for any unusual sounds or behavior
+"""
+        elif has_warning:
+            response += """- Schedule a maintenance check when convenient
+- Continue monitoring the warning indicators
+- Keep an eye on your dashboard warning lights
+"""
+        else:
+            response += """- Continue with regular maintenance schedule
+- Monitor any warning lights that may appear
+- Your vehicle is performing well!
+"""
 
+        response += """
 Is there a specific aspect of your vehicle's diagnostics you'd like me to explain in more detail?"""
 
+        return response
+
     def _mock_fault_code_response(self, context: str) -> str:
-        return """I'll explain the fault codes found in your vehicle's diagnostic data:
+        """Generate context-aware fault code response."""
+        # Check if there are actual fault codes in the context
+        has_faults = "FAULT CODES:" in context and "None detected" not in context if context else False
 
-**No Active Fault Codes Detected**
+        if has_faults:
+            # Extract fault code info from context if available
+            response = """**Fault Code Analysis**
 
-Great news! Your vehicle currently has no diagnostic trouble codes (DTCs) stored in the system. This means:
+Based on your vehicle's diagnostic data, fault codes have been detected.
 
-1. The engine management system hasn't detected any significant issues
-2. All monitored systems are operating within acceptable parameters
+**Understanding Fault Codes:**
+Fault codes (also called DTCs - Diagnostic Trouble Codes) are stored by your vehicle's computer when it detects a problem. They follow a standard format:
 
-**What This Means:**
-- Your vehicle's onboard computer hasn't flagged any problems
-- This doesn't guarantee everything is perfect, but major issues would typically trigger a code
+- **P codes** - Powertrain (engine, transmission)
+- **C codes** - Chassis (ABS, steering)
+- **B codes** - Body (airbags, A/C)
+- **U codes** - Network (communication issues)
+
+**Severity Levels:**
+- 🔴 **Critical** - Should be addressed immediately
+- 🟡 **Warning** - Schedule service soon
+- 🟢 **Minor** - Monitor but not urgent
 
 **Recommendations:**
-- Continue regular maintenance
-- If your check engine light comes on in the future, have it scanned promptly
-- Keep an eye on any unusual behavior (sounds, smells, or performance changes)
+1. Note down any codes shown in your data
+2. Research the specific code meanings
+3. Consider having a mechanic diagnose the root cause
+4. Don't ignore persistent check engine lights
 
-Would you like me to explain what types of issues would trigger fault codes?"""
+Would you like me to explain a specific fault code? Just ask about it by name (e.g., "What does P0300 mean?")."""
+        else:
+            response = """**Fault Code Analysis**
+
+Great news! **No active fault codes** were detected in your vehicle's diagnostic data.
+
+**What This Means:**
+✅ The engine management system hasn't flagged any problems
+✅ All monitored systems are operating within acceptable parameters
+✅ No pending diagnostic trouble codes (DTCs)
+
+**Important Notes:**
+- This doesn't guarantee everything is perfect mechanically
+- Some issues may not trigger fault codes
+- Cleared codes won't show until the issue recurs
+
+**Recommendations:**
+- Continue regular maintenance schedule
+- If your check engine light comes on, have it scanned promptly
+- Pay attention to any unusual sounds, smells, or performance changes
+
+**Want to know more?**
+Ask me about your vehicle's health summary or specific sensor readings!"""
+
+        return response
 
     def _mock_metric_response(self, metric: str, context: str) -> str:
         metrics_info = {
@@ -688,21 +783,90 @@ Your speed sensor data looks good. Let me know if you have any other questions!"
         }
         return metrics_info.get(metric, self._mock_general_response(metric))
 
-    def _mock_general_response(self, prompt: str) -> str:
-        return f"""Thank you for your question about your vehicle.
+    def _mock_battery_response(self, context: str) -> str:
+        """Generate mock battery response."""
+        return """**Battery & Electrical System Analysis**
 
-Based on the OBD-II diagnostic data available, I can help you understand your vehicle's condition.
+Based on your vehicle's diagnostic data:
 
-The OBD-II system monitors many aspects of your vehicle including:
-- Engine performance and emissions
-- Fuel system operation
-- Ignition system
-- Various sensors throughout the vehicle
+**Current Status:** Normal Operation
 
-Is there a specific aspect of your vehicle's diagnostics you'd like me to focus on? For example:
-- Overall vehicle health summary
-- Specific fault codes explanation
-- Particular sensor readings
-- Maintenance recommendations
+- **Battery Voltage:** Within acceptable range (typically 12.4-12.7V when off, 13.7-14.7V when running)
+- **Charging System:** Alternator appears to be functioning properly
 
-Please let me know how I can help you better understand your vehicle's condition!"""
+**What This Means:**
+Your vehicle's electrical system is operating within normal parameters. The battery is holding charge and the alternator is providing adequate power.
+
+**Tips for Battery Health:**
+- Have battery tested if vehicle is slow to start
+- Check terminals for corrosion periodically
+- Most batteries last 3-5 years
+
+Would you like me to explain any specific electrical readings?"""
+
+    def _mock_fuel_response(self, context: str) -> str:
+        """Generate mock fuel system response."""
+        return """**Fuel System Analysis**
+
+Based on your vehicle's OBD-II data:
+
+**Current Status:** Operating Normally
+
+**Key Readings:**
+- **Fuel System:** Closed loop operation (normal)
+- **Fuel Trim:** Within acceptable range
+- **Fuel Pressure:** Normal operating pressure
+
+**What This Means:**
+Your fuel system is functioning correctly. The engine is receiving the proper air-fuel mixture for efficient combustion.
+
+**Fuel Efficiency Tips:**
+- Maintain proper tire pressure
+- Replace air filter as recommended
+- Use the recommended fuel grade for your vehicle
+
+Any specific fuel-related concerns you'd like me to address?"""
+
+    def _mock_general_response(self, prompt: str, context: str = "") -> str:
+        """Generate context-aware general response."""
+        # Parse context to provide more relevant response
+        has_metrics = "VEHICLE METRICS:" in context if context else False
+        has_faults = "FAULT CODES:" in context and "None detected" not in context if context else False
+
+        response = f"""Thank you for your question: "{prompt[:50]}{'...' if len(prompt) > 50 else ''}"
+
+Based on your vehicle's OBD-II diagnostic data, here's what I can tell you:
+
+"""
+        if has_metrics:
+            response += """**Available Data:**
+Your uploaded diagnostic file contains vehicle sensor readings that I can analyze. I can help you understand:
+- Engine performance metrics (RPM, load, temperatures)
+- Emission system readings
+- Fuel system status
+- Various sensor values
+
+"""
+        if has_faults:
+            response += """**Fault Codes Detected:**
+Your vehicle has diagnostic trouble codes stored. Ask me about "fault codes" for a detailed explanation.
+
+"""
+        elif context:
+            response += """**Good News:**
+No fault codes were detected in your diagnostic data.
+
+"""
+
+        response += """**How I Can Help:**
+Try asking me specific questions like:
+- "What's my vehicle health summary?"
+- "Explain my RPM readings"
+- "What does my coolant temperature mean?"
+- "Are there any fault codes?"
+
+**Note:** I'm currently running in demo mode. For full AI-powered analysis, the local Granite model needs to be installed.
+
+What would you like to know about your vehicle?"""
+
+        return response
