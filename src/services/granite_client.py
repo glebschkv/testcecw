@@ -205,6 +205,9 @@ class GraniteClient:
         self._ollama_url = self.settings.ollama_url
         self._ollama_model = ollama_model or self.settings.ollama_model
 
+        # HTTP session for connection pooling
+        self._session = requests.Session() if HAS_REQUESTS else None
+
         # Check what's available
         self._use_ollama = self._check_ollama_available()
 
@@ -224,7 +227,7 @@ class GraniteClient:
             return False
 
         try:
-            response = requests.get(
+            response = self._session.get(
                 f"{self._ollama_url}/api/tags",
                 timeout=5
             )
@@ -373,7 +376,7 @@ class GraniteClient:
         messages.append({"role": "user", "content": prompt})
 
         try:
-            response = requests.post(
+            response = self._session.post(
                 f"{self._ollama_url}/api/chat",
                 json={
                     "model": self._ollama_model,
@@ -424,7 +427,7 @@ class GraniteClient:
         messages.append({"role": "user", "content": prompt})
 
         try:
-            response = requests.post(
+            response = self._session.post(
                 f"{self._ollama_url}/api/chat",
                 json={
                     "model": self._ollama_model,
@@ -468,7 +471,7 @@ class GraniteClient:
         embeddings = []
         for text in texts:
             try:
-                response = requests.post(
+                response = self._session.post(
                     f"{self._ollama_url}/api/embeddings",
                     json={
                         "model": self._ollama_model,
@@ -521,7 +524,7 @@ class GraniteClient:
             }
             # Try to get model details from Ollama
             try:
-                response = requests.post(
+                response = self._session.post(
                     f"{self._ollama_url}/api/show",
                     json={"name": self._ollama_model},
                     timeout=5
@@ -545,7 +548,7 @@ class GraniteClient:
     def list_available_models(self) -> List[str]:
         """List models available on the Ollama server."""
         try:
-            response = requests.get(
+            response = self._session.get(
                 f"{self._ollama_url}/api/tags",
                 timeout=5
             )
@@ -561,7 +564,7 @@ class GraniteClient:
         model = model_name or self._ollama_model
         try:
             logger.info(f"Pulling Ollama model: {model}...")
-            response = requests.post(
+            response = self._session.post(
                 f"{self._ollama_url}/api/pull",
                 json={"name": model, "stream": False},
                 timeout=600

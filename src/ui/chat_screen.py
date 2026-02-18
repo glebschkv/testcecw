@@ -4,6 +4,7 @@ Implements BR2, BR3, BR4, BR5, BR8
 """
 
 from typing import Optional, List
+from datetime import datetime
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QTextEdit,
     QPushButton, QFrame, QListWidget, QListWidgetItem,
@@ -11,7 +12,7 @@ from PyQt6.QtWidgets import (
     QMenu, QInputDialog, QApplication
 )
 from PyQt6.QtCore import Qt, pyqtSignal, QThread, QTimer, QEvent
-from PyQt6.QtGui import QFont, QAction, QTextCursor, QKeyEvent
+from PyQt6.QtGui import QFont, QAction, QTextCursor, QKeyEvent, QShortcut, QKeySequence
 
 from .styles import Styles, SeverityStyles
 from ..models.user import User
@@ -90,6 +91,7 @@ class MessageWidget(QFrame):
         role = self.message.get("role", "assistant")
         content = self.message.get("content", "")
         severity = self.message.get("severity", "normal")
+        timestamp = self.message.get("timestamp")
 
         # Main horizontal layout with avatar
         main_layout = QHBoxLayout(self)
@@ -125,7 +127,7 @@ class MessageWidget(QFrame):
         content_layout.setContentsMargins(0, 0, 0, 0)
         content_layout.setSpacing(6)
 
-        # Header row with name and severity badge
+        # Header row with name, severity badge, and timestamp
         header_layout = QHBoxLayout()
         header_layout.setSpacing(10)
 
@@ -155,7 +157,58 @@ class MessageWidget(QFrame):
             severity_badge.setFixedHeight(20)
             header_layout.addWidget(severity_badge)
 
+        # Timestamp
+        time_str = ""
+        if timestamp:
+            try:
+                if isinstance(timestamp, str):
+                    dt = datetime.fromisoformat(timestamp)
+                elif isinstance(timestamp, datetime):
+                    dt = timestamp
+                else:
+                    dt = None
+                if dt:
+                    time_str = dt.strftime("%-I:%M %p") if hasattr(dt, 'strftime') else ""
+            except (ValueError, OSError):
+                pass
+        if not time_str:
+            time_str = datetime.now().strftime("%-I:%M %p")
+
+        time_label = QLabel(time_str)
+        time_label.setStyleSheet("""
+            color: #94A3B8;
+            font-size: 11px;
+            font-weight: 400;
+            background-color: transparent;
+        """)
+        header_layout.addWidget(time_label)
+
         header_layout.addStretch()
+
+        # Copy button for assistant messages
+        if role == "assistant":
+            self._copy_btn = QPushButton("Copy")
+            self._copy_btn.setFixedHeight(22)
+            self._copy_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+            self._copy_btn.setStyleSheet("""
+                QPushButton {
+                    background-color: transparent;
+                    color: #94A3B8;
+                    border: 1px solid #E2E8F0;
+                    border-radius: 6px;
+                    padding: 2px 8px;
+                    font-size: 11px;
+                    font-weight: 500;
+                }
+                QPushButton:hover {
+                    background-color: #F1F5F9;
+                    color: #475569;
+                    border-color: #CBD5E1;
+                }
+            """)
+            self._copy_btn.clicked.connect(lambda: self._copy_content(content))
+            header_layout.addWidget(self._copy_btn)
+
         content_layout.addLayout(header_layout)
 
         # Message content bubble
@@ -200,6 +253,13 @@ class MessageWidget(QFrame):
         # Transparent frame background
         self.setStyleSheet("QFrame { background-color: transparent; }")
 
+    def _copy_content(self, text: str):
+        """Copy message content to clipboard."""
+        clipboard = QApplication.clipboard()
+        clipboard.setText(text)
+        self._copy_btn.setText("Copied!")
+        QTimer.singleShot(1500, lambda: self._copy_btn.setText("Copy"))
+
 
 class ChatWorker(QThread):
     """Worker thread for processing chat queries."""
@@ -213,22 +273,31 @@ class ChatWorker(QThread):
         self.query = query
         self.chat_id = chat_id
         self.context = context
+        self._cancelled = False
 
     def run(self):
         """Process the query in background."""
         try:
+            if self._cancelled:
+                return
             response = self.rag_pipeline.query(
                 self.query,
                 self.chat_id,
                 self.context
             )
-            self.response_ready.emit({
-                "response": response.response,
-                "severity": response.severity
-            })
+            if not self._cancelled:
+                self.response_ready.emit({
+                    "response": response.response,
+                    "severity": response.severity
+                })
         except Exception as e:
-            logger.error(f"Chat worker error: {e}")
-            self.error_occurred.emit(str(e))
+            if not self._cancelled:
+                logger.error(f"Chat worker error: {e}")
+                self.error_occurred.emit(str(e))
+
+    def cancel(self):
+        """Mark this worker as cancelled."""
+        self._cancelled = True
 
 
 class ChatScreen(QWidget):
@@ -251,6 +320,7 @@ class ChatScreen(QWidget):
         self.session_token = session_token
         self.current_chat: Optional[Chat] = None
         self.current_context: dict = {}
+        self._active_worker: Optional[ChatWorker] = None
 
         # Initialize services
         self.obd_parser = OBDParser()
@@ -258,6 +328,7 @@ class ChatScreen(QWidget):
         self.rag_pipeline = RAGPipeline(self.granite_client)
 
         self.setup_ui()
+        self._setup_shortcuts()
         self.load_chat_history()
 
     def setup_ui(self):
@@ -275,6 +346,27 @@ class ChatScreen(QWidget):
         # Main chat area
         chat_area = self._create_chat_area()
         main_layout.addWidget(chat_area, stretch=1)
+
+    def _setup_shortcuts(self):
+        """Set up keyboard shortcuts."""
+        # Ctrl+N: New chat
+        new_chat_shortcut = QShortcut(QKeySequence("Ctrl+N"), self)
+        new_chat_shortcut.activated.connect(self._create_new_chat)
+
+        # Escape: Cancel active AI response
+        cancel_shortcut = QShortcut(QKeySequence("Escape"), self)
+        cancel_shortcut.activated.connect(self._cancel_response)
+
+    def _cancel_response(self):
+        """Cancel the active AI response."""
+        if self._active_worker and self._active_worker.isRunning():
+            self._active_worker.cancel()
+            self._hide_loading()
+            self._add_message_widget({
+                "role": "assistant",
+                "content": "Response cancelled.",
+                "severity": "normal"
+            })
 
     def _create_sidebar(self) -> QFrame:
         """Create the sidebar with chat history."""
@@ -390,7 +482,7 @@ class ChatScreen(QWidget):
         # Text input with auto-resize
         self.message_input = QTextEdit()
         self.message_input.setObjectName("messageInput")
-        self.message_input.setPlaceholderText("Ask about your vehicle...")
+        self.message_input.setPlaceholderText("Create a new chat to start messaging")
         self.message_input.setMinimumHeight(36)
         self.message_input.setMaximumHeight(120)
         self.message_input.setEnabled(False)
@@ -419,8 +511,8 @@ class ChatScreen(QWidget):
         self.message_input.installEventFilter(self)
         input_layout.addWidget(self.message_input, stretch=1)
 
-        # Send button
-        self.send_btn = QPushButton(">")
+        # Send button with arrow icon
+        self.send_btn = QPushButton("\u27A4")
         self.send_btn.setObjectName("sendButton")
         self.send_btn.setFixedSize(48, 48)
         self.send_btn.setCursor(Qt.CursorShape.PointingHandCursor)
@@ -431,7 +523,7 @@ class ChatScreen(QWidget):
         layout.addWidget(input_frame)
 
         # Keyboard hint
-        hint_label = QLabel("Enter to send  |  Shift+Enter for new line")
+        hint_label = QLabel("Enter to send  |  Shift+Enter for new line  |  Ctrl+N new chat")
         hint_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         hint_label.setStyleSheet("""
             color: #CBD5E1;
@@ -578,7 +670,36 @@ class ChatScreen(QWidget):
         card_container.addStretch()
         welcome_layout.addLayout(card_container)
 
-        welcome_layout.addSpacing(40)
+        welcome_layout.addSpacing(32)
+
+        # Start New Chat CTA button
+        cta_container = QHBoxLayout()
+        cta_container.addStretch()
+        cta_btn = QPushButton("+  Start New Chat")
+        cta_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        cta_btn.setStyleSheet("""
+            QPushButton {
+                background-color: #6366F1;
+                color: #FFFFFF;
+                border-radius: 14px;
+                padding: 14px 32px;
+                font-size: 15px;
+                font-weight: 700;
+                border: none;
+            }
+            QPushButton:hover {
+                background-color: #4F46E5;
+            }
+            QPushButton:pressed {
+                background-color: #4338CA;
+            }
+        """)
+        cta_btn.clicked.connect(self._create_new_chat)
+        cta_container.addWidget(cta_btn)
+        cta_container.addStretch()
+        welcome_layout.addLayout(cta_container)
+
+        welcome_layout.addSpacing(32)
 
         # Footer
         footer = QLabel("Powered by IBM Granite AI")
@@ -606,6 +727,14 @@ class ChatScreen(QWidget):
             item = QListWidgetItem(display_name)
             item.setData(Qt.ItemDataRole.UserRole, chat.id)
             item.setToolTip(chat.name)
+
+            # Add severity indicator dot based on fault codes
+            severity = getattr(chat, 'highest_severity', None)
+            if severity and severity.lower() == "critical":
+                item.setForeground(Qt.GlobalColor.red)
+            elif severity and severity.lower() == "warning":
+                item.setForeground(Qt.GlobalColor.yellow)
+
             self.chat_list.addItem(item)
 
     def _create_new_chat(self):
@@ -663,6 +792,9 @@ class ChatScreen(QWidget):
 
     def _load_chat(self, chat_id: int):
         """Load a chat and display its messages."""
+        # Cancel any active worker before switching chats
+        self._cleanup_worker()
+
         try:
             chat = ChatService.get_chat(chat_id, self.user.id)
             if not chat:
@@ -695,6 +827,7 @@ class ChatScreen(QWidget):
 
             # Enable input
             self.message_input.setEnabled(True)
+            self.message_input.setPlaceholderText("Ask about your vehicle...")
             self.send_btn.setEnabled(True)
 
             # Re-index data for RAG if needed (with error handling)
@@ -724,8 +857,8 @@ class ChatScreen(QWidget):
         widget = MessageWidget(message)
         self.messages_layout.addWidget(widget)
 
-        # Scroll to bottom
-        QTimer.singleShot(100, self._scroll_to_bottom)
+        # Scroll to bottom after layout update
+        QTimer.singleShot(50, self._scroll_to_bottom)
 
     def _scroll_to_bottom(self):
         """Scroll messages to bottom."""
@@ -750,6 +883,15 @@ class ChatScreen(QWidget):
                     return True
         return super().eventFilter(obj, event)
 
+    def _cleanup_worker(self):
+        """Cancel and clean up the active worker thread."""
+        if self._active_worker and self._active_worker.isRunning():
+            self._active_worker.cancel()
+            self._active_worker.response_ready.disconnect()
+            self._active_worker.error_occurred.disconnect()
+            self._active_worker = None
+            self._hide_loading()
+
     def _send_message(self):
         """Send a message and get response (BR4, BR5)."""
         if not self.current_chat:
@@ -757,6 +899,10 @@ class ChatScreen(QWidget):
 
         text = self.message_input.toPlainText().strip()
         if not text:
+            return
+
+        # Don't allow sending while worker is active
+        if self._active_worker and self._active_worker.isRunning():
             return
 
         # Clear input
@@ -775,22 +921,22 @@ class ChatScreen(QWidget):
             self._show_loading()
 
             # Process query in background
-            self.worker = ChatWorker(
+            self._active_worker = ChatWorker(
                 self.rag_pipeline,
                 text,
                 self.current_chat.id,
                 self.current_context
             )
-            self.worker.response_ready.connect(self._on_response_ready)
-            self.worker.error_occurred.connect(self._on_response_error)
-            self.worker.start()
+            self._active_worker.response_ready.connect(self._on_response_ready)
+            self._active_worker.error_occurred.connect(self._on_response_error)
+            self._active_worker.start()
 
         except Exception as e:
             logger.error(f"Error sending message: {e}")
             self._hide_loading()
             self._add_message_widget({
                 "role": "assistant",
-                "content": f"Sorry, there was an error processing your message. Please try again.",
+                "content": "Sorry, there was an error processing your message. Please try again.",
                 "severity": "warning"
             })
 
@@ -802,12 +948,13 @@ class ChatScreen(QWidget):
         # Add thinking indicator
         self.thinking_indicator = ThinkingIndicator()
         self.messages_layout.addWidget(self.thinking_indicator)
-        QTimer.singleShot(100, self._scroll_to_bottom)
+        QTimer.singleShot(50, self._scroll_to_bottom)
 
     def _hide_loading(self):
         """Hide loading indicator."""
         self.send_btn.setEnabled(True)
         self.message_input.setEnabled(True)
+        self.message_input.setFocus()
 
         # Remove thinking indicator
         if hasattr(self, 'thinking_indicator') and self.thinking_indicator:
@@ -818,6 +965,7 @@ class ChatScreen(QWidget):
     def _on_response_ready(self, response: dict):
         """Handle response from worker."""
         self._hide_loading()
+        self._active_worker = None
 
         # Guard against chat being deleted while waiting for response
         if not self.current_chat:
@@ -835,11 +983,25 @@ class ChatScreen(QWidget):
     def _on_response_error(self, error: str):
         """Handle error from worker."""
         self._hide_loading()
+        self._active_worker = None
 
-        # Add error message
+        # Provide actionable error messages
+        if "Connection" in error or "connect" in error.lower():
+            user_msg = (
+                "Could not connect to the AI backend. "
+                "Make sure Ollama is running: ollama serve"
+            )
+        elif "timeout" in error.lower():
+            user_msg = (
+                "The AI request timed out. This can happen with complex queries. "
+                "Please try a simpler question or check that Ollama is running."
+            )
+        else:
+            user_msg = f"I encountered an error: {error}\n\nPlease try again."
+
         self._add_message_widget({
             "role": "assistant",
-            "content": f"I'm sorry, I encountered an error processing your request: {error}\n\nPlease try again.",
+            "content": user_msg,
             "severity": "warning"
         })
 
@@ -851,13 +1013,13 @@ class ChatScreen(QWidget):
         has_issues = parsed_data.get("has_issues", False)
 
         summary = f"I've analyzed your OBD-II log file and found:\n\n"
-        summary += f"• **{metrics_count}** vehicle metrics\n"
-        summary += f"• **{fault_count}** fault codes\n\n"
+        summary += f"  {metrics_count} vehicle metrics\n"
+        summary += f"  {fault_count} fault codes\n\n"
 
         if has_issues:
-            summary += "⚠️ Some readings need your attention. Ask me for a detailed summary!"
+            summary += "Some readings need your attention. Ask me for a detailed summary!"
         else:
-            summary += "✅ Your vehicle appears to be in good condition!"
+            summary += "Your vehicle appears to be in good condition!"
 
         self._add_message_widget({
             "role": "assistant",
@@ -883,6 +1045,10 @@ class ChatScreen(QWidget):
         export_action = menu.addAction("Export to .txt")
         export_action.triggered.connect(lambda: self._export_chat(chat_id))
 
+        # Copy all messages
+        copy_all_action = menu.addAction("Copy All Messages")
+        copy_all_action.triggered.connect(lambda: self._copy_all_messages(chat_id))
+
         menu.addSeparator()
 
         # Delete action (BR3.2)
@@ -906,24 +1072,53 @@ class ChatScreen(QWidget):
                 self.chat_header.setText(new_name)
 
     def _export_chat(self, chat_id: int):
-        """Export chat to file (BR3.4)."""
-        content = ChatService.export_chat(chat_id, self.user.id, "txt")
+        """Export chat to file (BR3.4) with error handling."""
+        try:
+            content = ChatService.export_chat(chat_id, self.user.id, "txt")
 
-        if not content:
-            QMessageBox.warning(self, "Export Failed", "Could not export chat.")
-            return
+            if not content:
+                QMessageBox.warning(self, "Export Failed", "Could not export chat.")
+                return
 
-        file_path, _ = QFileDialog.getSaveFileName(
-            self, "Export Chat", "chat_export.txt", "Text Files (*.txt)"
-        )
+            file_path, _ = QFileDialog.getSaveFileName(
+                self, "Export Chat", "chat_export.txt", "Text Files (*.txt)"
+            )
 
-        if file_path:
-            with open(file_path, "w", encoding="utf-8") as f:
-                f.write(content)
-            QMessageBox.information(self, "Export Complete", f"Chat exported to {file_path}")
+            if file_path:
+                with open(file_path, "w", encoding="utf-8") as f:
+                    f.write(content)
+                QMessageBox.information(self, "Export Complete", f"Chat exported to {file_path}")
+
+        except PermissionError:
+            QMessageBox.critical(
+                self, "Export Failed",
+                "Permission denied. Try saving to a different location."
+            )
+        except OSError as e:
+            QMessageBox.critical(
+                self, "Export Failed",
+                f"Could not write file: {str(e)}"
+            )
+        except Exception as e:
+            logger.error(f"Export error: {e}")
+            QMessageBox.critical(
+                self, "Export Failed",
+                f"An unexpected error occurred: {str(e)}"
+            )
+
+    def _copy_all_messages(self, chat_id: int):
+        """Copy all messages from a chat to clipboard."""
+        try:
+            content = ChatService.export_chat(chat_id, self.user.id, "txt")
+            if content:
+                clipboard = QApplication.clipboard()
+                clipboard.setText(content)
+                # Brief visual feedback would be nice but a message box is too intrusive
+        except Exception as e:
+            logger.error(f"Error copying messages: {e}")
 
     def _delete_chat(self, chat_id: int):
-        """Delete a chat (BR3.2)."""
+        """Delete a chat (BR3.2) with confirmation."""
         reply = QMessageBox.question(
             self, "Delete Chat",
             "Are you sure you want to delete this chat?\nThis cannot be undone.",
@@ -931,6 +1126,10 @@ class ChatScreen(QWidget):
         )
 
         if reply == QMessageBox.StandardButton.Yes:
+            # Cancel active worker if it's for this chat
+            if self.current_chat and self.current_chat.id == chat_id:
+                self._cleanup_worker()
+
             ChatService.delete_chat(chat_id, self.user.id)
             self.load_chat_history()
 
@@ -940,11 +1139,25 @@ class ChatScreen(QWidget):
                 self._show_welcome_message()
                 self.chat_header.setText("Welcome to OBD InsightBot")
                 self.message_input.setEnabled(False)
+                self.message_input.setPlaceholderText("Create a new chat to start messaging")
                 self.send_btn.setEnabled(False)
 
     def _show_settings_menu(self):
         """Show settings/logout menu."""
         menu = QMenu(self)
+
+        # Model info
+        model_info = self.granite_client.get_model_info()
+        backend = model_info.get("backend", "unknown")
+        if backend == "ollama":
+            model_name = model_info.get("model", "unknown")
+            status_action = menu.addAction(f"AI: {model_name} (Ollama)")
+            status_action.setEnabled(False)
+        elif backend == "mock":
+            status_action = menu.addAction("AI: Demo Mode")
+            status_action.setEnabled(False)
+
+        menu.addSeparator()
 
         logout_action = menu.addAction("Logout")
         logout_action.triggered.connect(self._logout)
@@ -955,6 +1168,7 @@ class ChatScreen(QWidget):
 
     def _logout(self):
         """Handle logout (BR1.3)."""
+        self._cleanup_worker()
         from ..services.auth_service import AuthService
         AuthService.logout(self.session_token)
         self.logout_requested.emit()
