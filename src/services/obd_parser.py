@@ -560,20 +560,34 @@ class OBDParser:
         metrics = []
         column_map = self._find_valid_columns(df)
 
+        # Filter out engine-off rows (RPM=0) to avoid false critical readings
+        # from shutdown state (e.g. fuel_pressure=0, engine_rpm=0)
+        running_df = df
+        rpm_col = column_map.get("engine_rpm")
+        if rpm_col:
+            rpm_values = pd.to_numeric(df[rpm_col], errors="coerce")
+            running_mask = rpm_values > 0
+            if running_mask.any():
+                running_df = df[running_mask]
+
         for metric_name, column_name in column_map.items():
             if metric_name in ["fault_codes", "timestamp"]:
                 continue
 
             try:
-                values = pd.to_numeric(df[column_name], errors="coerce").dropna()
+                # Use running-engine data to avoid engine-off false readings
+                values = pd.to_numeric(running_df[column_name], errors="coerce").dropna()
+                if values.empty:
+                    # Fall back to all data if no running data available
+                    values = pd.to_numeric(df[column_name], errors="coerce").dropna()
                 if values.empty:
                     continue
 
-                # Calculate average value
-                avg_value = values.mean()
-                latest_value = values.iloc[-1] if len(values) > 0 else avg_value
+                # Use median for a representative value (robust against outliers)
+                median_value = values.median()
+                latest_value = values.iloc[-1] if len(values) > 0 else median_value
 
-                # Classify status
+                # Classify status based on latest running value
                 status = self._classify_metric_status(metric_name, latest_value)
 
                 # Get normal range string

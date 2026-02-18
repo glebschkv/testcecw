@@ -5,6 +5,7 @@ Implements BR2, BR3, BR4, BR5, BR8
 
 from typing import Optional, List
 from datetime import datetime
+from pathlib import Path
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QTextEdit,
     QPushButton, QFrame, QListWidget, QListWidgetItem,
@@ -91,7 +92,8 @@ class MessageWidget(QFrame):
         role = self.message.get("role", "assistant")
         content = self.message.get("content", "")
         severity = self.message.get("severity", "normal")
-        timestamp = self.message.get("timestamp")
+        # Support both 'created_at' (from to_dict()) and 'timestamp' keys
+        timestamp = self.message.get("created_at") or self.message.get("timestamp")
 
         # Main horizontal layout with avatar
         main_layout = QHBoxLayout(self)
@@ -157,7 +159,7 @@ class MessageWidget(QFrame):
             severity_badge.setFixedHeight(20)
             header_layout.addWidget(severity_badge)
 
-        # Timestamp
+        # Timestamp (cross-platform: %I is zero-padded, strip leading zero)
         time_str = ""
         if timestamp:
             try:
@@ -168,11 +170,11 @@ class MessageWidget(QFrame):
                 else:
                     dt = None
                 if dt:
-                    time_str = dt.strftime("%-I:%M %p") if hasattr(dt, 'strftime') else ""
+                    time_str = dt.strftime("%I:%M %p").lstrip("0")
             except (ValueError, OSError):
                 pass
         if not time_str:
-            time_str = datetime.now().strftime("%-I:%M %p")
+            time_str = datetime.now().strftime("%I:%M %p").lstrip("0")
 
         time_label = QLabel(time_str)
         time_label.setStyleSheet("""
@@ -766,7 +768,7 @@ class ChatScreen(QWidget):
                 user_id=self.user.id,
                 obd_log_path=file_path,
                 parsed_data=parsed_data,
-                name=f"Vehicle Diagnostic - {file_path.split('/')[-1]}"
+                name=f"Vehicle Diagnostic - {Path(file_path).name}"
             )
 
             # Index data for RAG
@@ -887,8 +889,11 @@ class ChatScreen(QWidget):
         """Cancel and clean up the active worker thread."""
         if self._active_worker and self._active_worker.isRunning():
             self._active_worker.cancel()
-            self._active_worker.response_ready.disconnect()
-            self._active_worker.error_occurred.disconnect()
+            try:
+                self._active_worker.response_ready.disconnect()
+                self._active_worker.error_occurred.disconnect()
+            except (TypeError, RuntimeError):
+                pass  # Signals may already be disconnected
             self._active_worker = None
             self._hide_loading()
 

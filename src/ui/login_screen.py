@@ -90,6 +90,8 @@ class LoginScreen(QWidget):
         """Initialize the UI components."""
         # Dark gradient background
         self.setObjectName("loginBg")
+        # Required for QWidget to render stylesheet backgrounds
+        self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
         self.setStyleSheet("""
             QWidget#loginBg {
                 background: qlineargradient(x1:0, y1:0, x2:0.7, y2:1,
