@@ -789,6 +789,34 @@ class Styles:
     }
     """
 
+    ERROR_MESSAGE_STYLE = """
+    QFrame {
+        background-color: #FEF2F2;
+        border-left: 3px solid #F87171;
+        border-radius: 12px;
+        padding: 0px;
+        margin: 0px;
+    }
+    QLabel {
+        color: #B91C1C;
+        background-color: transparent;
+    }
+    """
+
+    WARNING_MESSAGE_STYLE = """
+    QFrame {
+        background-color: #FFFBEB;
+        border-left: 3px solid #FBBF24;
+        border-radius: 12px;
+        padding: 0px;
+        margin: 0px;
+    }
+    QLabel {
+        color: #B45309;
+        background-color: transparent;
+    }
+    """
+
     @classmethod
     def get_message_style(cls, severity: str) -> str:
         """Get message style based on severity (BR8)."""

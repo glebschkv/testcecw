@@ -16,6 +16,60 @@ from ..services.auth_service import AuthService, AuthenticationError
 from ..utils.validators import Validators
 
 
+class PasswordField(QWidget):
+    """Password input field with show/hide toggle."""
+
+    def __init__(self, placeholder: str = "Enter your password", parent=None):
+        super().__init__(parent)
+        self.setStyleSheet("background: transparent;")
+        layout = QHBoxLayout(self)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(0)
+
+        # Password input
+        self.input = QLineEdit()
+        self.input.setPlaceholderText(placeholder)
+        self.input.setEchoMode(QLineEdit.EchoMode.Password)
+        layout.addWidget(self.input)
+
+        # Toggle button overlaid on right side
+        self.toggle_btn = QPushButton("Show")
+        self.toggle_btn.setFixedSize(52, 32)
+        self.toggle_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.toggle_btn.setStyleSheet("""
+            QPushButton {
+                background-color: transparent;
+                color: #6366F1;
+                border: none;
+                font-size: 12px;
+                font-weight: 600;
+                padding: 0;
+            }
+            QPushButton:hover {
+                color: #4F46E5;
+            }
+        """)
+        self.toggle_btn.clicked.connect(self._toggle_visibility)
+        layout.addWidget(self.toggle_btn)
+
+    def _toggle_visibility(self):
+        """Toggle password visibility."""
+        if self.input.echoMode() == QLineEdit.EchoMode.Password:
+            self.input.setEchoMode(QLineEdit.EchoMode.Normal)
+            self.toggle_btn.setText("Hide")
+        else:
+            self.input.setEchoMode(QLineEdit.EchoMode.Password)
+            self.toggle_btn.setText("Show")
+
+    def text(self):
+        return self.input.text()
+
+    def clear(self):
+        self.input.clear()
+        self.input.setEchoMode(QLineEdit.EchoMode.Password)
+        self.toggle_btn.setText("Show")
+
+
 class LoginScreen(QWidget):
     """
     Login and registration screen widget.
@@ -147,10 +201,8 @@ class LoginScreen(QWidget):
         layout.addWidget(password_label)
         layout.addSpacing(6)
 
-        self.login_password = QLineEdit()
-        self.login_password.setPlaceholderText("Enter your password")
-        self.login_password.setEchoMode(QLineEdit.EchoMode.Password)
-        layout.addWidget(self.login_password)
+        self.login_password_field = PasswordField("Enter your password")
+        layout.addWidget(self.login_password_field)
 
         # Error label
         self.login_error = QLabel()
@@ -163,11 +215,11 @@ class LoginScreen(QWidget):
         layout.addSpacing(24)
 
         # Login button
-        login_btn = QPushButton("Sign In")
-        login_btn.setObjectName("primaryButton")
-        login_btn.setCursor(Qt.CursorShape.PointingHandCursor)
-        login_btn.clicked.connect(self._handle_login)
-        layout.addWidget(login_btn)
+        self.login_btn = QPushButton("Sign In")
+        self.login_btn.setObjectName("primaryButton")
+        self.login_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.login_btn.clicked.connect(self._handle_login)
+        layout.addWidget(self.login_btn)
 
         layout.addSpacing(16)
 
@@ -197,7 +249,7 @@ class LoginScreen(QWidget):
         layout.addWidget(register_btn)
 
         # Enter key handling
-        self.login_password.returnPressed.connect(self._handle_login)
+        self.login_password_field.input.returnPressed.connect(self._handle_login)
 
         return form
 
@@ -240,10 +292,8 @@ class LoginScreen(QWidget):
         layout.addWidget(password_label)
         layout.addSpacing(6)
 
-        self.register_password = QLineEdit()
-        self.register_password.setPlaceholderText("Create a password")
-        self.register_password.setEchoMode(QLineEdit.EchoMode.Password)
-        layout.addWidget(self.register_password)
+        self.register_password_field = PasswordField("Create a password")
+        layout.addWidget(self.register_password_field)
 
         layout.addSpacing(16)
 
@@ -253,10 +303,8 @@ class LoginScreen(QWidget):
         layout.addWidget(confirm_label)
         layout.addSpacing(6)
 
-        self.register_confirm = QLineEdit()
-        self.register_confirm.setPlaceholderText("Confirm your password")
-        self.register_confirm.setEchoMode(QLineEdit.EchoMode.Password)
-        layout.addWidget(self.register_confirm)
+        self.register_confirm_field = PasswordField("Confirm your password")
+        layout.addWidget(self.register_confirm_field)
 
         # Error label
         self.register_error = QLabel()
@@ -269,11 +317,11 @@ class LoginScreen(QWidget):
         layout.addSpacing(24)
 
         # Register button
-        register_btn = QPushButton("Create Account")
-        register_btn.setObjectName("primaryButton")
-        register_btn.setCursor(Qt.CursorShape.PointingHandCursor)
-        register_btn.clicked.connect(self._handle_register)
-        layout.addWidget(register_btn)
+        self.register_btn = QPushButton("Create Account")
+        self.register_btn.setObjectName("primaryButton")
+        self.register_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.register_btn.clicked.connect(self._handle_register)
+        layout.addWidget(self.register_btn)
 
         layout.addSpacing(16)
 
@@ -286,10 +334,25 @@ class LoginScreen(QWidget):
 
         return form
 
+    def _set_login_loading(self, loading: bool):
+        """Set login form loading state."""
+        self.login_btn.setEnabled(not loading)
+        self.login_username.setEnabled(not loading)
+        self.login_password_field.input.setEnabled(not loading)
+        self.login_btn.setText("Signing in..." if loading else "Sign In")
+
+    def _set_register_loading(self, loading: bool):
+        """Set register form loading state."""
+        self.register_btn.setEnabled(not loading)
+        self.register_username.setEnabled(not loading)
+        self.register_password_field.input.setEnabled(not loading)
+        self.register_confirm_field.input.setEnabled(not loading)
+        self.register_btn.setText("Creating account..." if loading else "Create Account")
+
     def _handle_login(self):
         """Handle login attempt (BR1.2)."""
         username = self.login_username.text().strip()
-        password = self.login_password.text()
+        password = self.login_password_field.text()
 
         # Validate
         valid, error = Validators.validate_username(username)
@@ -297,18 +360,22 @@ class LoginScreen(QWidget):
             self._show_login_error(error)
             return
 
+        self._set_login_loading(True)
+
         try:
             user, token = AuthService.login(username, password)
             self.login_error.hide()
+            self._set_login_loading(False)
             self.login_successful.emit(user, token)
         except AuthenticationError as e:
+            self._set_login_loading(False)
             self._show_login_error(str(e))
 
     def _handle_register(self):
         """Handle registration attempt (BR1.1)."""
         username = self.register_username.text().strip()
-        password = self.register_password.text()
-        confirm = self.register_confirm.text()
+        password = self.register_password_field.text()
+        confirm = self.register_confirm_field.text()
 
         # Validate username
         valid, error = Validators.validate_username(username)
@@ -328,9 +395,12 @@ class LoginScreen(QWidget):
             self._show_register_error(error)
             return
 
+        self._set_register_loading(True)
+
         try:
             user = AuthService.register(username, password)
             self.register_error.hide()
+            self._set_register_loading(False)
 
             # Show success and switch to login
             QMessageBox.information(
@@ -341,12 +411,13 @@ class LoginScreen(QWidget):
 
             # Clear fields and switch to login
             self.register_username.clear()
-            self.register_password.clear()
-            self.register_confirm.clear()
+            self.register_password_field.clear()
+            self.register_confirm_field.clear()
             self.login_username.setText(username)
             self.stacked_widget.setCurrentIndex(0)
 
         except AuthenticationError as e:
+            self._set_register_loading(False)
             self._show_register_error(str(e))
 
     def _show_login_error(self, message: str):
@@ -362,10 +433,10 @@ class LoginScreen(QWidget):
     def reset(self):
         """Reset the form fields."""
         self.login_username.clear()
-        self.login_password.clear()
+        self.login_password_field.clear()
         self.login_error.hide()
         self.register_username.clear()
-        self.register_password.clear()
-        self.register_confirm.clear()
+        self.register_password_field.clear()
+        self.register_confirm_field.clear()
         self.register_error.hide()
         self.stacked_widget.setCurrentIndex(0)

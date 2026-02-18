@@ -1,12 +1,8 @@
 # Core
 # python>=3.11
 
-# Local Granite AI (Optional - requires C++ compiler on Windows)
-# The app runs in demo/mock mode without these packages.
-# Windows users: Install Visual Studio Build Tools with C++ workload, or use pre-built wheels:
-#   pip install llama-cpp-python --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
-# llama-cpp-python>=0.3.0
-# huggingface-hub>=0.20.0
+# Ollama HTTP Client (for local AI inference)
+requests>=2.28.0
 
 # IBM watsonx.ai & Granite (Cloud - Optional)
 # These packages are optional and only needed for cloud deployment.

@@ -23,9 +23,7 @@ classifiers = [
 ]
 
 dependencies = [
-    "ibm-watsonx-ai>=1.0.0",
-    "langchain-ibm>=0.1.0",
-    "ibm-watson>=8.0.0",
+    "requests>=2.28.0",
     "langchain>=0.1.0",
     "langchain-community>=0.0.10",
     "chromadb>=0.4.0",
@@ -39,6 +37,11 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+watsonx = [
+    "ibm-watsonx-ai>=1.0.0",
+    "langchain-ibm>=0.1.0",
+    "ibm-watson>=8.0.0",
+]
 dev = [
     "pytest>=7.0.0",
     "pytest-qt>=4.2.0",

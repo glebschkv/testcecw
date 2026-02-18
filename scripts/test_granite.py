@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Quick test script to verify local Granite model is working via llama-cpp-python.
+Quick test script to verify Ollama connectivity and Granite model availability.
 Run: python scripts/test_granite.py
 """
 
@@ -11,92 +11,89 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 
-def check_llama_cpp_installed():
-    """Check if llama-cpp-python is installed."""
-    print("Checking if llama-cpp-python is installed...")
+def check_requests_installed():
+    """Check if requests library is installed."""
+    print("Checking if requests is installed...")
     try:
-        import llama_cpp
-        print(f"  llama-cpp-python version: {llama_cpp.__version__}")
+        import requests
+        print(f"  requests version: {requests.__version__}")
         return True
     except ImportError:
-        print("  llama-cpp-python is not installed.")
-        print("  Install with: pip install llama-cpp-python")
+        print("  requests is not installed.")
+        print("  Install with: pip install requests")
         return False
 
 
-def check_huggingface_hub():
-    """Check if huggingface-hub is installed."""
-    print("\nChecking if huggingface-hub is installed...")
-    try:
-        import huggingface_hub
-        print(f"  huggingface-hub version: {huggingface_hub.__version__}")
-        return True
-    except ImportError:
-        print("  huggingface-hub is not installed.")
-        print("  Install with: pip install huggingface-hub")
-        return False
-
-
-def check_model_available():
-    """Check if a Granite GGUF model is available locally."""
-    print("\nChecking for Granite model file...")
-
+def check_ollama_running():
+    """Check if Ollama server is running."""
+    import requests
     from src.config.settings import get_settings
     settings = get_settings()
 
-    # Check explicit path
-    if settings.granite_model_path and Path(settings.granite_model_path).is_file():
-        model_path = settings.granite_model_path
-        size_mb = Path(model_path).stat().st_size / (1024 * 1024)
-        print(f"  Found model at: {model_path} ({size_mb:.1f} MB)")
-        return model_path
+    url = settings.ollama_url
+    print(f"\nChecking Ollama server at {url}...")
 
-    # Check models directory
-    candidate = settings.models_dir / settings.granite_model_file
-    if candidate.is_file():
-        size_mb = candidate.stat().st_size / (1024 * 1024)
-        print(f"  Found model at: {candidate} ({size_mb:.1f} MB)")
-        return str(candidate)
-
-    print(f"  Model not found at: {candidate}")
-    print(f"  Expected repo: {settings.granite_model_repo}")
-    print(f"  Expected file: {settings.granite_model_file}")
-    print("\n  The model will be auto-downloaded on first run.")
-    print("  Or download manually:")
-    print(f"    pip install huggingface-hub")
-    print(f"    huggingface-cli download {settings.granite_model_repo} {settings.granite_model_file} --local-dir {settings.models_dir}")
-    return None
-
-
-def test_generation(model_path):
-    """Test a simple generation with the local Granite model."""
-    print(f"\nLoading model from {model_path}...")
     try:
-        from llama_cpp import Llama
+        response = requests.get(f"{url}/api/tags", timeout=5)
+        if response.status_code == 200:
+            data = response.json()
+            models = [m.get("name", "") for m in data.get("models", [])]
+            print(f"  Ollama is running! Available models: {models}")
+            return True, models
+        else:
+            print(f"  Ollama responded with status {response.status_code}")
+            return False, []
+    except requests.ConnectionError:
+        print(f"  Ollama is not running at {url}")
+        print("  Start it with: ollama serve")
+        return False, []
 
-        llm = Llama(
-            model_path=model_path,
-            n_ctx=2048,
-            n_gpu_layers=0,
-            verbose=False,
+
+def check_model_available(models):
+    """Check if target Granite model is available."""
+    from src.config.settings import get_settings
+    settings = get_settings()
+
+    target = settings.ollama_model
+    print(f"\nChecking for model '{target}'...")
+
+    model_base = target.split(":")[0]
+    if any(model_base in m for m in models):
+        print(f"  Model '{target}' is available!")
+        return True
+    else:
+        print(f"  Model '{target}' not found.")
+        print(f"  Pull it with: ollama pull {target}")
+        return False
+
+
+def test_generation():
+    """Test a simple generation with Ollama."""
+    import requests
+    from src.config.settings import get_settings
+    settings = get_settings()
+
+    print(f"\nTesting generation with {settings.ollama_model}...")
+    try:
+        response = requests.post(
+            f"{settings.ollama_url}/api/chat",
+            json={
+                "model": settings.ollama_model,
+                "messages": [
+                    {"role": "system", "content": "You are a helpful assistant."},
+                    {"role": "user", "content": "What is an OBD-II fault code? Answer in one sentence."},
+                ],
+                "stream": False,
+                "options": {"num_predict": 100}
+            },
+            timeout=60
         )
-        print("  Model loaded successfully!")
-
-        print("\nTesting chat generation...")
-        result = llm.create_chat_completion(
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant."},
-                {"role": "user", "content": "What is an OBD-II fault code? Answer in one sentence."},
-            ],
-            max_tokens=100,
-            temperature=0.7,
-        )
-
-        content = result["choices"][0]["message"]["content"]
+        response.raise_for_status()
+        data = response.json()
+        content = data.get("message", {}).get("content", "")
         print(f"  Generation successful!")
         print(f"\n  Response: {content[:200]}")
         return True
-
     except Exception as e:
         print(f"  Error during generation: {e}")
         return False
@@ -104,28 +101,25 @@ def test_generation(model_path):
 
 def main():
     print("=" * 50)
-    print("OBD InsightBot - Local Granite Model Test")
+    print("OBD InsightBot - Ollama Granite Model Test")
     print("=" * 50)
 
     # Check dependencies
-    has_llama = check_llama_cpp_installed()
-    has_hf = check_huggingface_hub()
+    if not check_requests_installed():
+        sys.exit(1)
 
-    if not has_llama:
-        print("\nllama-cpp-python is required. Install it and try again.")
+    # Check Ollama server
+    running, models = check_ollama_running()
+    if not running:
+        print("\nOllama is not running. Start it and try again.")
         sys.exit(1)
 
     # Check model
-    model_path = check_model_available()
-
-    if not model_path:
-        print("\nModel not found locally. It will be auto-downloaded when you run the app.")
-        if has_hf:
-            print("Or run the app once to trigger the download.")
-        sys.exit(0)
+    if not check_model_available(models):
+        sys.exit(1)
 
     # Test generation
-    if not test_generation(model_path):
+    if not test_generation():
         sys.exit(1)
 
     print("\n" + "=" * 50)
