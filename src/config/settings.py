@@ -17,25 +17,12 @@ load_dotenv()
 class Settings:
     """Application configuration settings."""
 
-    # Local Granite Model Configuration (llama-cpp-python)
-    granite_model_repo: str = field(
-        default_factory=lambda: os.getenv(
-            "GRANITE_MODEL_REPO", "ibm-granite/granite-4.0-tiny-preview-GGUF"
-        )
+    # Ollama Configuration (Local AI)
+    ollama_url: str = field(
+        default_factory=lambda: os.getenv("OLLAMA_URL", "http://localhost:11434")
     )
-    granite_model_file: str = field(
-        default_factory=lambda: os.getenv(
-            "GRANITE_MODEL_FILE", "granite-4.0-tiny-preview.Q4_K_M.gguf"
-        )
-    )
-    granite_model_path: str = field(
-        default_factory=lambda: os.getenv("GRANITE_MODEL_PATH", "")
-    )
-    granite_n_ctx: int = field(
-        default_factory=lambda: int(os.getenv("GRANITE_N_CTX", "2048"))
-    )
-    granite_n_gpu_layers: int = field(
-        default_factory=lambda: int(os.getenv("GRANITE_N_GPU_LAYERS", "0"))
+    ollama_model: str = field(
+        default_factory=lambda: os.getenv("OLLAMA_MODEL", "granite3.3:2b")
     )
 
     # IBM watsonx.ai Configuration (Cloud - Optional fallback)
@@ -87,18 +74,14 @@ class Settings:
     # Paths
     base_dir: Path = field(default_factory=lambda: Path(__file__).parent.parent.parent)
     data_dir: Path = field(default_factory=lambda: Path(__file__).parent.parent.parent / "data")
-    models_dir: Path = field(
-        default_factory=lambda: Path(__file__).parent.parent.parent / "models"
-    )
 
     # Voice Settings
     silence_threshold_seconds: float = 3.0
     wake_word: str = "Hey InsightBot"
 
     def __post_init__(self):
-        """Ensure data and models directories exist."""
+        """Ensure data directory exists."""
         self.data_dir.mkdir(parents=True, exist_ok=True)
-        self.models_dir.mkdir(parents=True, exist_ok=True)
 
         # Ensure database directory exists
         db_path = Path(self.database_path)

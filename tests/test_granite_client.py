@@ -142,36 +142,36 @@ class TestGraniteClient:
 
     def test_client_initialization(self):
         """Test client initializes with default settings."""
-        with patch.object(GraniteClient, '_check_local_model_available', return_value=False):
+        with patch.object(GraniteClient, '_check_ollama_available', return_value=False):
             client = GraniteClient()
 
         assert client._cache is not None
 
     def test_client_with_cache_disabled(self):
         """Test client can be initialized with cache disabled."""
-        with patch.object(GraniteClient, '_check_local_model_available', return_value=False):
+        with patch.object(GraniteClient, '_check_ollama_available', return_value=False):
             client = GraniteClient(enable_cache=False)
 
         assert client._cache is None
 
-    def test_client_with_custom_model_path(self):
-        """Test client accepts custom model path."""
-        with patch.object(GraniteClient, '_check_local_model_available', return_value=False):
-            client = GraniteClient(model_path="/custom/model.gguf")
+    def test_client_with_custom_ollama_model(self):
+        """Test client accepts custom Ollama model."""
+        with patch.object(GraniteClient, '_check_ollama_available', return_value=False):
+            client = GraniteClient(ollama_model="granite3.3:8b")
 
-        assert client._model_path == "/custom/model.gguf"
+        assert client._ollama_model == "granite3.3:8b"
 
-    def test_is_configured_with_local(self):
-        """Test is_configured returns True when local model is available."""
-        with patch.object(GraniteClient, '_check_local_model_available', return_value=True):
+    def test_is_configured_with_ollama(self):
+        """Test is_configured returns True when Ollama is available."""
+        with patch.object(GraniteClient, '_check_ollama_available', return_value=True):
             client = GraniteClient()
 
         assert client.is_configured is True
-        assert client.is_using_local is True
+        assert client.is_using_ollama is True
 
     def test_mock_response_for_summary(self):
         """Test mock response for summary queries."""
-        with patch.object(GraniteClient, '_check_local_model_available', return_value=False):
+        with patch.object(GraniteClient, '_check_ollama_available', return_value=False):
             client = GraniteClient()
 
         response = client._mock_response("Give me a health summary", "context")
@@ -180,7 +180,7 @@ class TestGraniteClient:
 
     def test_mock_response_for_fault_code(self):
         """Test mock response for fault code queries."""
-        with patch.object(GraniteClient, '_check_local_model_available', return_value=False):
+        with patch.object(GraniteClient, '_check_ollama_available', return_value=False):
             client = GraniteClient()
 
         response = client._mock_response("What is fault code P0300?", "context")
@@ -189,7 +189,7 @@ class TestGraniteClient:
 
     def test_mock_response_for_rpm(self):
         """Test mock response for RPM queries."""
-        with patch.object(GraniteClient, '_check_local_model_available', return_value=False):
+        with patch.object(GraniteClient, '_check_ollama_available', return_value=False):
             client = GraniteClient()
 
         response = client._mock_response("What is the RPM reading?", "context")
@@ -198,7 +198,7 @@ class TestGraniteClient:
 
     def test_generate_response_uses_cache(self):
         """Test generate_response uses cache when available."""
-        with patch.object(GraniteClient, '_check_local_model_available', return_value=False):
+        with patch.object(GraniteClient, '_check_ollama_available', return_value=False):
             client = GraniteClient()
 
         # First call
@@ -211,7 +211,7 @@ class TestGraniteClient:
 
     def test_generate_response_bypasses_cache(self):
         """Test generate_response can bypass cache."""
-        with patch.object(GraniteClient, '_check_local_model_available', return_value=False):
+        with patch.object(GraniteClient, '_check_ollama_available', return_value=False):
             client = GraniteClient()
 
         # Pre-populate cache
@@ -225,7 +225,7 @@ class TestGraniteClient:
 
     def test_clear_cache(self):
         """Test clearing the cache."""
-        with patch.object(GraniteClient, '_check_local_model_available', return_value=False):
+        with patch.object(GraniteClient, '_check_ollama_available', return_value=False):
             client = GraniteClient()
 
         client._cache.set("prompt", "context", "response")
@@ -235,7 +235,7 @@ class TestGraniteClient:
 
     def test_get_cache_stats(self):
         """Test getting cache statistics."""
-        with patch.object(GraniteClient, '_check_local_model_available', return_value=False):
+        with patch.object(GraniteClient, '_check_ollama_available', return_value=False):
             client = GraniteClient()
 
         client._cache.set("prompt", "context", "response")
@@ -246,7 +246,7 @@ class TestGraniteClient:
 
     def test_get_cache_stats_when_disabled(self):
         """Test cache stats when cache is disabled."""
-        with patch.object(GraniteClient, '_check_local_model_available', return_value=False):
+        with patch.object(GraniteClient, '_check_ollama_available', return_value=False):
             client = GraniteClient(enable_cache=False)
 
         stats = client.get_cache_stats()
@@ -255,7 +255,7 @@ class TestGraniteClient:
 
     def test_default_system_prompt(self):
         """Test default system prompt is generated correctly."""
-        with patch.object(GraniteClient, '_check_local_model_available', return_value=False):
+        with patch.object(GraniteClient, '_check_ollama_available', return_value=False):
             client = GraniteClient()
 
         prompt = client._get_default_system_prompt()
@@ -265,7 +265,7 @@ class TestGraniteClient:
 
     def test_build_prompt(self):
         """Test prompt building with context."""
-        with patch.object(GraniteClient, '_check_local_model_available', return_value=False):
+        with patch.object(GraniteClient, '_check_ollama_available', return_value=False):
             client = GraniteClient()
 
         full_prompt = client._build_prompt(
@@ -280,7 +280,7 @@ class TestGraniteClient:
 
     def test_get_embeddings_mock(self):
         """Test embeddings returns deterministic mock when no backend available."""
-        with patch.object(GraniteClient, '_check_local_model_available', return_value=False):
+        with patch.object(GraniteClient, '_check_ollama_available', return_value=False):
             client = GraniteClient()
 
         embeddings = client.get_embeddings(["test text"])
@@ -290,7 +290,7 @@ class TestGraniteClient:
 
     def test_get_embedding_single(self):
         """Test getting embedding for single text."""
-        with patch.object(GraniteClient, '_check_local_model_available', return_value=False):
+        with patch.object(GraniteClient, '_check_ollama_available', return_value=False):
             client = GraniteClient()
 
         embedding = client.get_embedding("test text")
@@ -299,99 +299,134 @@ class TestGraniteClient:
 
     def test_get_model_info_mock(self):
         """Test model info when running in mock mode."""
-        with patch.object(GraniteClient, '_check_local_model_available', return_value=False):
+        with patch.object(GraniteClient, '_check_ollama_available', return_value=False):
             client = GraniteClient()
 
         info = client.get_model_info()
 
         assert info["backend"] == "mock"
-        assert info["loaded"] is False
+        assert info["connected"] is False
 
 
-class TestGraniteClientWithLocalModel:
-    """Tests for GraniteClient with mocked local llama-cpp-python backend."""
+class TestGraniteClientWithOllama:
+    """Tests for GraniteClient with mocked Ollama backend."""
 
-    def test_generate_local_success(self):
-        """Test successful local model generation."""
-        mock_llm = MagicMock()
-        mock_llm.create_chat_completion.return_value = {
-            "choices": [{"message": {"content": "Generated response"}}]
+    def test_generate_ollama_success(self):
+        """Test successful Ollama model generation."""
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "message": {"content": "Generated response"}
         }
 
-        with patch.object(GraniteClient, '_check_local_model_available', return_value=True):
+        with patch.object(GraniteClient, '_check_ollama_available', return_value=True):
             client = GraniteClient()
-            client._llm = mock_llm
 
-        response = client.generate_response("test prompt", use_cache=False)
+        with patch('src.services.granite_client.requests.post', return_value=mock_response):
+            response = client.generate_response("test prompt", use_cache=False)
 
         assert response == "Generated response"
 
-    def test_generate_local_error_falls_back_to_mock(self):
-        """Test local model error falls back to mock response."""
-        mock_llm = MagicMock()
-        mock_llm.create_chat_completion.side_effect = RuntimeError("Model error")
+    def test_generate_ollama_error_falls_back_to_mock(self):
+        """Test Ollama error falls back to mock response."""
+        mock_response = MagicMock()
+        mock_response.status_code = 500
+        mock_response.text = "Internal Server Error"
 
-        with patch.object(GraniteClient, '_check_local_model_available', return_value=True):
+        with patch.object(GraniteClient, '_check_ollama_available', return_value=True):
             client = GraniteClient()
-            client._llm = mock_llm
 
-        response = client.generate_response("What is my health status?", use_cache=False)
+        with patch('src.services.granite_client.requests.post', return_value=mock_response):
+            response = client.generate_response("What is my health status?", use_cache=False)
 
         # Should get a mock response (not crash)
         assert response is not None
         assert len(response) > 0
 
-    def test_local_embeddings_success(self):
-        """Test successful local embeddings."""
-        mock_llm = MagicMock()
-        mock_llm.embed.return_value = [0.1] * 384
+    def test_ollama_embeddings_success(self):
+        """Test successful Ollama embeddings."""
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "embedding": [0.1] * 384
+        }
 
-        with patch.object(GraniteClient, '_check_local_model_available', return_value=True):
+        with patch.object(GraniteClient, '_check_ollama_available', return_value=True):
             client = GraniteClient()
-            client._llm = mock_llm
 
-        embeddings = client.get_embeddings(["test"])
-
-        assert len(embeddings) == 1
-        assert len(embeddings[0]) == 384
-
-    def test_local_embeddings_nested_list(self):
-        """Test local embeddings when model returns nested list."""
-        mock_llm = MagicMock()
-        mock_llm.embed.return_value = [[0.1] * 384]
-
-        with patch.object(GraniteClient, '_check_local_model_available', return_value=True):
-            client = GraniteClient()
-            client._llm = mock_llm
-
-        embeddings = client.get_embeddings(["test"])
+        with patch('src.services.granite_client.requests.post', return_value=mock_response):
+            embeddings = client.get_embeddings(["test"])
 
         assert len(embeddings) == 1
         assert len(embeddings[0]) == 384
 
     def test_streaming_generation(self):
-        """Test streaming generation from local model."""
-        mock_llm = MagicMock()
-        mock_llm.create_chat_completion.return_value = iter([
-            {"choices": [{"delta": {"content": "Hello"}}]},
-            {"choices": [{"delta": {"content": " world"}}]},
-        ])
+        """Test streaming generation from Ollama."""
+        mock_response = MagicMock()
+        mock_response.iter_lines.return_value = [
+            b'{"message":{"content":"Hello"},"done":false}',
+            b'{"message":{"content":" world"},"done":true}',
+        ]
 
-        with patch.object(GraniteClient, '_check_local_model_available', return_value=True):
+        with patch.object(GraniteClient, '_check_ollama_available', return_value=True):
             client = GraniteClient()
-            client._llm = mock_llm
 
-        chunks = list(client.generate_streaming("test prompt"))
+        with patch('src.services.granite_client.requests.post', return_value=mock_response):
+            chunks = list(client.generate_streaming("test prompt"))
 
         assert len(chunks) > 0
+        assert "Hello" in chunks[0]
 
-    def test_model_info_with_local(self):
-        """Test model info when using local model."""
-        with patch.object(GraniteClient, '_check_local_model_available', return_value=True):
+    def test_model_info_with_ollama(self):
+        """Test model info when using Ollama."""
+        mock_show_response = MagicMock()
+        mock_show_response.status_code = 200
+        mock_show_response.json.return_value = {
+            "details": {
+                "family": "granite",
+                "parameter_size": "2B",
+                "quantization_level": "Q4_K_M",
+            }
+        }
+
+        with patch.object(GraniteClient, '_check_ollama_available', return_value=True):
             client = GraniteClient()
-            client._model_path = "/tmp/test_model.gguf"
 
-        with patch('pathlib.Path.exists', return_value=False):
+        with patch('src.services.granite_client.requests.post', return_value=mock_show_response):
             info = client.get_model_info()
 
-        assert info["backend"] == "llama-cpp-python"
+        assert info["backend"] == "ollama"
+        assert info["connected"] is True
+
+    def test_list_available_models(self):
+        """Test listing available Ollama models."""
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "models": [
+                {"name": "granite3.3:2b"},
+                {"name": "llama3:8b"}
+            ]
+        }
+
+        with patch.object(GraniteClient, '_check_ollama_available', return_value=True):
+            client = GraniteClient()
+
+        with patch('src.services.granite_client.requests.get', return_value=mock_response):
+            models = client.list_available_models()
+
+        assert "granite3.3:2b" in models
+        assert "llama3:8b" in models
+
+    def test_pull_model_success(self):
+        """Test pulling a model from Ollama."""
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+
+        with patch.object(GraniteClient, '_check_ollama_available', return_value=True):
+            client = GraniteClient()
+
+        with patch('src.services.granite_client.requests.post', return_value=mock_response):
+            result = client.pull_model("granite3.3:2b")
+
+        assert result is True
