@@ -159,13 +159,13 @@ try:
     from ibm_watsonx_ai import APIClient, Credentials
     from ibm_watsonx_ai.foundation_models import ModelInference
     HAS_WATSONX = True
-except ImportError:
+except Exception:
     HAS_WATSONX = False
 
 try:
     from langchain_ibm import ChatWatsonx, WatsonxEmbeddings
     HAS_LANGCHAIN_IBM = True
-except ImportError:
+except Exception:
     HAS_LANGCHAIN_IBM = False
 
 

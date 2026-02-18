@@ -1012,6 +1012,9 @@ class ChatScreen(QWidget):
 
     def _generate_initial_summary(self, parsed_data: dict):
         """Generate initial vehicle summary after upload."""
+        if not self.current_chat:
+            return
+
         # Add system message about the upload
         metrics_count = len(parsed_data.get("metrics", []))
         fault_count = len(parsed_data.get("fault_codes", []))
@@ -1026,11 +1029,16 @@ class ChatScreen(QWidget):
         else:
             summary += "Your vehicle appears to be in good condition!"
 
-        self._add_message_widget({
-            "role": "assistant",
-            "content": summary,
-            "severity": "warning" if has_issues else "normal"
-        })
+        severity = "warning" if has_issues else "normal"
+
+        # Save to database so it persists when chat is reloaded
+        msg = ChatService.add_message(
+            self.current_chat.id,
+            "assistant",
+            summary,
+            severity=severity
+        )
+        self._add_message_widget(msg.to_dict())
 
     def _show_chat_context_menu(self, position):
         """Show context menu for chat list (BR3.2, BR3.3, BR3.4)."""

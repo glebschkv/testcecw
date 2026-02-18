@@ -19,7 +19,7 @@ try:
     from langchain_community.vectorstores import Chroma
     from langchain.schema import Document
     HAS_LANGCHAIN = True
-except ImportError:
+except Exception:
     HAS_LANGCHAIN = False
     logger.warning("LangChain not fully installed. Using simplified RAG.")
 
