@@ -15,6 +15,46 @@ from ..services.auth_service import AuthService, AuthenticationError, RateLimitE
 from ..utils.validators import Validators
 
 
+_PRIMARY_BTN_STYLE = """
+    QPushButton {
+        min-height: 52px;
+        font-size: 15px;
+        font-weight: 700;
+        border-radius: 14px;
+        background-color: #6366F1;
+        color: #FFFFFF;
+        border: none;
+        letter-spacing: 0.3px;
+    }
+    QPushButton:hover { background-color: #4F46E5; }
+    QPushButton:pressed { background-color: #4338CA; }
+    QPushButton:disabled { background-color: #C7D2FE; color: #6366F1; }
+"""
+
+_SECONDARY_BTN_STYLE = """
+    QPushButton {
+        background-color: #F8FAFC;
+        color: #475569;
+        border: 1.5px solid #CBD5E1;
+        min-height: 52px;
+        font-size: 15px;
+        font-weight: 600;
+        border-radius: 14px;
+    }
+    QPushButton:hover {
+        background-color: #F1F5F9;
+        border-color: #94A3B8;
+        color: #0F172A;
+    }
+    QPushButton:pressed { background-color: #E2E8F0; }
+    QPushButton:disabled {
+        background-color: #F8FAFC;
+        color: #CBD5E1;
+        border-color: #E2E8F0;
+    }
+"""
+
+
 class PasswordField(QWidget):
     """Password input field with show/hide toggle."""
 
@@ -217,6 +257,7 @@ class LoginScreen(QWidget):
         self.login_btn = QPushButton("Sign In")
         self.login_btn.setObjectName("primaryButton")
         self.login_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.login_btn.setStyleSheet(_PRIMARY_BTN_STYLE)
         self.login_btn.clicked.connect(self._handle_login)
         layout.addWidget(self.login_btn)
 
@@ -244,6 +285,7 @@ class LoginScreen(QWidget):
         register_btn = QPushButton("Create Account")
         register_btn.setObjectName("secondaryButton")
         register_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        register_btn.setStyleSheet(_SECONDARY_BTN_STYLE)
         register_btn.clicked.connect(lambda: self.stacked_widget.setCurrentIndex(1))
         layout.addWidget(register_btn)
 
@@ -319,6 +361,7 @@ class LoginScreen(QWidget):
         self.register_btn = QPushButton("Create Account")
         self.register_btn.setObjectName("primaryButton")
         self.register_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.register_btn.setStyleSheet(_PRIMARY_BTN_STYLE)
         self.register_btn.clicked.connect(self._handle_register)
         layout.addWidget(self.register_btn)
 
@@ -328,6 +371,7 @@ class LoginScreen(QWidget):
         back_btn = QPushButton("Back to Sign In")
         back_btn.setObjectName("secondaryButton")
         back_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        back_btn.setStyleSheet(_SECONDARY_BTN_STYLE)
         back_btn.clicked.connect(lambda: self.stacked_widget.setCurrentIndex(0))
         layout.addWidget(back_btn)
 
