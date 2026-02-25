@@ -205,6 +205,11 @@ class MessageWidget(QFrame):
                     color: #475569;
                     border-color: #CBD5E1;
                 }
+                QPushButton:pressed {
+                    background-color: #E2E8F0;
+                    color: #0F172A;
+                    border-color: #94A3B8;
+                }
             """)
             self._copy_btn.clicked.connect(lambda: self._copy_content(content))
             header_layout.addWidget(self._copy_btn)

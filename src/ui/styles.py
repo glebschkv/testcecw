@@ -468,6 +468,12 @@ class Styles:
         background-color: #E2E8F0;
     }
 
+    QPushButton#secondaryButton:disabled {
+        background-color: #F8FAFC;
+        color: #CBD5E1;
+        border-color: #E2E8F0;
+    }
+
     QLabel#dividerText {
         color: #94A3B8;
         font-size: 12px;
@@ -562,7 +568,7 @@ class Styles:
     QPushButton#newChatButton {
         background-color: #6366F1;
         color: #FFFFFF;
-        border-radius: 12px;
+        border-radius: 14px;
         padding: 14px 16px;
         font-size: 14px;
         font-weight: 700;
@@ -583,7 +589,7 @@ class Styles:
         background-color: rgba(255, 255, 255, 0.08);
         color: #E2E8F0;
         border: 1px solid rgba(255, 255, 255, 0.12);
-        border-radius: 8px;
+        border-radius: 10px;
         padding: 6px;
         font-size: 13px;
         font-weight: 500;
@@ -712,6 +718,12 @@ class Styles:
         background-color: #CBD5E1;
     }
 
+    QPushButton#micButton:disabled {
+        background-color: #F8FAFC;
+        color: #CBD5E1;
+        border-color: #E2E8F0;
+    }
+
     /* ─── UPLOAD BUTTON ─── */
 
     QPushButton#uploadButton {
@@ -734,6 +746,12 @@ class Styles:
         background-color: #E2E8F0;
     }
 
+    QPushButton#uploadButton:disabled {
+        background-color: transparent;
+        color: #CBD5E1;
+        border-color: #E2E8F0;
+    }
+
     /* ─── DELETE BUTTON ─── */
 
     QPushButton#deleteButton {
@@ -754,6 +772,12 @@ class Styles:
 
     QPushButton#deleteButton:pressed {
         background-color: #FEE2E2;
+    }
+
+    QPushButton#deleteButton:disabled {
+        background-color: transparent;
+        color: #FECACA;
+        border-color: #FEE2E2;
     }
     """
 
