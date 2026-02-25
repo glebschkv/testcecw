@@ -222,23 +222,23 @@ class SeverityClassifier:
         """
         colors = {
             "critical": {
-                "background": "#FFEBEE",
-                "border": "#F44336",
-                "text": "#C62828",
+                "background": "#FEF2F2",
+                "border": "#F87171",
+                "text": "#B91C1C",
                 "icon": "🔴",
                 "name": "Critical"
             },
             "warning": {
-                "background": "#FFF8E1",
-                "border": "#FFC107",
-                "text": "#F57F17",
+                "background": "#FFFBEB",
+                "border": "#FBBF24",
+                "text": "#B45309",
                 "icon": "🟡",
                 "name": "Warning"
             },
             "normal": {
-                "background": "#E8F5E9",
-                "border": "#4CAF50",
-                "text": "#2E7D32",
+                "background": "#F0FDF4",
+                "border": "#4ADE80",
+                "text": "#15803D",
                 "icon": "🟢",
                 "name": "Normal"
             }

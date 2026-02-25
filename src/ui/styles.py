@@ -445,13 +445,13 @@ class Styles:
 
     QPushButton#primaryButton:disabled {
         background-color: #C7D2FE;
-        color: #FFFFFF;
+        color: #6366F1;
     }
 
     QPushButton#secondaryButton {
-        background-color: transparent;
+        background-color: #F8FAFC;
         color: #475569;
-        border: 1.5px solid #E2E8F0;
+        border: 1.5px solid #CBD5E1;
         min-height: 52px;
         font-size: 15px;
         font-weight: 600;
@@ -460,12 +460,18 @@ class Styles:
 
     QPushButton#secondaryButton:hover {
         background-color: #F1F5F9;
-        border-color: #CBD5E1;
+        border-color: #94A3B8;
         color: #0F172A;
     }
 
     QPushButton#secondaryButton:pressed {
         background-color: #E2E8F0;
+    }
+
+    QPushButton#secondaryButton:disabled {
+        background-color: #F8FAFC;
+        color: #CBD5E1;
+        border-color: #E2E8F0;
     }
 
     QLabel#dividerText {
@@ -562,7 +568,7 @@ class Styles:
     QPushButton#newChatButton {
         background-color: #6366F1;
         color: #FFFFFF;
-        border-radius: 12px;
+        border-radius: 14px;
         padding: 14px 16px;
         font-size: 14px;
         font-weight: 700;
@@ -570,7 +576,7 @@ class Styles:
     }
 
     QPushButton#newChatButton:hover {
-        background-color: #818CF8;
+        background-color: #4F46E5;
     }
 
     QPushButton#newChatButton:pressed {
@@ -583,7 +589,7 @@ class Styles:
         background-color: rgba(255, 255, 255, 0.08);
         color: #E2E8F0;
         border: 1px solid rgba(255, 255, 255, 0.12);
-        border-radius: 8px;
+        border-radius: 10px;
         padding: 6px;
         font-size: 13px;
         font-weight: 500;
@@ -688,73 +694,6 @@ class Styles:
         height: 0px;
     }
 
-    /* ─── MIC BUTTON ─── */
-
-    QPushButton#micButton {
-        background-color: #F1F5F9;
-        color: #475569;
-        border-radius: 12px;
-        min-width: 44px;
-        max-width: 44px;
-        min-height: 44px;
-        max-height: 44px;
-        font-size: 16px;
-        border: 1px solid #E2E8F0;
-    }
-
-    QPushButton#micButton:hover {
-        background-color: #E2E8F0;
-        color: #0F172A;
-        border-color: #CBD5E1;
-    }
-
-    QPushButton#micButton:pressed {
-        background-color: #CBD5E1;
-    }
-
-    /* ─── UPLOAD BUTTON ─── */
-
-    QPushButton#uploadButton {
-        background-color: transparent;
-        color: #475569;
-        border: 1.5px solid #E2E8F0;
-        border-radius: 10px;
-        padding: 8px 16px;
-        font-size: 13px;
-        font-weight: 600;
-    }
-
-    QPushButton#uploadButton:hover {
-        background-color: #F1F5F9;
-        border-color: #CBD5E1;
-        color: #0F172A;
-    }
-
-    QPushButton#uploadButton:pressed {
-        background-color: #E2E8F0;
-    }
-
-    /* ─── DELETE BUTTON ─── */
-
-    QPushButton#deleteButton {
-        background-color: transparent;
-        color: #DC2626;
-        border: 1.5px solid #FECACA;
-        border-radius: 10px;
-        padding: 8px 16px;
-        font-size: 13px;
-        font-weight: 600;
-    }
-
-    QPushButton#deleteButton:hover {
-        background-color: #FEF2F2;
-        border-color: #F87171;
-        color: #B91C1C;
-    }
-
-    QPushButton#deleteButton:pressed {
-        background-color: #FEE2E2;
-    }
     """
 
     # ═══════════════════════════════════════════════════════════════
