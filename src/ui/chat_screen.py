@@ -3,16 +3,16 @@ Main Chat Screen.
 Implements BR2, BR3, BR4, BR5, BR8
 """
 
-from typing import Optional, List
+from typing import Optional
 from datetime import datetime
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QTextEdit,
     QPushButton, QFrame, QListWidget, QListWidgetItem,
-    QFileDialog, QMessageBox, QScrollArea, QSplitter,
+    QFileDialog, QMessageBox, QScrollArea,
     QMenu, QInputDialog, QApplication
 )
 from PyQt6.QtCore import Qt, pyqtSignal, QThread, QTimer, QEvent
-from PyQt6.QtGui import QFont, QAction, QTextCursor, QKeyEvent, QShortcut, QKeySequence
+from PyQt6.QtGui import QShortcut, QKeySequence
 
 from .styles import Styles, SeverityStyles
 from ..models.user import User
@@ -219,7 +219,7 @@ class MessageWidget(QFrame):
         # Message content bubble
         bubble = QFrame()
         bubble_layout = QVBoxLayout(bubble)
-        bubble_layout.setContentsMargins(14, 12, 14, 12)
+        bubble_layout.setContentsMargins(14, 14, 14, 14)
         bubble_layout.setSpacing(0)
 
         # Apply styling based on role and severity
@@ -248,7 +248,6 @@ class MessageWidget(QFrame):
             color: #0F172A;
             background-color: transparent;
             font-size: 14px;
-            line-height: 1.6;
         """)
         bubble_layout.addWidget(content_label)
 
@@ -467,19 +466,17 @@ class ChatScreen(QWidget):
         self._show_welcome_message()
 
         # Input area - premium pill shape
-        input_frame = QFrame()
-        input_frame.setObjectName("inputFrame")
-        input_frame.setStyleSheet("""
+        self.input_frame = QFrame()
+        self.input_frame.setObjectName("inputFrame")
+        self._input_frame_base_style = """
             QFrame#inputFrame {
                 background-color: #FFFFFF;
                 border-radius: 28px;
-                border: 2px solid #E2E8F0;
+                border: 2px solid %s;
             }
-            QFrame#inputFrame:focus-within {
-                border-color: #6366F1;
-            }
-        """)
-        input_layout = QHBoxLayout(input_frame)
+        """
+        self.input_frame.setStyleSheet(self._input_frame_base_style % "#E2E8F0")
+        input_layout = QHBoxLayout(self.input_frame)
         input_layout.setContentsMargins(22, 10, 10, 10)
         input_layout.setSpacing(12)
         input_layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
@@ -525,7 +522,7 @@ class ChatScreen(QWidget):
         self.send_btn.setEnabled(False)
         input_layout.addWidget(self.send_btn)
 
-        layout.addWidget(input_frame)
+        layout.addWidget(self.input_frame)
 
         # Keyboard hint
         hint_label = QLabel("Enter to send  |  Shift+Enter for new line  |  Ctrl+N new chat")
@@ -733,11 +730,17 @@ class ChatScreen(QWidget):
             item.setData(Qt.ItemDataRole.UserRole, chat.id)
             item.setToolTip(chat.name)
 
-            # Add severity indicator dot based on fault codes
-            severity = getattr(chat, 'highest_severity', None)
-            if severity and severity.lower() == "critical":
+            # Add severity indicator based on fault codes
+            fault_codes = chat.fault_codes or []
+            has_critical = any(
+                f.get("severity") == "critical" for f in fault_codes
+            )
+            has_warning = any(
+                f.get("severity") == "warning" for f in fault_codes
+            )
+            if has_critical:
                 item.setForeground(Qt.GlobalColor.red)
-            elif severity and severity.lower() == "warning":
+            elif has_warning:
                 item.setForeground(Qt.GlobalColor.yellow)
 
             self.chat_list.addItem(item)
@@ -880,12 +883,17 @@ class ChatScreen(QWidget):
         self.message_input.setFixedHeight(new_height)
 
     def eventFilter(self, obj, event):
-        """Handle Enter key to send message (Shift+Enter for new line)."""
-        if obj == self.message_input and event.type() == QEvent.Type.KeyPress:
-            if event.key() == Qt.Key.Key_Return or event.key() == Qt.Key.Key_Enter:
-                if event.modifiers() != Qt.KeyboardModifier.ShiftModifier:
-                    self._send_message()
-                    return True
+        """Handle Enter key and input frame focus highlight."""
+        if obj == self.message_input:
+            if event.type() == QEvent.Type.KeyPress:
+                if event.key() == Qt.Key.Key_Return or event.key() == Qt.Key.Key_Enter:
+                    if not (event.modifiers() & Qt.KeyboardModifier.ShiftModifier):
+                        self._send_message()
+                        return True
+            elif event.type() == QEvent.Type.FocusIn:
+                self.input_frame.setStyleSheet(self._input_frame_base_style % "#6366F1")
+            elif event.type() == QEvent.Type.FocusOut:
+                self.input_frame.setStyleSheet(self._input_frame_base_style % "#E2E8F0")
         return super().eventFilter(obj, event)
 
     def _cleanup_worker(self):

@@ -9,10 +9,9 @@ from PyQt6.QtWidgets import (
     QPushButton, QFrame, QMessageBox, QStackedWidget
 )
 from PyQt6.QtCore import Qt, pyqtSignal
-from PyQt6.QtGui import QFont
 
 from .styles import Styles
-from ..services.auth_service import AuthService, AuthenticationError
+from ..services.auth_service import AuthService, AuthenticationError, RateLimitError
 from ..utils.validators import Validators
 
 
@@ -367,7 +366,7 @@ class LoginScreen(QWidget):
             self.login_error.hide()
             self._set_login_loading(False)
             self.login_successful.emit(user, token)
-        except AuthenticationError as e:
+        except (AuthenticationError, RateLimitError) as e:
             self._set_login_loading(False)
             self._show_login_error(str(e))
 
@@ -416,7 +415,7 @@ class LoginScreen(QWidget):
             self.login_username.setText(username)
             self.stacked_widget.setCurrentIndex(0)
 
-        except AuthenticationError as e:
+        except (AuthenticationError, RateLimitError) as e:
             self._set_register_loading(False)
             self._show_register_error(str(e))
 

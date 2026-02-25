@@ -195,6 +195,6 @@ class Message(Base):
             "role": self.role,
             "content": self.content,
             "severity": self.severity,
-            "created_at": self.created_at.isoformat() if self.created_at else None,
+            "timestamp": self.created_at.isoformat() if self.created_at else None,
             "metadata": self.extra_data
         }
