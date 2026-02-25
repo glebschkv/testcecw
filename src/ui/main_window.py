@@ -4,7 +4,7 @@ Coordinates login and chat screens.
 """
 
 from PyQt6.QtWidgets import QMainWindow, QStackedWidget, QMessageBox, QStatusBar, QLabel
-from PyQt6.QtCore import Qt, QTimer
+from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QCloseEvent
 
 from .styles import Styles

@@ -3,7 +3,7 @@ Login and Registration Screen.
 Implements BR1: Account Management
 """
 
-from typing import Optional, Callable
+from typing import Optional
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit,
     QPushButton, QFrame, QMessageBox, QStackedWidget
