@@ -113,7 +113,7 @@ class TestSeverityClassifier:
         """Test color scheme retrieval."""
         critical_colors = severity_classifier.get_severity_color("critical")
         assert critical_colors["icon"] == "🔴"
-        assert "#FF" in critical_colors["background"] or "#ff" in critical_colors["background"].lower()
+        assert critical_colors["background"] == "#FEF2F2"
 
         warning_colors = severity_classifier.get_severity_color("warning")
         assert warning_colors["icon"] == "🟡"

@@ -445,13 +445,13 @@ class Styles:
 
     QPushButton#primaryButton:disabled {
         background-color: #C7D2FE;
-        color: #FFFFFF;
+        color: #6366F1;
     }
 
     QPushButton#secondaryButton {
-        background-color: transparent;
+        background-color: #F8FAFC;
         color: #475569;
-        border: 1.5px solid #E2E8F0;
+        border: 1.5px solid #CBD5E1;
         min-height: 52px;
         font-size: 15px;
         font-weight: 600;
@@ -460,7 +460,7 @@ class Styles:
 
     QPushButton#secondaryButton:hover {
         background-color: #F1F5F9;
-        border-color: #CBD5E1;
+        border-color: #94A3B8;
         color: #0F172A;
     }
 
@@ -570,7 +570,7 @@ class Styles:
     }
 
     QPushButton#newChatButton:hover {
-        background-color: #818CF8;
+        background-color: #4F46E5;
     }
 
     QPushButton#newChatButton:pressed {
